@@ -1,0 +1,58 @@
+projeto:
+  titulo: "Protocolo Nao Encontrado: Por Que Sua Geracao Esta Fodida e O Que Fazer Com Isso"
+  genero: "autoajuda acida / ensaio geracional confessional"
+  publico: "millennials brasileiros (27-40 anos)"
+  idioma: "pt-BR"
+  extensao: "~71.000 palavras"
+  registro_surreal: "kafkiano"
+  ultima_atualizacao: "2026-02-27"
+  fase_atual: 7_completa
+  modo: "guiado"
+
+manuscrito:
+  total_capitulos: 13
+  palavras_estimadas: 71000
+  status: "finalizado"
+  estrutura:
+    introducao: "Eu Fiz Eletrochoque e Continuei Fudido"
+    parte_1: "Como Eu Quebrei (Cap 1-4)"
+    parte_2: "Por Que Voce Tambem Quebrou (Cap 5-9)"
+    parte_3: "O Que Sobra Quando Para de Procurar Cura (Cap 10-13)"
+    epilogo: "Protocolo Nao Encontrado (e ta tudo bem)"
+
+capitulos:
+  - { numero: 0, titulo: "Introducao", status: "rascunho", palavras: 2125 }
+  - { numero: 1, titulo: "A Praia do Sossego", status: "rascunho", palavras: 3769 }
+  - { numero: 2, titulo: "O Shopping de Deuses", status: "rascunho", palavras: 3775 }
+  - { numero: 3, titulo: "A Roleta de Remedios", status: "rascunho", palavras: 4514 }
+  - { numero: 4, titulo: "O Fundo do Poco", status: "rascunho", palavras: 4112 }
+  - { numero: 5, titulo: "A Promessa Quebrada", status: "rascunho", palavras: 3927 }
+  - { numero: 6, titulo: "O PJ da Vida", status: "rascunho", palavras: 4139 }
+  - { numero: 7, titulo: "O Scroll Infinito", status: "rascunho", palavras: 4512 }
+  - { numero: 8, titulo: "O Amor em Tempos de App", status: "rascunho", palavras: 4388 }
+  - { numero: 9, titulo: "A Industria da Cura", status: "rascunho", palavras: 4873 }
+  - { numero: 10, titulo: "A Rendicao", status: "rascunho", palavras: 4242 }
+  - { numero: 11, titulo: "O Ritmo", status: "rascunho", palavras: 4127 }
+  - { numero: 12, titulo: "A Constancia Enquanto Fodido", status: "rascunho", palavras: 4696 }
+  - { numero: 13, titulo: "A Vocacao Encontrada no Caos", status: "rascunho", palavras: 4748 }
+  - { numero: 14, titulo: "Epilogo", status: "rascunho", palavras: 2847 }
+
+genesis_score:
+  ultima_avaliacao: "2026-02-26"
+  media_ponderada: 9.04
+  aprovado: true
+  dimensoes:
+    originalidade: 9.0
+    tema: 9.1
+    personagens: 9.1
+    prosa: 9.1
+    ritmo: 9.0
+    emocao: 9.1
+    coerencia: 9.0
+    mercado: 8.9
+    voz: 9.0
+    surreal: 9.0
+  iteracoes_revisao: 2
+
+handoffs_pendentes: []
+inconsistencias: []
