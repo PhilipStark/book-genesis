@@ -1,205 +1,161 @@
-# Skills Reference
+# Skills Reference — Book Genesis V3
 
-Complete reference for all 15 skills in Book Genesis. Each skill can be used **standalone** (invoke it directly) or **orchestrated** by the `book-genesis` pipeline.
-
-## Orchestrators
-
-### book-genesis
-**Invocation:** `/book-genesis`
-**Lines:** ~1,000 | **Phase:** All
-
-The master orchestrator. Chains all 15 skills into an 8-phase pipeline with quality gates. Takes a one-sentence idea and produces a complete manuscript with editorial package.
-
-**Key commands:**
-| Command | What it does |
-|---------|-------------|
-| `/genesis` | Start the full pipeline from Phase 0 |
-| `/capitulo N` | Write chapter N with 5 obligations |
-| `/score` | Run Genesis Score evaluation |
-| `/revisar` | Start directed revision loop |
-| `/beta` | Simulate 5 beta readers |
-| `/pacote` | Generate editorial package (Phase 7) |
-| `/status` | Show current project state |
-| `/continuar` | Resume from PROJECT_STATE.yaml |
-
-### bestseller-orchestrator
-**Invocation:** `/bestseller-orchestrator`
-**Lines:** ~390 | **Phase:** All
-
-Alternative orchestrator with a more streamlined, pitch-to-book approach. Less granular than `book-genesis` but faster for simpler projects.
+Book Genesis V3 contains **9 skills** organized into a 6-phase pipeline. Each skill is a standalone specialist that also works as part of the orchestrated pipeline.
 
 ---
 
-## Foundation Skills (Phase 1)
+## Pipeline Skills (used in sequence)
 
-### character-forge
-**Invocation:** `/character-forge`
-**Lines:** ~210
+### 1. book-genesis (Master Orchestrator)
 
-Builds characters with deep psychological profiles:
-- **Central wound** — what happened, when, with whom, and the (partially wrong) conclusion
-- **Conscious desire vs. unconscious need** — what they think they want vs. what they actually need
-- **The lie they believe** — one sentence that distorts their worldview
-- **3-5 internal contradictions** — what makes them human
-- **Unique voice** — speech patterns, what they never say directly, humor type
-- **Transformation arc** — beginning, turning point, end
-- **Surreal filter** — how the chosen register affects their subjective experience
+**Phase:** All phases
+**Command:** `/book-genesis`
 
-### theme-weaver
-**Invocation:** `/theme-weaver`
-**Lines:** ~390
+The brain of the system. Coordinates all other skills through 6 phases with hard quality gates. Implements the Genesis Score V2 with FLOOR system, anti-inflation protocol, configurable stylistic device, and progressive structure enforcement.
 
-Ensures the central theme is woven into every scene across 4 depth levels:
-- Level 1 (Surface): The plot question
-- Level 2 (Personal): The protagonist's question
-- Level 3 (Universal): The reader's takeaway
-- Level 4 (Philosophical): The unanswerable question
-
-Also defines subtemes and recurring symbols.
-
-### emotion-engineer
-**Invocation:** `/emotion-engineer`
-**Lines:** ~300
-
-Maps and designs the reader's emotional curve chapter by chapter:
-- Emotional state at start and end of each chapter
-- Emotional function (what the scene does for the reader)
-- Primary trigger (event/revelation that causes the shift)
-- Abandonment risk assessment
-- Surreal element per chapter
+**Key features:**
+- 6-phase pipeline: Research -> Foundation -> Writing -> Evaluation -> Revision -> Delivery
+- Genesis Score V2: 7 dimensions, FLOOR system (weakest = final score)
+- Anti-inflation: evidence required, +0.5 ceiling per iteration
+- Progressive structure: each chapter builds causally on the previous
+- Configurable stylistic device (surreal, worldbuilding, epistolary, humor, market, or custom)
+- Research protocol for non-fiction with data integration guidelines
+- 4-type revision taxonomy (structural -> connective -> prose -> factual)
 
 ---
 
-## Architecture Skills (Phase 2)
+### 2. narrative-foundation (Characters + Emotion + Theme)
 
-### hook-crafter
-**Invocation:** `/hook-crafter`
-**Lines:** ~330
+**Phase:** 2 (Foundation)
+**Command:** `/narrative-foundation`
 
-Engineers irresistible openings using 5 hook types:
-| Type | Description |
-|------|------------|
-| A — Impossible Statement | Violates reader expectations in a way only reading resolves |
-| B — Mid-Movement | Starts in the middle of action. No setup. |
-| C — Voice Hook | The first line is about WHO tells, not what happens |
-| D — Revelation Promise | The reader senses a secret |
-| E — Surreal Image | An impossible image that anchors the register from sentence one |
+Consolidates what was previously three separate skills (character-forge, emotion-engineer, theme-weaver) into one deep, integrated foundation builder.
 
-Includes 4 diagnostic tests for the chosen opening.
+**Part 1 — Characters:** 7 layers of depth per character (wound, lie, conscious desire, unconscious need, contradictions, voice, transformation arc). Includes non-fiction/memoir adaptation and relationship mapping.
 
----
+**Part 1B — Voice Construction:** Method for building authentic voice from author samples or literary references. Includes drift detection protocol.
 
-## Writing Skills (Phase 3)
+**Part 2 — Pacing:** Chapter/paragraph/sentence rhythm management. Genre-specific density guidelines. Alternation between scene and reflection.
 
-### dialogue-master
-**Invocation:** `/dialogue-master`
-**Lines:** ~310
+**Part 3 — Emotional Curve:** 7 primary emotions mapped chapter by chapter. High-impact beat identification with setup requirements. Investment management protocol.
 
-Writes and revises dialogue with strict rules:
-- Every line of dialogue serves **at least 2 of 4 functions**: reveals character, advances plot, creates conflict, establishes subtext
-- If you cover the names, you should be able to identify who's speaking by voice alone
-- Zero exposition disguised as dialogue
-- Stage directions show emotion through action, never adjectives
+**Part 4 — Theme:** Theme as QUESTION (never answer). 4 levels of weaving (macro, medium, micro, nano). Symbol/motif system. Anti-patterns for theme declaration.
 
 ---
 
-## Polish Skills (Phase 6)
+### 3. prose-craft (Opening + Dialogue + Anti-IA)
 
-### beta-reader-sim
-**Invocation:** `/beta-reader-sim`
-**Lines:** ~340
+**Phase:** 3 (Writing)
+**Command:** `/prose-craft`
 
-Simulates 5 distinct reader profiles:
+Consolidates hook-crafter and dialogue-master into one skill, plus adds the anti-IA protocol and non-fiction prose guidelines.
 
-| Profile | Reads/Year | Central Question |
-|---------|-----------|-----------------|
-| Genre Devourer | 80+ | "Does this give me something others in the genre don't?" |
-| Literary Critic | 40+ | "Does this have something to say — and say it uniquely?" |
-| Casual Reader | 5-10 | "Could I put this down or did I have to keep going?" |
-| Commercial Editor | 200 proposals | "Could I sell this book — and why?" |
-| Hostile Reader | varies | "Did this win me over despite my resistance?" |
+**Part 1 — Opening:** 5-layer hook system (first line, first paragraph, first page, first scene, first chapter). 4 diagnostic tests.
 
-Produces per-reader reports + consensus analysis (positive, negative, productive divergence).
+**Part 2 — Dialogue:** 4 functions of dialogue. Subtexto techniques. Voice differentiation per character. Action beats over dialogue tags.
 
-### proofreader
-**Invocation:** `/proofreader`
-**Lines:** ~240
+**Part 3 — Anti-IA Protocol:** 10 detectable AI patterns with specific elimination techniques. Per-chapter verification checklist. This is mandatory during writing, not a post-production step.
 
-3-pass proofreading:
-1. **Read aloud** — the ear catches what the eye normalizes
-2. **Category search** — spelling, punctuation, agreement, repetition, inconsistencies, verb tense, formatting
-3. **Invisible errors** — swapped letters forming valid words, double spaces, spaces before punctuation
+**Part 4 — Non-Fiction Prose:** Data as narrative (not reports). Reported speech techniques. Argumentation that flows without reading like a thesis.
+
+**Part 5 — Line Quality:** What editors highlight positively (specificity, concrete images, rhythm variation, strong verbs) and negatively (cliches, filler, abstraction, passive voice, adjective excess).
 
 ---
 
-## Editorial Package Skills (Phase 7)
+### 4. beta-reader (3 Non-Convergent Profiles)
 
-### synopsis-writer
-**Invocation:** `/synopsis-writer`
-**Lines:** ~360
+**Phase:** 4 (Evaluation)
+**Command:** `/beta-reader`
 
-Writes commercial synopses in 3 formats:
-- **Logline** (1-2 sentences): protagonist + goal + obstacle + stakes
-- **Cover paragraph** (80-120 words): anchoring → rupture → central conflict → hook
-- **Editorial synopsis** (250-400 words): full plot including ending (for professionals)
+Simulates 3 radically different readers evaluating the manuscript. Replaces the previous 5-profile system (beta-reader-sim) with fewer but deeper, non-convergent profiles.
 
-### cover-brief
-**Invocation:** `/cover-brief`
-**Lines:** ~370
+**The Devourer:** Reads fast, feels everything, zero tolerance for dragging. Reports where they would stop reading.
 
-Creates a complete cover design brief:
-- Genre visual analysis (dominant palettes, compositions, typography)
-- Emotional concept
-- Color palette (60/30/10 rule)
-- Main visual element
-- Typography recommendations
-- 3-5 reference covers
-- What to avoid
-- AI generation prompt (Midjourney/DALL-E ready)
+**The Critic:** Literary analysis lens. Hunts for originality, thematic depth, prose quality, coherence. Compares with published references.
 
-### book-formatter
-**Invocation:** `/book-formatter`
-**Lines:** ~430
+**The Hostile:** Did not want to read this. Actively seeks flaws, manipulation, questionable data, AI smell. Their respect is the highest validation.
 
-Formatting guide for ebook and print:
-- **Ebook:** structure, paragraph styles, metadata, dialogue conventions
-- **Print (POD):** page size, margins, font, chapter layout
-- Generates build-ready structure with frontmatter and backmatter
-
-### query-letter
-**Invocation:** `/query-letter`
-**Lines:** ~440
-
-Writes query letters with 5 required elements:
-1. Opening hook (comp titles or direct pitch)
-2. Book paragraph (100-150 words adapted synopsis)
-3. Book data (title, genre, word count, standalone/series, audience)
-4. Agent personalization placeholder
-5. Author bio
-
-Total: 250-400 words. Never more than 1 page.
+**Cross-diagnosis:** 3/3 agree = critical problem. 2/3 agree = real problem. 1/1 = investigate. Hostile praises = exceptional moment.
 
 ---
 
-## Utility Skills
+### 5. production-prep (Proofreading + Formatting)
 
-### series-architect
-**Invocation:** `/series-architect`
-**Lines:** ~420
+**Phase:** 6 (Delivery)
+**Command:** `/production-prep`
 
-Builds the series bible:
-- Macro arc across books
-- Worldbuilding consistency
-- Character threading and evolution
-- Plot seeds planted in early books
-- Standalone satisfaction per volume
+Consolidates proofreader and book-formatter into one final-stage skill.
 
-### manuscript-manager
-**Invocation:** `/manuscript-manager`
-**Lines:** ~380
+**Part 1 — Proofreading:** 8 error categories (spelling, punctuation, agreement, repetition, factual inconsistencies, verb tense, internal formatting, invisible errors). 3-pass methodology.
 
-Orchestrates manuscript state between sessions:
-- Reads and writes `PROJECT_STATE.yaml`
-- Tracks chapter status, word counts, scores
-- Detects inconsistencies
-- Manages handoffs between skills
+**Part 2 — Formatting:** Complete guidelines for ebook (EPUB structure, typography, metadata, KDP keywords) and print (page size, margins, typography, headers, PDF specs). Includes final checklists for both formats.
+
+---
+
+### 6. editorial-package (Synopses + Query + Cover)
+
+**Phase:** 6 (Delivery)
+**Command:** `/editorial-package`
+
+Consolidates synopsis-writer, cover-brief, and query-letter into one coherent market-facing package.
+
+**Part 1 — Synopses:** 3 formats — logline (~25 words), cover synopsis (~100 words, never reveals ending), editorial synopsis (~300 words, reveals everything for agents/editors). Genre-specific adaptation guidelines.
+
+**Part 2 — Query Letter:** 5 mandatory elements (hook, compact synopsis, comp titles, author credentials, practical data). Personalization protocol per agent/publisher. Max 400 words.
+
+**Part 3 — Cover Brief:** Visual positioning analysis, emotional concept, color palette, main visual element, typography, reference covers, AI generation prompt structure, technical specs for ebook and print.
+
+---
+
+## Support Skills (used across phases or independently)
+
+### 7. manuscript-manager (State Engine)
+
+**Phase:** All phases
+**Command:** `/manuscript-manager`
+
+The persistent memory of the project. Manages PROJECT_STATE.yaml with CHECK-IN/CHECK-OUT protocols, decision logging, handoff tracking, and session recovery.
+
+**CHECK-IN:** Reads state, reports to user, verifies consistency, asks for direction.
+**CHECK-OUT:** Updates all state, lists what was done, alerts on stale handoffs.
+**Decision Log:** Every significant decision recorded with date, justification, and reversibility.
+**Handoffs:** Inter-skill task tracking with priority and age alerts.
+**File Convention:** Standardized project structure (manuscrito/, fundacao/, capitulos/, pesquisa/, avaliacoes/, editorial/, export/).
+
+---
+
+### 8. series-architect (Series Bible)
+
+**Phase:** Independent (use before Vol. 2+)
+**Command:** `/series-architect`
+
+Builds and maintains the series bible for multi-volume projects. Ensures each volume works standalone AND as part of the series.
+
+**Delivers:** Series premise, protagonist transformation arc across all volumes, volume map (per-volume conflicts, resolutions, hooks), canonical worldbuilding, character management across volumes, inter-volume hook design, consistency checklist, canonical glossary.
+
+---
+
+### 9. bestseller-orchestrator (Alternative Pipeline)
+
+**Phase:** Independent (alternative to book-genesis)
+**Command:** `/bestseller-orchestrator`
+
+An alternative, faster orchestrator that transforms a basic idea into a commercially strong book. Supports autopilot mode (zero questions, assume defaults) or guided mode (max 3 questions).
+
+**Note:** This skill references V1 skill names in its internal documentation. In practice, Claude will use the V3 equivalents (narrative-foundation instead of character-forge + theme-weaver + emotion-engineer, etc.).
+
+---
+
+## Skill Consolidation Map (V1 -> V3)
+
+| V1 Skills | V3 Equivalent |
+|-----------|---------------|
+| character-forge + theme-weaver + emotion-engineer | **narrative-foundation** |
+| hook-crafter + dialogue-master | **prose-craft** |
+| synopsis-writer + cover-brief + query-letter | **editorial-package** |
+| proofreader + book-formatter | **production-prep** |
+| beta-reader-sim | **beta-reader** |
+| book-genesis | **book-genesis** (upgraded) |
+| manuscript-manager | **manuscript-manager** (upgraded) |
+| series-architect | **series-architect** (kept as-is) |
+| bestseller-orchestrator | **bestseller-orchestrator** (kept as-is) |
