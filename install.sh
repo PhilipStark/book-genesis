@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Book Genesis — Installer for macOS/Linux
-# Copies all 15 skills to ~/.claude/skills/
+# Book Genesis V3 — Installer for macOS/Linux
+# Copies all 9 skills to ~/.claude/skills/
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$REPO_DIR/skills"
@@ -20,7 +20,7 @@ echo -e "${BLUE} |  _ \\ / _ \\ / _ \\| |/ /| |  _ / _ \\ '_ \\ / _ \\/ __| / __
 echo -e "${BLUE} | |_) | (_) | (_) |   < | |_| |  __/ | | |  __/\\__ \\ \\__ \\${NC}"
 echo -e "${BLUE} |____/ \\___/ \\___/|_|\\_\\ \\____|\\___|_| |_|\\___||___/_|___/${NC}"
 echo ""
-echo -e "${YELLOW}Installing 15 skills to $TARGET_DIR${NC}"
+echo -e "${YELLOW}Installing 9 skills to $TARGET_DIR${NC}"
 echo ""
 
 # Check that skills directory exists

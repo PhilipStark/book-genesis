@@ -1,5 +1,5 @@
-# Book Genesis — Installer for Windows (PowerShell)
-# Copies all 15 skills to ~/.claude/skills/
+# Book Genesis V3 — Installer for Windows (PowerShell)
+# Copies all 9 skills to ~/.claude/skills/
 
 $ErrorActionPreference = "Stop"
 
@@ -15,7 +15,7 @@ Write-Host " |  _ \ / _ \ / _ \| |/ /| |  _ / _ \ '_ \ / _ \/ __| / __|" -Foregr
 Write-Host " | |_) | (_) | (_) |   < | |_| |  __/ | | |  __/\__ \ \__ \" -ForegroundColor Blue
 Write-Host " |____/ \___/ \___/|_|\_\ \____|\___| |_| |_|\___||___/_|___/" -ForegroundColor Blue
 Write-Host ""
-Write-Host "Installing 15 skills to $TargetDir" -ForegroundColor Yellow
+Write-Host "Installing 9 skills to $TargetDir" -ForegroundColor Yellow
 Write-Host ""
 
 # Check that skills directory exists

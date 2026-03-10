@@ -1,177 +1,169 @@
-# Architecture
+# Architecture — Book Genesis V3
 
-Book Genesis is an 8-phase pipeline that transforms a one-sentence idea into a publishable manuscript. This document explains how the phases connect, what each produces, and where the quality gates live.
+Book Genesis V3 is a 6-phase pipeline that transforms a one-sentence idea into a publishable manuscript. This document explains how the phases connect, what each produces, and where the quality gates live.
 
 ## Pipeline Overview
 
 ```
 IDEA (1 sentence)
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 0 — Research & Reference Bible                            │
-│                                                                 │
-│ Input:  User's idea + genre + language                          │
-│ Actions: WebSearch for top books, awards, trends                │
-│ Output: artefatos/01-reference-bible.md                         │
-│ Gate:   Reference Bible saved with comp titles + market gaps    │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 1 — Narrative Foundation                                  │
-│                                                                 │
-│ Produces:                                                       │
-│   artefatos/02-personagens.md  — Characters with psych depth    │
-│   artefatos/03-tema.md         — Theme at 4 depth levels        │
-│   artefatos/05-mapa-emocional.md — Emotional map per chapter    │
-│                                                                 │
-│ Skills used: character-forge, theme-weaver, emotion-engineer    │
-│ Gate: All 3 artifacts saved                                     │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 2 — Architecture                                          │
-│                                                                 │
-│ Produces:                                                       │
-│   artefatos/04-outline.md     — Chapter-by-chapter outline      │
-│   artefatos/06-hook-cap01.md  — First line/page/chapter hook    │
-│                                                                 │
-│ Skills used: hook-crafter                                       │
-│ Gate: Outline + hook strategy saved                             │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 3 — Writing                                               │
-│                                                                 │
-│ Produces: manuscrito/cap-01.md through cap-XX.md                │
-│                                                                 │
-│ Every chapter fulfills 5 simultaneous obligations:              │
-│   1. Plot — advance at least one plot point                     │
-│   2. Character — reveal, deepen, or transform                  │
-│   3. Emotion — shift the reader's emotional state              │
-│   4. Theme — echo the central theme without preaching          │
-│   5. Surreal — manifest the chosen register organically        │
-│                                                                 │
-│ Skills used: dialogue-master                                    │
-│ Gates at: 25%, 50%, 75%, 100% of manuscript                    │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 4 — Evaluation (Genesis Score)                            │
-│                                                                 │
-│ Input:  Complete manuscript                                     │
-│ Output: artefatos/07-genesis-score.md                           │
-│                                                                 │
-│ 10 dimensions × weights = weighted average                      │
-│ Pass: avg > 9.0 AND no dimension < 8.0                         │
-│                                                                 │
-│ Gate: PASS → Phase 6  |  FAIL → Phase 5                        │
-└───────────┬─────────────────────────────┬──────────────────────┘
-            │ PASS                        │ FAIL
-            ▼                             ▼
-┌───────────────────┐   ┌─────────────────────────────────────────┐
-│ PHASE 6 — Polish  │   │ PHASE 5 — Directed Revision             │
-│ (see below)       │   │                                         │
-└───────────────────┘   │ Order: weakest dimension first           │
-                        │ Each cycle: diagnose → intervene → re-score│
-                        │ Max 5 iterations before escalating       │
-                        │ Output: artefatos/08-revision-log.md     │
-                        │                                         │
-                        │ Loop back to Phase 4 after each cycle   │
-                        └─────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 6 — Polish                                                │
-│                                                                 │
-│ Produces: artefatos/09-beta-notes.md                            │
-│                                                                 │
-│ 6.1 — 5 Simulated Beta Readers                                 │
-│   Genre Devourer | Literary Critic | Casual Reader              │
-│   Commercial Editor | Hostile Reader                            │
-│                                                                 │
-│ 6.2 — 3-Pass Proofreading                                      │
-│   Pass 1: Read aloud  |  Pass 2: Category search               │
-│   Pass 3: Invisible errors                                      │
-│                                                                 │
-│ 6.3 — Final Emotional Map Verification                          │
-│                                                                 │
-│ Skills used: beta-reader-sim, proofreader                       │
-│ Gate: Issues fixed before advancing                             │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 7 — Editorial Package                                     │
-│                                                                 │
-│ Produces:                                                       │
-│   artefatos/10-sinopses.md      — 3 synopsis formats            │
-│   artefatos/11-cover-brief.md   — Cover design brief + AI prompt│
-│   artefatos/12-formatacao.md    — Ebook/print formatting guide  │
-│   artefatos/13-query-letter.md  — Query letter for agents       │
-│                                                                 │
-│ Skills used: synopsis-writer, cover-brief, book-formatter,      │
-│              query-letter                                       │
-│ Gate: All 4 artifacts saved → PROJECT COMPLETE                  │
-└─────────────────────────────────────────────────────────────────┘
+    |
+    v
++-------------------------------------------------------------------+
+| PHASE 1 — Research                                                 |
+|                                                                    |
+| Input:  User idea + genre + target audience                        |
+| Actions: WebSearch for top books, identify market gaps, comp titles |
+| Output: Research report with comp titles, market gap, word count   |
+| Gate:   User approves direction before advancing                   |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 2 — Foundation                                               |
+|                                                                    |
+| Skill:  narrative-foundation                                       |
+| Produces:                                                          |
+|   - Characters with 7 layers of depth                              |
+|   - Emotional curve chapter by chapter                             |
+|   - Theme as question + 4 levels of weaving                        |
+|   - Voice guide (from author samples or references)                |
+|   - Stylistic device configuration (if any)                        |
+|   - Chapter-by-chapter outline with progressive structure          |
+|                                                                    |
+| Gate: User approves foundation + outline before writing            |
+| Loop-back: If writing reveals foundation needs change, return here |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 3 — Writing                                                  |
+|                                                                    |
+| Skills: prose-craft (opening, dialogue, anti-IA)                   |
+|         manuscript-manager (state tracking)                        |
+| Process:                                                           |
+|   - Write chapter by chapter, in order                             |
+|   - Each chapter: 5 obligations (voice, substance, emotion,        |
+|     theme, device) + 6th obligation: anti-IA check                 |
+|   - Progressive structure enforced (each builds on previous)       |
+|   - Connectors between chapters mandatory                          |
+|   - Word count per chapter within planned range (+/- 15%)          |
+|                                                                    |
+| Gate: Each chapter passes anti-IA check before advancing           |
+| Loop-backs: Outline change -> Phase 2. Research gap -> Phase 1     |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 4 — Evaluation                                               |
+|                                                                    |
+| Skills: Genesis Score V2 (built into book-genesis)                 |
+|         beta-reader (3 profiles)                                   |
+| Process:                                                           |
+|   - Run Genesis Score on full manuscript (7 dimensions)            |
+|   - Run beta-reader (Devourer, Critic, Hostile)                    |
+|   - Cross-reference: Score weak + readers confirm = real problem   |
+|   - Progressive evaluation (per part, not just final)              |
+|   - Deliberate sampling (3-5 specific excerpts per dimension)      |
+|   - Evidence-based scoring (chapter + excerpt cited)               |
+|                                                                    |
+| Output: Score per dimension, floor, top 3 weaknesses, top 3       |
+|         strengths                                                  |
+| Gate: Floor >= 8.0 to advance. Recommended >= 8.5 for submission  |
+| Loop-back: Floor < 8.0 -> Phase 5 (Revision) -> return here       |
++------------------------------------+------------------------------+
+                                     |
+                                     v (if floor < 8.0)
++-------------------------------------------------------------------+
+| PHASE 5 — Revision                                                 |
+|                                                                    |
+| Skills: prose-craft (for prose issues)                             |
+|         narrative-foundation (for structural issues)               |
+| Process:                                                           |
+|   1. Classify each weakness by taxonomy:                           |
+|      Type 1 — Structural (highest priority)                        |
+|      Type 2 — Connective                                           |
+|      Type 3 — Prose                                                |
+|      Type 4 — Factual/Punctual (lowest priority)                   |
+|   2. Execute in order (structural first, punctual last)            |
+|   3. Verify strengths not degraded by corrections                  |
+|   4. Max 3 revision cycles per iteration                           |
+|                                                                    |
+| Loop-back: Always returns to Phase 4 for re-evaluation             |
+| Escalation: 3 cycles without floor improvement -> Phase 2          |
++------------------------------------+------------------------------+
+                                     |
+                                     v (when floor >= 8.0)
++-------------------------------------------------------------------+
+| PHASE 6 — Delivery                                                 |
+|                                                                    |
+| Skills: editorial-package, production-prep, manuscript-manager     |
+| Produces:                                                          |
+|   - Logline (1 sentence)                                           |
+|   - Cover synopsis (100 words)                                     |
+|   - Editorial synopsis (300 words, reveals ending)                 |
+|   - Query letter (personalized)                                    |
+|   - Cover brief (with AI generation prompts)                       |
+|   - Final proofreading (8 categories, 3 passes)                    |
+|   - Formatting for ebook and/or print                              |
+|   - Final PROJECT_STATE.yaml update                                |
+|                                                                    |
+| Output: Manuscript + editorial package + formatted files           |
++-------------------------------------------------------------------+
 ```
 
-## Project Directory Structure
+## State Management
 
-Every Book Genesis project creates this directory tree:
+The `manuscript-manager` skill operates across ALL phases via PROJECT_STATE.yaml:
+
+- **CHECK-IN** at the start of every session: reads state, reports progress, verifies consistency
+- **CHECK-OUT** at the end of every session: updates state, logs decisions, manages handoffs
+- **Decision Log**: every significant decision recorded with justification and reversibility
+- **Handoff Tracking**: inter-skill tasks with priority and staleness alerts (>2 sessions)
+- **Session Recovery**: if context is lost, PROJECT_STATE.yaml contains everything needed to resume
+
+## Anti-Inflation Protocol
+
+The Genesis Score V2 includes built-in protections against LLM score inflation:
+
+1. Every score requires a textual citation (no citation = invalid)
+2. Maximum +0.5 improvement per iteration per dimension
+3. Scores >= 9.0 require comparison with published comp titles
+4. When one dimension improves, adjacent dimensions are re-checked
+5. The FLOOR mechanism forces honest assessment (weakest = final)
+
+## File Structure
+
+Every Book Genesis project follows this convention:
 
 ```
-your-book/
-├── PROJECT_STATE.yaml          ← Persistent state (resume across sessions)
-├── artefatos/
-│   ├── 00-brief.md             ← Initial brief + assumptions
-│   ├── 01-reference-bible.md   ← Market research + comp titles
-│   ├── 02-personagens.md       ← Character profiles
-│   ├── 03-tema.md              ← Theme at 4 levels + symbols
-│   ├── 04-outline.md           ← Chapter outline + tension map
-│   ├── 05-mapa-emocional.md    ← Emotional curve per chapter
-│   ├── 06-hook-cap01.md        ← Hook strategy
-│   ├── 07-genesis-score.md     ← Scoring history
-│   ├── 08-revision-log.md      ← Revision tracking
-│   ├── 09-beta-notes.md        ← Beta reader simulation
-│   ├── 10-sinopses.md          ← Logline + cover + editorial
-│   ├── 11-cover-brief.md       ← Cover design brief
-│   ├── 12-formatacao.md        ← Formatting guide
-│   └── 13-query-letter.md      ← Query letter
-└── manuscrito/
-    ├── cap-01.md
-    ├── cap-02.md
-    └── ...
+manuscrito/
+  PROJECT_STATE.yaml          # Source of truth (manuscript-manager)
+  fundacao/
+    personagens.md            # Character sheets (7 layers)
+    curva-emocional.md        # Emotional map chapter by chapter
+    tema.md                   # Theme as question + 4 weaving levels
+    guia-de-voz.md            # Vocabulary, rhythm, tics, references
+    outline.md                # Chapter-by-chapter outline
+  capitulos/
+    cap-01.md
+    cap-02.md
+    ...
+  pesquisa/
+    comp-titles.md            # Comparable books + analysis
+    dados-por-capitulo.md     # Sources, data, statistics
+    mercado.md                # Niche analysis, market gap
+  avaliacoes/
+    genesis-score-v1.md       # First full evaluation
+    genesis-score-v2.md       # Re-evaluation after revision
+    beta-reader-v1.md         # First beta reading
+    ...
+  editorial/
+    logline.md
+    sinopse-capa.md
+    sinopse-editorial.md
+    query-letter.md
+    cover-brief.md
+  export/
+    manuscrito-final.md       # Complete text in order
+    ...
 ```
-
-## Skill Delegation
-
-When the orchestrator (`book-genesis`) reaches a phase that has a dedicated skill installed, it delegates to that skill instead of using its inline logic. This gives each phase deeper, more nuanced behavior.
-
-| Phase | Component | Dedicated Skill |
-|-------|-----------|----------------|
-| 1 | Characters | `character-forge` |
-| 1 | Theme | `theme-weaver` |
-| 1 | Emotional map | `emotion-engineer` |
-| 2 | Hook | `hook-crafter` |
-| 3 | Dialogue | `dialogue-master` |
-| 6 | Beta readers | `beta-reader-sim` |
-| 6 | Proofreading | `proofreader` |
-| 7 | Synopses | `synopsis-writer` |
-| 7 | Cover brief | `cover-brief` |
-| 7 | Formatting | `book-formatter` |
-| 7 | Query letter | `query-letter` |
-| * | State management | `manuscript-manager` |
-
-If a dedicated skill is **not** installed, `book-genesis` uses its own inline logic (which covers the essentials of each sub-skill). Installing the dedicated skills unlocks more depth.
-
-## Anti-Drift Rules
-
-1. **Every canonical change** (name, world rule, motivation, timeline) must be registered in `PROJECT_STATE.yaml` and propagated to all affected artifacts.
-2. **No phase advances without its gate passing.**
-3. **The surreal is never gratuitous.** Every surreal element must serve at least one of the 5 obligations.
-4. **No emotion adjectives in prose.** "Fear spread" → never. Show fear through action, physical sensation, altered perception.
-5. **Every session starts by reading `PROJECT_STATE.yaml`.** If it doesn't exist, create it. If it exists, honor what came before.

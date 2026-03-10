@@ -1,137 +1,125 @@
-# Genesis Score — Methodology
+# Genesis Score V2 — Scoring Reference
 
-The Genesis Score is a quantitative evaluation system for manuscripts. It measures 10 dimensions with different weights, producing a single weighted average that determines whether the manuscript is ready to advance.
+The Genesis Score is the quality control system at the heart of Book Genesis. V2 introduces the FLOOR system and anti-inflation protocol.
 
-## Dimensions
+## Core Principle: FLOOR, Not Average
 
-### 1. Originality (Weight: 1.2)
+The score is the **lowest dimension among all 7**. Not the average. Not the weighted average. The lowest.
 
-**What it measures:** Premise novelty, approach freshness, trope subversion. Has the reader encountered something like this before?
+A book with 6 dimensions at 9.0 and one at 7.0 has a Genesis Score of **7.0**.
 
-| Score | Meaning |
-|-------|---------|
-| 9.0+ | Literary prize level — genuinely new contribution to the genre |
-| 8.0-8.9 | Good but with clear precedents |
-| 7.0-7.9 | Competent execution of familiar territory |
-| < 7.0 | Derivative |
+This forces the writer to strengthen ALL dimensions. You cannot compensate weak characters with brilliant prose. You cannot hide poor pacing behind deep theme. Every dimension must clear the bar.
 
-### 2. Theme (Weight: 1.1)
+## The 7 Dimensions
 
-**What it measures:** Thematic depth across 4 levels:
-- **Level 1 — Surface:** The question the plot asks
-- **Level 2 — Personal:** The question the protagonist faces
-- **Level 3 — Universal:** The question the reader takes home
-- **Level 4 — Philosophical:** The question with no answer (where the surreal lives)
+### 1. Originality
 
-| Score | Meaning |
-|-------|---------|
-| 9.0+ | Stays with the reader for weeks |
-| 8.0-8.9 | Present but not transformative |
-| < 8.0 | Underdeveloped or preachy |
+**What it measures:** What this book does that no other book did.
 
-### 3. Characters (Weight: 1.2)
+**How to evaluate:** List 3 unique elements. If you cannot list 3, the score is <= 7.0.
 
-**What it measures:** Psychological depth — wounds, arcs, contradictions, unique voice. Would the reader think about these characters years later?
+**What counts:** Unique premise, unexpected approach, trope subversion, original structural choices, fresh voice in a saturated genre.
 
-Key elements evaluated:
-- Central wound and the (partially wrong) conclusion drawn from it
-- Conscious desire vs. unconscious need
-- The lie the character believes
-- 3-5 internal contradictions
-- Voice distinctiveness (could you identify who's speaking without names?)
-- Transformation arc (beginning → turning point → end)
+**What does not count:** Being "different" for the sake of different. Originality must serve the story.
 
-### 4. Prose (Weight: 1.0)
+### 2. Theme
 
-**What it measures:** Sentence-level quality. Imagery, rhythm, precision, language originality.
+**What it measures:** Depth of the central question.
 
-Red flags: emotion adjectives ("said angrily"), exposition in dialogue ("As you know, John..."), cliches, overwriting.
+**How to evaluate:** Does the theme appear in >= 80% of chapters without being explicitly declared? If yes, score >= 8.0. Does a character ever say "the theme of this book is X"? If yes, score <= 7.0.
 
-### 5. Pacing (Weight: 0.8)
+**4 levels of weaving:**
+- MACRO: The question of the entire book
+- MEDIUM: How each part reflects the question from a different angle
+- MICRO: How each chapter touches the question (advancing, not repeating)
+- NANO: Images, metaphors, recurring details that echo the theme
 
-**What it measures:** Tension curve, peaks and valleys, page-turner quality.
+### 3. Characters
 
-The tension must never be linear. Continuous escalation desensitizes the reader. Strategic relief is as important as tension.
+**What it measures:** Dimensionality, contradictions, and transformation arc.
 
-### 6. Emotion (Weight: 1.0)
+**How to evaluate:** Each main character has wound + lie + arc? Cover the name — are the voices distinguishable? Minimum 2 contradictions per main character.
 
-**What it measures:** The reader's emotional journey. Investment in characters, catharsis moments, emotional variety.
+**7 layers:** Wound, Lie, Conscious Desire, Unconscious Need, Contradictions, Voice, Transformation Arc.
 
-The 7 primary emotions of fiction:
-1. Tension — something might go wrong
-2. Hope — things might improve
-3. Fear — something threatens what the reader loves
-4. Joy/Relief — the threat passed
-5. Sadness/Grief — real loss
-6. Anger/Indignation — injustice
-7. Wonder/Awe — the world is bigger than imagined
+### 4. Prose & Voice
 
-### 7. Coherence (Weight: 0.8)
+**What it measures:** Sentence-level quality + recognizable authorial personality + anti-IA compliance.
 
-**What it measures:** Internal consistency — characters, worldbuilding, timeline, tone. Zero plot holes.
+**How to evaluate:** Open 3 random pages. Is the voice identifiable? Are there sentences an editor would highlight positively? Does it pass the anti-IA check (10 patterns)?
 
-### 8. Market (Weight: 0.7)
+**Anti-IA check:** Forced symmetry, empty poetic vocabulary, automatic rule-of-three, em dash excess, decorative metaphors, dramatic "And" openings, pseudo-deep closing paragraphs, excessive parallelism, too-smooth transitions, described-not-shown emotion.
 
-**What it measures:** Commercial positioning, comp titles, target audience clarity, word count viability.
+### 5. Pacing & Coherence
 
-### 9. Voice (Weight: 1.0)
+**What it measures:** Speed variation + internal consistency + page-turning quality.
 
-**What it measures:** Authorial identity, stylistic signature. Is this author recognizable from the prose alone?
+**How to evaluate:** Does the reader turn the page in >= 80% of chapters? Do paragraph sizes vary? Are there contradictions between chapters? Does the speed change within each chapter?
 
-### 10. Surreal (Weight: 1.2)
+### 6. Emotion
 
-**What it measures:** Integration of the surreal register. Is it organic, functional, revelatory? Or is it decoration?
+**What it measures:** Real emotional investment from the reader.
 
-The surreal must serve at least one of the 5 chapter obligations (plot, character, emotion, theme, surreal integration). If it exists "because it's beautiful" but doesn't reveal theme, character, or emotion, it's decoration and should be cut.
+**How to evaluate:** Identify the 3 highest-impact moments. Do they work? Does the reader care about the character BEFORE suffering with them? Is there investment (vulnerability + effort + clear stakes) before every emotional beat?
 
-## Calculation
+### 7. Configurable Dimension
 
-```
-Genesis Score = Sum(dimension_score * dimension_weight) / 10.0
-```
+**What it measures:** Varies by project. Defined at the start.
 
-Total weights sum to 10.0.
+**Options:**
+- **Surreal/Kafkaesque** — Bureaucratic interludes at 3 levels: ILLUSTRATE (<=7.0), COMMENT (7.5-8.0), REVEAL (>=8.5)
+- **Market** (default if no device) — Clear audience, comp titles, cultural moment, appropriate word count
+- **Worldbuilding** — Consistent rules, sensory details, real cost for characters
+- **Epistolary** — Documents that reveal more than narrative, with their own voice
+- **Humor** — Humor that serves the scene, consistent, with register variation
+- **Custom** — Any device defined by the user
 
-## Approval Criteria
+## Anti-Inflation Protocol
 
-Both must be true:
-- **Weighted average > 9.0**
-- **No individual dimension < 8.0**
+LLMs systematically inflate scores. These 5 rules prevent that:
 
-If either fails, the manuscript enters the Directed Revision loop (Phase 5).
+### Rule 1: Evidence Required
 
-## Revision Protocol
+Every score must cite a specific passage from the manuscript. "Prose 9.0" with no citation = invalid score. The evaluator must point to the exact chapter, paragraph, and ideally the specific sentences that justify the score.
 
-1. Order dimensions from weakest to strongest
-2. For each dimension below 9.0 (starting from weakest):
-   - Identify specific chapters where the dimension fails
-   - List concrete interventions (not generic — "rewrite paragraph X of chapter Y with technique Z")
-   - Execute interventions
-   - Verify changes didn't harm other dimensions
-3. Re-score after each revision cycle
-4. Maximum 5 iterations before escalating to the user
+### Rule 2: +0.5 Ceiling Per Iteration
 
-## Example: Real Scoring Progression
+If a dimension scored 7.5 in iteration 1, the maximum in iteration 2 is 8.0. Larger jumps require extraordinary evidence — a complete rewrite of the relevant sections with demonstrably superior quality.
 
-From *Protocolo Nao Encontrado* (proof-of-concept book):
+### Rule 3: Reference Comparison for High Scores
 
-```
-                  Iter.1    Iter.2    Iter.3
-Originality        8.7       8.9       9.0      (x1.2)
-Theme              9.0       9.1       9.1      (x1.1)
-Characters         8.5       9.0       9.1      (x1.2)
-Prose              8.5       9.0       9.1      (x1.0)
-Pacing             8.2       8.7       9.0      (x0.8)
-Emotion            8.7       9.0       9.1      (x1.0)
-Coherence          9.0       9.0       9.0      (x0.8)
-Market             8.5       8.7       8.9      (x0.7)
-Voice              9.0       9.0       9.0      (x1.0)
-Surreal            8.8       9.0       9.0      (x1.2)
-─────────────────────────────────────────────────
-WEIGHTED AVG       8.70      8.95      9.04
-STATUS             FAIL      FAIL      PASS
-```
+When scoring any dimension >= 9.0, the evaluator must answer: "Would a professional editor agree that this dimension is at the level of [specific published book]?" If the answer is not a confident yes, the score must be <= 8.5.
 
-Key improvements between iterations:
-- **Iter.1 → Iter.2:** Added sensory scenes to Part II, deepened secondary characters, varied Kafkaesque formats mid-chapter. Expanded from ~52k to ~58k words.
-- **Iter.2 → Iter.3:** Expanded three shortest chapters (Cap 1, 6, 10). Pacing jumped +0.3. Final word count: ~60.8k.
+### Rule 4: Cross-Check Adjacent Dimensions
+
+When one dimension improves, re-verify the ones it touches. Prose went up? Check if Pacing held. Characters improved? Check if Theme is still woven. Improvements in one area can inadvertently degrade another.
+
+### Rule 5: Floor Calibration
+
+The floor mechanism itself prevents inflation. Having 5 dimensions at 9.0 and one at 7.0 produces a score of 7.0. This makes it impossible to inflate the overall score without genuinely improving every dimension.
+
+## Evaluation Protocol for Long Manuscripts
+
+Evaluating a 50k+ word manuscript all at once produces generic, inflated scores. The protocol:
+
+1. **Progressive evaluation** — Evaluate at the end of each part/act, not just the final manuscript
+2. **Deliberate sampling** — For each dimension, select 3-5 SPECIFIC excerpts from different parts of the book
+3. **Localized evidence** — Every score must cite chapter + excerpt. Scores without location = invalid
+4. **Internal comparison** — Chapter 1 and chapter 10 must be at the same level. If not, the score is that of the weaker one
+5. **Recorded** — All evaluations go to PROJECT_STATE.yaml with per-dimension notes (excerpt cited + justification)
+
+## Scale Reference
+
+| Score | Meaning | Publishing Implication |
+|-------|---------|----------------------|
+| 6.0-6.5 | Amateur | Editor rejects immediately |
+| 7.0-7.5 | Competent | Publishable but forgettable. Mid-list at best |
+| 8.0-8.5 | Strong | Level of a book published by a major house. Competitive |
+| 9.0-9.5 | Exceptional | Bestseller or award-winning level |
+| 10.0 | Genre reference | Reserved for works that defined categories. Almost never given |
+
+## Pass Criteria
+
+- **Minimum to advance from Phase 4:** Floor >= 8.0
+- **Recommended for editorial submission:** Floor >= 8.5
+- **Maximum revision cycles:** 3 per evaluation round. If floor does not improve after 3 cycles, the problem is structural — return to Phase 2 (Foundation)
