@@ -1,161 +1,270 @@
-# Skills Reference — Book Genesis V3
+# Skills Reference -- Book Genesis V4
 
-Book Genesis V3 contains **9 skills** organized into a 6-phase pipeline. Each skill is a standalone specialist that also works as part of the orchestrated pipeline.
+Book Genesis V4 contains **12 skills** organized into a 7-phase pipeline (including Phase 3.5). Each skill is a standalone specialist that also works as part of the orchestrated pipeline. V4 adds 3 new skills (chaos-engine, book-editor, book-researcher) that address the 9 structural problems identified in the system analysis.
 
 ---
 
-## Pipeline Skills (used in sequence)
+## Pipeline Skills
 
-### 1. book-genesis (Master Orchestrator)
+### 1. book-genesis (Orchestrator)
 
 **Phase:** All phases
-**Command:** `/book-genesis`
-
-The brain of the system. Coordinates all other skills through 6 phases with hard quality gates. Implements the Genesis Score V2 with FLOOR system, anti-inflation protocol, configurable stylistic device, and progressive structure enforcement.
+**Role:** The brain of the system. Coordinates all 12 skills through 7 phases with hard quality gates.
 
 **Key features:**
-- 6-phase pipeline: Research -> Foundation -> Writing -> Evaluation -> Revision -> Delivery
-- Genesis Score V2: 7 dimensions, FLOOR system (weakest = final score)
-- Anti-inflation: evidence required, +0.5 ceiling per iteration
-- Progressive structure: each chapter builds causally on the previous
-- Configurable stylistic device (surreal, worldbuilding, epistolary, humor, market, or custom)
-- Research protocol for non-fiction with data integration guidelines
-- 4-type revision taxonomy (structural -> connective -> prose -> factual)
+- 7-phase pipeline: Research -> Foundation -> Writing -> Disruption -> Evaluation -> Revision -> Delivery
+- Genesis Score V3.7: 7 dimensions, FLOOR system, genre-adjusted profiles
+- CVI-Launch and CVI-Legacy: commercial viability separate from craft quality
+- Anti-inflation protocol: 10 rules including external benchmark anchoring
+- Casual Reader Gate: would an airport reader give this 10 pages?
+- Loop-back rules with escalation paths
+- Genre-specific prose targets and anti-AI thresholds
+
+**What changed from V2:** Added Phase 3.5 (Disruption), CVI system, Casual Reader Gate, genre-adjusted scoring, engagement types, 20-pattern anti-AI (up from 10), emotional anchors replacing numerical curves.
 
 ---
 
-### 2. narrative-foundation (Characters + Emotion + Theme)
+### 2. narrative-foundation (Architect)
 
 **Phase:** 2 (Foundation)
-**Command:** `/narrative-foundation`
 
-Consolidates what was previously three separate skills (character-forge, emotion-engineer, theme-weaver) into one deep, integrated foundation builder.
+Builds the complete narrative foundation. Consolidates character-forge, emotion-engineer, and theme-weaver from V1 into one integrated skill.
 
-**Part 1 — Characters:** 7 layers of depth per character (wound, lie, conscious desire, unconscious need, contradictions, voice, transformation arc). Includes non-fiction/memoir adaptation and relationship mapping.
+**Part 1 -- Characters:** 7 layers of depth per character (wound, lie, conscious desire, unconscious need, contradictions, voice, transformation arc).
 
-**Part 1B — Voice Construction:** Method for building authentic voice from author samples or literary references. Includes drift detection protocol.
+V4 additions:
+- **Chaos profiles** for each character: irrelevant obsessions, cognitive distortions, unprompted memories, failed emotional management patterns
+- **Voice-under-pressure** specification: how the voice changes when the character is stressed (fragments, repetition, tense changes)
+- **Composure calibration**: characters can be authentically composed (subtle chaos) vs. suppressing chaos (visible cracks)
 
-**Part 2 — Pacing:** Chapter/paragraph/sentence rhythm management. Genre-specific density guidelines. Alternation between scene and reflection.
+**Part 1B -- Voice Construction:** Method for building authentic voice from author samples or literary references. Voice bank requires 10-15 samples INCLUDING 3+ samples of voice failing under pressure.
 
-**Part 3 — Emotional Curve:** 7 primary emotions mapped chapter by chapter. High-impact beat identification with setup requirements. Investment management protocol.
+**Part 2 -- Pacing:** Chapter/paragraph/sentence rhythm management. Genre-specific density guidelines.
 
-**Part 4 — Theme:** Theme as QUESTION (never answer). 4 levels of weaving (macro, medium, micro, nano). Symbol/motif system. Anti-patterns for theme declaration.
+**Part 3 -- Emotional System (V4 overhaul):**
+- Emotional ANCHORS per chapter (specific image/moment) replacing numerical curves (4/10, 7/10)
+- Emotional SURPRISES per chapter (where the expected emotion should be wrong)
+- 6 emotional techniques beyond physical sensation + metaphor: contradiction, understatement, dramatic irony, wrong reaction, accumulated mundane detail, body rebels
+- "Would You Remember This Tomorrow?" anchor definition
+
+**Part 4 -- Theme:** Theme as QUESTION. 4 levels of weaving (macro, medium, micro, nano). Theme is allowed to RECEDE in some chapters.
+
+**Part 5 -- Engagement and Commercial (NEW):**
+- Engagement type ranking (primary/secondary/tertiary from 5 types)
+- Re-read architecture: planned details that gain meaning after the ending
+- Cultural vocabulary: branded terms for reader adoption
+- Identity effect planning: moments that make the reader feel something about themselves
+
+**Part 6 -- Outline Enrichment (NEW):**
+- Structural approach per chapter (1 of 8 types, no consecutive repeats)
+- Opening strategy for Chapter 1 (voice bomb, in medias res, wrong emotion, confession, question, ordinary made strange, failure)
+- Value shift per chapter
+- Chapter-ending hook type
 
 ---
 
-### 3. prose-craft (Opening + Dialogue + Anti-IA)
+### 3. prose-craft (Writer)
 
 **Phase:** 3 (Writing)
-**Command:** `/prose-craft`
 
-Consolidates hook-crafter and dialogue-master into one skill, plus adds the anti-IA protocol and non-fiction prose guidelines.
+The writing agent. Produces one chapter at a time. Follows the outline but is ALLOWED to deviate when the text wants to go somewhere the outline did not anticipate.
 
-**Part 1 — Opening:** 5-layer hook system (first line, first paragraph, first page, first scene, first chapter). 4 diagnostic tests.
+**Voice Inhabitation Protocol (NEW):** Before writing a single word:
+1. Read ALL project files
+2. Write a 200-300 word freewrite AS the character (discarded -- goes to /dev/null)
+3. Only then begin the chapter
 
-**Part 2 — Dialogue:** 4 functions of dialogue. Subtexto techniques. Voice differentiation per character. Action beats over dialogue tags.
+**6 Flexible Obligations** (one allowed to take a backseat per chapter):
+1. Voice (must change under pressure)
+2. Substance (30-40% texture details with no thematic resonance)
+3. Emotional Anchor (build toward specific image/moment)
+4. Theme (allowed to recede)
+5. Device (if applicable)
+6. Pacing (value shift, chapter hook, speed variation, vulnerability before competence)
 
-**Part 3 — Anti-IA Protocol:** 10 detectable AI patterns with specific elimination techniques. Per-chapter verification checklist. This is mandatory during writing, not a post-production step.
+**Character Chaos (Mandatory):**
+- Irrelevant thought (1-2 sentences, no narrative justification)
+- Cognitive distortion in action
+- Unprompted memory at the wrong time
+- Failed emotional management
+- Secondary character chaos (their own moment, not about protagonist)
 
-**Part 4 — Non-Fiction Prose:** Data as narrative (not reports). Reported speech techniques. Argumentation that flows without reading like a thesis.
+**Anti-AI Protocol:** 20 patterns internalized BEFORE writing (not scan-after). Genre-adjusted thresholds.
 
-**Part 5 — Line Quality:** What editors highlight positively (specificity, concrete images, rhythm variation, strong verbs) and negatively (cliches, filler, abstraction, passive voice, adjective excess).
+**The Impulse Instruction:** After writing as planned, follow unplanned pulls for 2-3 paragraphs. Keep if better.
+
+**Mandatory Ugly Sentence:** One deliberately rough sentence per chapter in a quiet moment.
+
+**Structural Diversity:** 8 chapter structures (chronological, reverse chronological, fragmented/mosaic, essayistic, spiral, parallel, epistolary/documentary, stream of consciousness). No consecutive repeats.
+
+**Reading Speed Design:** 1-2 acceleration passages and 1-2 deceleration passages per chapter.
+
+**Scene Transitions:** 5 types (hard cut, sensory bridge, dialogue bridge, time compression, emotional carry). Vary across chapters.
+
+**Exposition Disguises:** 5 techniques (conflict delivery, discovery delivery, wrong delivery, cost delivery, incidental delivery).
+
+**Output:** chapter-N.md + chapter-N-report.md (self-report with chaos moments, ugly sentence, impulse deviations, anti-AI scan results).
 
 ---
 
-### 4. beta-reader (3 Non-Convergent Profiles)
+### 4. chaos-engine (Disruptor) -- NEW in V4
+
+**Phase:** 3.5 (Disruption)
+
+The agent that introduces WILDNESS into a system that defaults to control. Operates AFTER the writer and BEFORE the evaluator. Its only job is to break the chapter's predictability.
+
+**Actions:**
+- Move a scene to an unexpected position
+- Delete the most expected paragraph and assess if the chapter improves
+- Insert a genuinely irrelevant detail
+- Break one moment of emotional management (let a character lose control without narrating it)
+- Remove one explanatory clause from a simile and leave it raw
+- Challenge the structural default (if the chapter follows the Graduated Reveal pattern, propose an alternative)
+- Target areas where the writer's self-report indicates "played it safe"
+
+**Why it exists:** The system analysis found that all 5 test books shared identical predictability: competent professional encounters anomaly, escalates, closes on tension. Every chapter was under authorial control at all times. The chaos-engine is the mechanism for controlled unpredictability.
+
+**Output:** Disrupted chapter + disruption report.
+
+**Gate:** Writer reviews all disruptions and can reject individual changes.
+
+---
+
+### 5. beta-reader (Evaluator)
 
 **Phase:** 4 (Evaluation)
-**Command:** `/beta-reader`
 
-Simulates 3 radically different readers evaluating the manuscript. Replaces the previous 5-profile system (beta-reader-sim) with fewer but deeper, non-convergent profiles.
+Simulates 4 radically different readers evaluating the manuscript. V4 adds the Casual Reader profile.
 
 **The Devourer:** Reads fast, feels everything, zero tolerance for dragging. Reports where they would stop reading.
 
-**The Critic:** Literary analysis lens. Hunts for originality, thematic depth, prose quality, coherence. Compares with published references.
+**The Critic:** Literary analysis lens. Hunts for originality, thematic depth, prose quality, coherence.
 
-**The Hostile:** Did not want to read this. Actively seeks flaws, manipulation, questionable data, AI smell. Their respect is the highest validation.
+**The Hostile:** Did not want to read this. Actively seeks flaws, manipulation, AI smell.
 
-**Cross-diagnosis:** 3/3 agree = critical problem. 2/3 agree = real problem. 1/1 = investigate. Hostile praises = exceptional moment.
+**The Casual Reader (NEW):** The person who picks up the book at an airport and gives it 10 pages. Does not analyze. Decides on vibes. If the Casual Reader puts it down, the chapter fails regardless of craft scores. This is the single best predictor of whether the book sells.
+
+**Cross-diagnosis:** 3/3 agree = critical. 2/3 = real problem. 1/1 = investigate. Hostile praises = exceptional. Casual Reader abandons = commercial failure regardless of other scores.
 
 ---
 
-### 5. production-prep (Proofreading + Formatting)
+### 6. book-editor (Editor) -- NEW in V4
+
+**Phase:** 5 (Revision)
+
+Dedicated revision agent. V2 relied on the writer to revise their own work, which produced diminishing returns. The editor is a separate agent with a different perspective.
+
+**Revision Taxonomy (4 types, priority order):**
+1. **Structural** -- Affects the skeleton. Arcs that don't close, themes that don't appear, parallel chapters.
+2. **Connective** -- How parts link. Weak transitions, logic gaps, emotional jumps.
+3. **Prose** -- How each section sounds. Voice drift, dialogue without subtext, AI patterns.
+4. **Factual/Punctual** -- Isolated errors. Incorrect data, name inconsistencies, typos.
+
+**Key principle:** Genesis Score governs revision priority. The weakest dimension gets attention first. Always revise structural before connective before prose before factual.
+
+**Output:** Revision plan with specific changes per chapter + revised chapters.
+
+---
+
+### 7. book-researcher (Researcher) -- NEW in V4
+
+**Phase:** 1 (Research)
+
+Dedicated research agent. V2 combined research into the orchestrator, producing shallow market analysis. The researcher is a deep specialist.
+
+**Delivers:**
+- Top 10 books in niche (last 5 years) with sales data
+- Market gaps and white space identification
+- 3-5 comp titles with detailed positioning analysis
+- **bestseller-dna.md**: Extracted prose patterns, pacing structures, hook types, and emotional techniques from genre leaders
+- **Comp title passages**: 3-5 actual excerpts from published bestsellers for the evaluator to benchmark against
+- Genre convention checklist (word count, structure, reader expectations)
+- Cultural moment assessment (is this topic trending?)
+
+**Why it exists:** The system analysis found that the evaluator had no comp title TEXT to compare against. It was told to compare with published works but had no reference material. The researcher provides that material.
+
+---
+
+### 8. editorial-package (Packager)
 
 **Phase:** 6 (Delivery)
-**Command:** `/production-prep`
 
-Consolidates proofreader and book-formatter into one final-stage skill.
+Everything the manuscript needs to reach the market.
 
-**Part 1 — Proofreading:** 8 error categories (spelling, punctuation, agreement, repetition, factual inconsistencies, verb tense, internal formatting, invisible errors). 3-pass methodology.
+**Part 1 -- Synopses:** 3 formats -- logline (~25 words), cover synopsis (~100 words), editorial synopsis (~300 words, reveals ending).
 
-**Part 2 — Formatting:** Complete guidelines for ebook (EPUB structure, typography, metadata, KDP keywords) and print (page size, margins, typography, headers, PDF specs). Includes final checklists for both formats.
+**Part 2 -- Query Letter:** 5 mandatory elements. Personalization protocol per agent/publisher.
+
+**Part 3 -- Cover Brief:** Visual positioning, emotional concept, color palette, typography, AI generation prompts.
 
 ---
 
-### 6. editorial-package (Synopses + Query + Cover)
+### 9. production-prep (Production)
 
 **Phase:** 6 (Delivery)
-**Command:** `/editorial-package`
 
-Consolidates synopsis-writer, cover-brief, and query-letter into one coherent market-facing package.
+Final technical preparation.
 
-**Part 1 — Synopses:** 3 formats — logline (~25 words), cover synopsis (~100 words, never reveals ending), editorial synopsis (~300 words, reveals everything for agents/editors). Genre-specific adaptation guidelines.
+**Part 1 -- Proofreading:** 8 error categories (spelling, punctuation, agreement, repetition, factual, verb tense, formatting, invisible errors). 3-pass methodology.
 
-**Part 2 — Query Letter:** 5 mandatory elements (hook, compact synopsis, comp titles, author credentials, practical data). Personalization protocol per agent/publisher. Max 400 words.
-
-**Part 3 — Cover Brief:** Visual positioning analysis, emotional concept, color palette, main visual element, typography, reference covers, AI generation prompt structure, technical specs for ebook and print.
+**Part 2 -- Formatting:** Complete guidelines for ebook (EPUB) and print (POD). Checklists for both formats.
 
 ---
 
-## Support Skills (used across phases or independently)
+## Support Skills
 
-### 7. manuscript-manager (State Engine)
+### 10. manuscript-manager (State)
 
 **Phase:** All phases
-**Command:** `/manuscript-manager`
 
-The persistent memory of the project. Manages PROJECT_STATE.yaml with CHECK-IN/CHECK-OUT protocols, decision logging, handoff tracking, and session recovery.
+The persistent memory of the project. Manages STATE.yaml.
 
-**CHECK-IN:** Reads state, reports to user, verifies consistency, asks for direction.
-**CHECK-OUT:** Updates all state, lists what was done, alerts on stale handoffs.
-**Decision Log:** Every significant decision recorded with date, justification, and reversibility.
-**Handoffs:** Inter-skill task tracking with priority and age alerts.
-**File Convention:** Standardized project structure (manuscrito/, fundacao/, capitulos/, pesquisa/, avaliacoes/, editorial/, export/).
+**Protocols:**
+- CHECK-IN: Reads state, reports progress, verifies consistency
+- CHECK-OUT: Updates state, logs decisions, manages handoffs
+- Decision Log: Every significant decision with justification and reversibility
+- Handoffs: Inter-skill task tracking with priority and age alerts
+- Session Recovery: STATE.yaml contains everything needed to resume after context loss
 
----
-
-### 8. series-architect (Series Bible)
-
-**Phase:** Independent (use before Vol. 2+)
-**Command:** `/series-architect`
-
-Builds and maintains the series bible for multi-volume projects. Ensures each volume works standalone AND as part of the series.
-
-**Delivers:** Series premise, protagonist transformation arc across all volumes, volume map (per-volume conflicts, resolutions, hooks), canonical worldbuilding, character management across volumes, inter-volume hook design, consistency checklist, canonical glossary.
+**V4 changes:** Renamed PROJECT_STATE.yaml to STATE.yaml. Added tracking for writer self-reports, disruption reports, CVI scores, and engagement type configuration.
 
 ---
 
-### 9. bestseller-orchestrator (Alternative Pipeline)
+### 11. series-architect (Series)
 
-**Phase:** Independent (alternative to book-genesis)
-**Command:** `/bestseller-orchestrator`
+**Phase:** Independent (multi-volume projects)
 
-An alternative, faster orchestrator that transforms a basic idea into a commercially strong book. Supports autopilot mode (zero questions, assume defaults) or guided mode (max 3 questions).
+Builds and maintains the series bible.
 
-**Note:** This skill references V1 skill names in its internal documentation. In practice, Claude will use the V3 equivalents (narrative-foundation instead of character-forge + theme-weaver + emotion-engineer, etc.).
+**Delivers:** Series premise, protagonist transformation arc across all volumes, volume map, canonical worldbuilding, character management, inter-volume hooks, consistency checklist, canonical glossary.
+
+**When to use:** Before writing Volume 2+. When a plot point could create a future contradiction. When reviewing volume endings.
 
 ---
 
-## Skill Consolidation Map (V1 -> V3)
+### 12. bestseller-orchestrator (Quick Mode)
 
-| V1 Skills | V3 Equivalent |
-|-----------|---------------|
-| character-forge + theme-weaver + emotion-engineer | **narrative-foundation** |
-| hook-crafter + dialogue-master | **prose-craft** |
-| synopsis-writer + cover-brief + query-letter | **editorial-package** |
-| proofreader + book-formatter | **production-prep** |
-| beta-reader-sim | **beta-reader** |
-| book-genesis | **book-genesis** (upgraded) |
-| manuscript-manager | **manuscript-manager** (upgraded) |
-| series-architect | **series-architect** (kept as-is) |
-| bestseller-orchestrator | **bestseller-orchestrator** (kept as-is) |
+**Phase:** Independent (alternative pipeline)
+
+An alternative, faster orchestrator for when the user wants autopilot or guided mode with minimal questions. Supports zero-question autopilot (assume defaults) or guided mode (max 3 questions).
+
+**Note:** References V1 skill names internally. In practice, Claude uses V4 equivalents.
+
+---
+
+## Skill Consolidation Map (V1 -> V2 -> V4)
+
+| V1 Skills (15) | V2 Skills (9) | V4 Skills (12) |
+|----------------|---------------|----------------|
+| character-forge + theme-weaver + emotion-engineer | narrative-foundation | narrative-foundation (upgraded with chaos profiles, engagement types, re-read architecture) |
+| hook-crafter + dialogue-master | prose-craft | prose-craft (upgraded with voice inhabitation, impulse instruction, 20 anti-AI patterns, structural diversity) |
+| beta-reader-sim (5 profiles) | beta-reader (3 profiles) | beta-reader (4 profiles: + Casual Reader) |
+| -- | -- | **chaos-engine** (NEW) |
+| -- | -- | **book-editor** (NEW) |
+| -- | -- | **book-researcher** (NEW) |
+| synopsis-writer + cover-brief + query-letter | editorial-package | editorial-package |
+| proofreader + book-formatter | production-prep | production-prep |
+| book-genesis | book-genesis | book-genesis (upgraded with CVI, genre profiles, 7 phases) |
+| manuscript-manager | manuscript-manager | manuscript-manager (STATE.yaml) |
+| series-architect | series-architect | series-architect |
+| bestseller-orchestrator | bestseller-orchestrator | bestseller-orchestrator |

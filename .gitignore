@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (if any tooling added later)
+node_modules/
+package-lock.json
+
+# Output
+output/
+manuscript/
+evaluations/
+delivery/
+voice-bank/
+*.epub
+*.pdf
+*.docx
+
+# State files (user-specific)
+STATE.yaml
+PROJECT_STATE.yaml
+
+# Claude
+.claude/
