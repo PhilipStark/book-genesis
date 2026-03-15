@@ -1,5 +1,5 @@
 # Book Genesis V4 — Installer for Windows (PowerShell)
-# Installs 12 skills + knowledge base to ~/.claude/
+# Installs 20 skills + 1 agent + knowledge base to ~/.claude/
 
 $ErrorActionPreference = "Stop"
 
@@ -7,8 +7,10 @@ $RepoDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 if (-not $RepoDir) { $RepoDir = Get-Location }
 $SkillsDir = Join-Path $RepoDir "skills"
 $KnowledgeDir = Join-Path $RepoDir "knowledge"
+$AgentsDir = Join-Path $RepoDir "agents"
 $TargetSkills = Join-Path $env:USERPROFILE ".claude\skills"
 $TargetKnowledge = Join-Path $env:USERPROFILE ".claude\knowledge"
+$TargetAgents = Join-Path $env:USERPROFILE ".claude\agents"
 
 Write-Host ""
 Write-Host "  ____              _      ____                      _     " -ForegroundColor Blue
@@ -18,7 +20,7 @@ Write-Host " | |_) | (_) | (_) |   < | |_| |  __/ | | |  __/\__ \ \__ \" -Foregr
 Write-Host " |____/ \___/ \___/|_|\_\ \____|\___| |_| |_|\___||___/_|___/" -ForegroundColor Blue
 Write-Host "                          V4 - Genesis Score V3.7" -ForegroundColor Yellow
 Write-Host ""
-Write-Host "Installing 12 skills + knowledge base" -ForegroundColor Yellow
+Write-Host "Installing 20 skills + 1 agent + knowledge base" -ForegroundColor Yellow
 Write-Host ""
 
 # Check that skills directory exists
@@ -28,7 +30,7 @@ if (-not (Test-Path $SkillsDir)) {
 }
 
 # Create target directories
-foreach ($dir in @($TargetSkills, $TargetKnowledge)) {
+foreach ($dir in @($TargetSkills, $TargetKnowledge, $TargetAgents)) {
     if (-not (Test-Path $dir)) {
         New-Item -ItemType Directory -Path $dir -Force | Out-Null
     }
@@ -62,10 +64,21 @@ if (Test-Path $KnowledgeDir) {
     }
 }
 
+# Copy agents
+$agentCount = 0
+if (Test-Path $AgentsDir) {
+    Get-ChildItem -Path $AgentsDir -Filter "*.md" | ForEach-Object {
+        Copy-Item $_.FullName (Join-Path $TargetAgents $_.Name) -Force
+        Write-Host "  + agent/$($_.Name)" -ForegroundColor Green
+        $agentCount++
+    }
+}
+
 Write-Host ""
-Write-Host "Done! $count skills + $kbCount knowledge files installed" -ForegroundColor Green
+Write-Host "Done! $count skills + $agentCount agents + $kbCount knowledge files installed" -ForegroundColor Green
 Write-Host ""
 Write-Host "Skills:    $TargetSkills" -ForegroundColor Blue
+Write-Host "Agents:    $TargetAgents" -ForegroundColor Blue
 Write-Host "Knowledge: $TargetKnowledge" -ForegroundColor Blue
 Write-Host ""
 Write-Host "Open Claude Code and type /book-genesis to start writing."

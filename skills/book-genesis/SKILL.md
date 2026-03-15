@@ -63,16 +63,24 @@ V4 is a ground-up rebuild from the V2 skill. Every V3.x calibration from the age
 
 ---
 
-## PIPELINE — 7 PHASES
+## PIPELINE — 14 PHASES
 
 ```
-PHASE 1: RESEARCH        -> /book-researcher
-PHASE 2: FOUNDATION      -> /narrative-foundation
-PHASE 3: WRITING         -> /prose-craft
-PHASE 3.5: DISRUPTION    -> /chaos-engine
-PHASE 4: EVALUATION      -> /beta-reader
-PHASE 5: REVISION        -> /book-editor
-PHASE 6: DELIVERY        -> /editorial-package + /production-prep
+PHASE 1:   RESEARCH           -> /book-researcher
+PHASE 1.5: READER PERSONAS    -> /reader-persona
+PHASE 2:   FOUNDATION         -> /narrative-foundation
+PHASE 2.5: VOICE DNA          -> /voice-fingerprint
+PHASE 2.7: CONTINUITY (outline) -> /continuity-guardian (batch: outline + foundation)
+PHASE 3:   WRITING            -> /prose-craft (one chapter at a time)
+PHASE 3.1: DIALOGUE POLISH    -> /dialogue-polish (per chapter, after prose-craft)
+PHASE 3.2: HOOK CRAFT         -> /hook-craft (per chapter, after dialogue-polish)
+PHASE 3.5: DISRUPTION         -> /chaos-engine
+PHASE 3.8: MECHANICAL PREPROCESS -> /mechanical-preprocess (bash pipeline, before eval)
+PHASE 4:   EVALUATION         -> /beta-reader
+PHASE 4.5: QUALITY GATE       -> /quality-gate (auto-loop: eval->fix->re-eval, max 3)
+PHASE 5:   REVISION           -> /book-editor
+PHASE 5.5: CONTINUITY (ms)    -> /continuity-guardian (full manuscript)
+PHASE 6:   DELIVERY           -> /editorial-package + /production-prep
 ```
 
 ### The Disruption Phase (3.5)
@@ -100,6 +108,8 @@ When starting a new project, create this directory structure:
 +-- STATE.yaml              # Source of truth -- you own this file
 +-- outline.md              # Chapter-by-chapter plan (Architect creates, you maintain)
 +-- foundation.md           # Characters, theme, emotional curve, voice, engagement type
++-- voice-dna.md            # Per-character voice specs (voice-fingerprint creates)
++-- reader-personas.md      # 3-5 reader personas (reader-persona creates)
 +-- voice-bank/             # 10-15 gold-standard prose excerpts
 |   +-- README.md           # Voice bank guidelines
 |   +-- samples/            # Individual voice samples
@@ -107,6 +117,9 @@ When starting a new project, create this directory structure:
 |   +-- chapters/           # One .md file per chapter
 |   +-- full-manuscript.md  # Assembled manuscript (generated)
 +-- evaluations/            # One .md per evaluation round
++-- continuity/             # Continuity audit reports
+|   +-- outline-audit.md    # Phase 2.7 results
+|   +-- manuscript-audit.md # Phase 5.5 results
 +-- feedback/               # Human feedback files
 |   +-- beta-readers/       # Structured beta reader feedback
 |   +-- author-notes.md     # Author's own annotations
@@ -133,7 +146,7 @@ project:
   updated: ""
 
 phase:
-  current: 1  # 1-6 (3.5 is implicit between 3 and 4)
+  current: 1  # 1, 1.5, 2, 2.5, 2.7, 3, 3.1, 3.2, 3.5, 3.8, 4, 4.5, 5, 5.5, 6
   status: "in_progress"  # in_progress, gate_pending, gate_passed, blocked
   history: []  # [{phase: 1, status: "completed", date: "", notes: ""}]
 
@@ -182,6 +195,33 @@ voice_bank:
   voice_description: ""
   voice_under_pressure: ""  # How the voice CHANGES under stress
 
+voice_dna:
+  created: false
+  character_cards: 0  # Number of voice cards created
+  differentiation_matrix: false
+  cover_the_name_pass: false  # All characters pass the test
+
+reader_personas:
+  created: false
+  count: 0
+  primary: ""  # Name of primary persona
+  hostile: ""  # Name of hostile persona
+
+continuity:
+  outline_check: false  # Phase 2.7 ran
+  manuscript_check: false  # Phase 5.5 ran
+  critical_findings: 0
+  warning_findings: 0
+
+quality_gate:
+  chapters_passed: []  # Chapter numbers that passed the gate
+  chapters_escalated: []  # Chapter numbers that hit max iterations without passing
+
+mechanical_preprocess:
+  em_dash_count: 0  # Total across manuscript
+  pattern_11_count: 0  # Total across manuscript
+  adverb_density: 0.0  # Per page average
+
 evaluation_tracking:
   anti_ai_worst_3: []  # [{pattern: N, count: X, density: Y}] per chapter
   reader_verdicts:
@@ -209,21 +249,25 @@ revision_cycles: 0  # Max 3 per iteration
 
 ## PHASE GATES
 
-### Phase 1 -> 2 (Research -> Foundation)
+### Phase 1 -> 1.5 (Research -> Reader Personas)
 - [ ] Market research report exists with comp titles
 - [ ] Genre conventions documented
 - [ ] Word count target defined
 - [ ] Engagement type identified (primary + secondary minimum)
 - [ ] User explicitly approves direction
 
-### Phase 2 -> 3 (Foundation -> Writing)
+### Phase 1.5 -> 2 (Reader Personas -> Foundation)
+- [ ] 3-5 reader personas created in `reader-personas.md`
+- [ ] PRIMARY persona identified (drives writing decisions)
+- [ ] HOSTILE persona identified (drives evaluator simulation)
+- [ ] Each persona has deal-breakers and emotional triggers defined
+
+### Phase 2 -> 2.5 (Foundation -> Voice DNA)
 - [ ] Character profiles complete with CHAOS (wound, lie, arc, irrelevant obsession, cognitive distortion, unprompted memory, failed emotional management)
 - [ ] Chapter outline with EMOTIONAL ANCHORS (not intensity numbers) and EMOTIONAL SURPRISES
 - [ ] Opening strategy defined for Chapter 1 (NOT defaulting to competence cascade)
 - [ ] Structural approach specified for EACH chapter (8 types, no consecutive repeats)
 - [ ] Theme defined as question (not answer)
-- [ ] Voice bank initialized with >=10 samples including >=3 voice-breaking and >=2 irrelevant-thought samples
-- [ ] Voice under pressure defined (how the voice CHANGES under stress)
 - [ ] Engagement type ranked list in foundation.md (primary/secondary/tertiary)
 - [ ] Re-read architecture planned (which chapters contain re-read rewards)
 - [ ] Cultural vocabulary identified (if applicable)
@@ -231,16 +275,50 @@ revision_cycles: 0  # Max 3 per iteration
 - [ ] Stylistic device chosen (or "market" default)
 - [ ] User explicitly approves foundation + outline
 
-### Phase 3 -> 3.5 (Writing -> Disruption)
+### Phase 2.5 -> 2.7 (Voice DNA -> Continuity Check)
+- [ ] `voice-dna.md` created by /voice-fingerprint with:
+  - Global narrative voice profile
+  - Per-character voice cards (speech patterns, syntax, metaphor source, voice-under-pressure)
+  - Voice differentiation matrix (min 3 distinguishing markers per character pair)
+  - Anti-pattern checklist
+  - Benchmark samples
+- [ ] Voice bank initialized with >=10 samples including >=3 voice-breaking and >=2 irrelevant-thought samples
+
+### Phase 2.7 -> 3 (Continuity Check -> Writing)
+- [ ] /continuity-guardian ran on outline + foundation + voice-dna
+- [ ] No CRITICAL findings (timeline contradictions, impossible information flow)
+- [ ] All WARNING findings logged and addressed or deferred with rationale
+
+### Phase 3 -> 3.1 (Writing -> Dialogue Polish)
 - [ ] Chapter written by /prose-craft
 - [ ] Writer's self-report saved (chapter-[N]-report.md) with chaos moments, ugly sentence, impulse deviations, anti-AI scan results, structural approach used
 
-### Phase 3.5 -> 4 (Disruption -> Evaluation)
+### Phase 3.1 -> 3.2 (Dialogue Polish -> Hook Craft)
+- [ ] /dialogue-polish ran on chapter using voice-dna.md
+- [ ] Cover-the-name test passed for all speaking characters in this chapter
+- [ ] Dialogue-to-prose ratio within genre target
+
+### Phase 3.2 -> 3.5 (Hook Craft -> Disruption)
+- [ ] /hook-craft evaluated opening and ending
+- [ ] Hook score >= 7 (commercial) or >= 6 (literary)
+- [ ] Pull score >= 7 (commercial) or >= 6 (literary)
+- [ ] Hook type differs from previous chapter's hook type
+
+### Phase 3.5 -> 3.8 (Disruption -> Mechanical Preprocess)
 - [ ] /chaos-engine applied >=5 of 8 disruption operations
 - [ ] Disruption report saved to evaluations/disruption-chapter-[N].md
 - [ ] Emotional anchor preserved (disruption enhanced it, not dissolved it)
 
-### Phase 4 -> 5 (Evaluation -> Revision)
+### Phase 3.8 -> 4 (Mechanical Preprocess -> Evaluation)
+- [ ] /mechanical-preprocess ran bash pipeline on chapter:
+  - Em-dash count within genre target (literary <3/page, commercial <2/page)
+  - Pattern #11 instances flagged and fixed
+  - Adverb density checked
+  - Sentence-start repetition checked
+  - Filter word count within limits
+- [ ] Agent reviewed all mechanical diffs for false positives
+
+### Phase 4 -> 4.5 (Evaluation -> Quality Gate)
 - [ ] Genesis Score calculated per chapter and globally
 - [ ] Weaknesses ranked by taxonomy (structural > connective > prose > factual)
 - [ ] Top 3 weaknesses identified with text citations
@@ -249,8 +327,14 @@ revision_cycles: 0  # Max 3 per iteration
 - [ ] Character chaos check completed (primary + secondary characters)
 - [ ] Tomorrow Test run (concrete anchors counted)
 
-### Phase 4 -> 5 (Evaluation -> Revision) -- CASUAL READER GATE
+### Phase 4 -> 4.5 -- CASUAL READER GATE
 - [ ] If Casual Reader verdict is "would not keep reading" -> treat as CRITICAL regardless of Genesis Score. The Casual Reader is the single best predictor of commercial success. This overrides everything.
+
+### Phase 4.5 -> 5 (Quality Gate -> Revision)
+- [ ] /quality-gate ran auto-loop (evaluate -> targeted fix -> re-evaluate)
+- [ ] Max 3 iterations per chapter
+- [ ] If floor didn't improve after 3 iterations -> escalate to orchestrator as structural issue
+- [ ] Gate threshold met: floor >= configured minimum (default 7.5)
 
 ### Phase 5 -> 4 (Revision -> Re-evaluation) -- LOOP
 - [ ] Targeted rewrites completed by /book-editor
@@ -258,7 +342,15 @@ revision_cycles: 0  # Max 3 per iteration
 - [ ] Max 3 revision cycles per iteration (structural problem = back to Phase 2)
 - [ ] **Oscillation check.** If evaluator reports oscillation count <6 or >12 or "highly irregular," this is a macro-structural issue that CANNOT be fixed by the editor. Loop back to Phase 2 (/narrative-foundation) for outline restructuring.
 
-### Phase 5 -> 6 (Revision -> Delivery)
+### Phase 5 -> 5.5 (Revision -> Full Continuity Check)
+- [ ] /continuity-guardian ran in full-manuscript mode
+- [ ] Character consistency: names, physical descriptions, relationships — zero contradictions
+- [ ] Timeline: no impossible sequences, travel times respected, ages consistent
+- [ ] Information flow: no character acts on knowledge they shouldn't have
+- [ ] Plot threads: all opened threads either closed or deliberately left open
+- [ ] World rules: no violations of established rules
+
+### Phase 5.5 -> 6 (Continuity -> Delivery)
 - [ ] Genesis Score floor >= 7.5 (target >= 8.0, stretch >= 8.5). V3.2 calibration: Genesis Floor does NOT predict sales. Floor 7.0 books sold 62M copies. The floor measures CRAFT, not commercial viability.
 - [ ] **CVI-Launch >= 7.0.** If CVI-Launch < 7.0 and Genesis Floor >= 7.5, dispatch targeted pacing/shareability revision before packaging. CVI-Launch formula: Commercial Pacing (20%) + Tomorrow Test (20%) + Casual Reader (20%) + Shareability (20%) + Concept Pitch (10%) + Human Closeness (10%).
 - [ ] **Genesis Score governs REVISION PRIORITY. CVI-Launch governs SUBMISSION READINESS.** When they diverge by 2.0+, report the divergence prominently -- it IS the finding.
@@ -384,6 +476,114 @@ for disruption context.
 Do NOT undo disruptions unless the Evaluator specifically flagged them as harmful.
 Fix without degrading identified strengths: [list top 3 strengths].
 Revision type: [structural|connective|prose|factual]
+```
+
+**Phase 1.5 -- Reader Personas:**
+```
+Next step: invoke /reader-persona
+
+Task: Build reader personas for "[title]".
+Project dir: [path]
+Read: research report for genre/comp titles, foundation.md if it exists.
+Deliverables: 3-5 reader personas in reader-personas.md.
+Identify: PRIMARY (drives writing), HOSTILE (drives evaluation), STRETCH (adjacent genre).
+Each persona needs: reading psychology, deal-breakers, emotional triggers, discovery channels.
+```
+
+**Phase 2.5 -- Voice DNA:**
+```
+Next step: invoke /voice-fingerprint
+
+Task: Build Voice DNA document for "[title]".
+Project dir: [path]
+Read: foundation.md for character profiles, reader-personas.md for audience calibration.
+Deliverables: voice-dna.md with:
+- Global narrative voice profile
+- Per-character voice cards (speech patterns, syntax fingerprint, metaphor source,
+  voice-under-pressure with specific examples)
+- Voice differentiation matrix (min 3 markers per character pair)
+- Anti-pattern checklist + benchmark samples
+This document is PRESCRIPTIVE — the writer MUST follow it.
+```
+
+**Phase 2.7 -- Continuity Check (outline):**
+```
+Next step: invoke /continuity-guardian
+
+Task: Pre-writing continuity audit for "[title]".
+Project dir: [path]
+Mode: outline
+Read: foundation.md, outline.md, voice-dna.md.
+Check: timeline feasibility, character availability (no one in two places at once),
+information flow (no character knows things before they're revealed),
+plot thread planning (all threads have planned resolutions).
+```
+
+**Phase 3.1 -- Dialogue Polish (per chapter):**
+```
+Next step: invoke /dialogue-polish
+
+Task: Polish dialogue in chapter [N] of "[title]".
+Project dir: [path]
+Read: manuscript/chapters/chapter-[N].md, voice-dna.md, foundation.md.
+Run cover-the-name test on ALL speaking characters.
+Fix: voice bleeding (characters sounding alike), missing subtext, clean dialogue (#17),
+tag/beat ratio, dialogue-to-prose ratio.
+Do NOT touch narrative prose — dialogue and surrounding mechanics only.
+```
+
+**Phase 3.2 -- Hook Craft (per chapter):**
+```
+Next step: invoke /hook-craft
+
+Task: Evaluate and fix hooks/pulls in chapter [N] of "[title]".
+Project dir: [path]
+Read: manuscript/chapters/chapter-[N].md, outline.md (for next chapter context), voice-dna.md.
+Previous chapter hook type: [type]. DO NOT repeat the same type.
+Score opening (hook) and ending (pull) 1-10.
+If either < 7 (commercial) or < 6 (literary): rewrite the first/last 3-5 sentences.
+Preserve POV character voice from voice-dna.md.
+```
+
+**Phase 3.8 -- Mechanical Preprocess (per chapter or batch):**
+```
+Next step: invoke /mechanical-preprocess
+
+Task: Mechanical cleanup of chapter [N] (or chapters [range]) of "[title]".
+Project dir: [path]
+Run bash pipeline:
+1. Count and reduce em-dashes (target: <[genre-target] per page)
+2. Grep and flag Pattern #11 (explanatory extensions)
+3. Check adverb density (flag if >2 per page)
+4. Check sentence-start repetition (no 3+ consecutive same-start)
+5. Count filter words (just, really, very, quite, rather, somewhat)
+Agent reviews all changes for false positives before applying.
+```
+
+**Phase 4.5 -- Quality Gate (auto-loop):**
+```
+Next step: invoke /quality-gate
+
+Task: Quality gate loop for chapter [N] of "[title]".
+Project dir: [path]
+Threshold: floor >= [target, default 7.5]
+Max iterations: 3
+Loop: evaluate chapter -> identify top weakness -> dispatch targeted fix -> re-evaluate
+If threshold met: PASS, advance to Phase 5.
+If 3 iterations without meeting threshold: ESCALATE to orchestrator.
+Preserve strengths: [list from evaluation]
+```
+
+**Phase 5.5 -- Full Continuity Check:**
+```
+Next step: invoke /continuity-guardian
+
+Task: Full-manuscript continuity audit for "[title]".
+Project dir: [path]
+Mode: full-manuscript
+Read ALL chapters + foundation.md + outline.md + voice-dna.md.
+Run all 5 audits: character consistency, timeline, information flow, plot threads, world rules.
+Report: CRITICAL (must fix before delivery), WARNING (should fix), MINOR (optional).
 ```
 
 **Phase 6 -- Delivery:**
@@ -698,7 +898,13 @@ You track these. The evaluator scans for them. The disruptor breaks them. The wr
 - `/book deliver` -- Run Phase 6 (gate check first)
 - `/book feedback [file]` -- Integrate human feedback file into pipeline
 - `/book voice-bank add [file]` -- Add voice sample to voice bank
-- `/book continuity` -- Run continuity sweep across all written chapters
+- `/book voice-dna` -- Generate or regenerate Voice DNA document
+- `/book personas` -- Generate or regenerate reader personas
+- `/book continuity [outline|manuscript]` -- Run continuity audit (outline or full manuscript)
+- `/book dialogue [chapter N]` -- Run dialogue polish on chapter
+- `/book hooks [chapter N | binge]` -- Evaluate/fix hooks and pulls (or run binge test on all)
+- `/book preprocess [chapter N | all]` -- Run mechanical preprocessing pipeline
+- `/book gate [chapter N]` -- Run quality gate auto-loop on chapter
 - `/book patterns` -- Show systemic AI patterns tracked across chapters
 - `/book oscillation` -- Show emotional oscillation analysis
 
@@ -709,15 +915,22 @@ You track these. The evaluator scans for them. The disruptor breaks them. The wr
 ```
 /book-genesis (THIS -- coordinates everything, never writes prose)
     |
-    +-- /book-researcher       -> Phase 1 (market research, comp titles, bestseller DNA)
-    +-- /narrative-foundation   -> Phase 2 (characters, outline, voice, theme, emotional design)
-    +-- /prose-craft            -> Phase 3 (writes chapters with voice inhabitation, anti-AI, chaos)
-    +-- /chaos-engine           -> Phase 3.5 (breaks predictability, injects human noise)
-    +-- /beta-reader            -> Phase 4 (5 readers, Genesis Score, anti-AI scan, Tomorrow Test)
-    +-- /book-editor            -> Phase 5 (targeted revision by taxonomy)
-    +-- /editorial-package      -> Phase 6 (logline, synopsis, query, cover brief)
-    +-- /production-prep        -> Phase 6 (proofreading, ebook/print formatting)
-    +-- /manuscript-manager     -> ALL phases (state tracking, continuity, handoffs)
+    +-- /book-researcher         -> Phase 1   (market research, comp titles, bestseller DNA)
+    +-- /reader-persona          -> Phase 1.5 (3-5 reader personas for writer/evaluator/packager)
+    +-- /narrative-foundation    -> Phase 2   (characters, outline, voice, theme, emotional design)
+    +-- /voice-fingerprint       -> Phase 2.5 (voice DNA: per-character voice cards, differentiation matrix)
+    +-- /continuity-guardian     -> Phase 2.7 + 5.5 (outline check + full manuscript check)
+    +-- /prose-craft             -> Phase 3   (writes chapters with voice inhabitation, anti-AI, chaos)
+    +-- /dialogue-polish         -> Phase 3.1 (cover-the-name test, subtext, voice consistency in dialogue)
+    +-- /hook-craft              -> Phase 3.2 (chapter openings + endings, binge test)
+    +-- /chaos-engine            -> Phase 3.5 (breaks predictability, injects human noise)
+    +-- /mechanical-preprocess   -> Phase 3.8 (bash pipeline: em-dashes, Pattern #11, adverbs, repetition)
+    +-- /beta-reader             -> Phase 4   (5 readers, Genesis Score, anti-AI scan, Tomorrow Test)
+    +-- /quality-gate            -> Phase 4.5 (auto-loop: eval->fix->re-eval, max 3 iterations)
+    +-- /book-editor             -> Phase 5   (targeted revision by taxonomy)
+    +-- /editorial-package       -> Phase 6   (logline, synopsis, query, cover brief)
+    +-- /production-prep         -> Phase 6   (proofreading, ebook/print formatting)
+    +-- /manuscript-manager      -> ALL phases (state tracking, continuity, handoffs)
 ```
 
 ---

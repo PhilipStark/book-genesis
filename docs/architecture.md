@@ -1,6 +1,6 @@
 # Architecture -- Book Genesis V4
 
-Book Genesis V4 is a 7-phase pipeline that transforms a one-sentence idea into a commercially viable, publishable manuscript. V4 was built from the ground up after a 5-genre stress test (SYSTEM-ANALYSIS.md) identified 9 structural problems in V2 that no amount of prompt refinement could fix. Every architectural change in V4 traces back to a specific failure in that analysis.
+Book Genesis V4.1 is a 14-phase pipeline (with sub-phases) that transforms a one-sentence idea into a commercially viable, publishable manuscript. V4 was built from the ground up after a 5-genre stress test (SYSTEM-ANALYSIS.md) identified 9 structural problems in V2. V4.1 adds 8 skills, doubles the phase count, and introduces fully autonomous execution via `/book-auto`. Every architectural change traces back to a specific failure in the system analysis or lessons learned from real manuscript iterations.
 
 ---
 
@@ -24,6 +24,21 @@ IDEA (1 sentence)
 |   - Pull 3-5 comp title PASSAGES for evaluator benchmarking        |
 | Output: Research report + bestseller-dna.md + comp passages        |
 | Gate:   User approves direction before advancing                   |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 1.5 -- Reader Personas (NEW in V4.1)                        |
+|                                                                    |
+| Skill:  reader-persona                                             |
+| Actions:                                                           |
+|   - Build 3-5 reader personas from research data                   |
+|   - PRIMARY persona (drives writing when conflicts arise)          |
+|   - HOSTILE persona (drives evaluator's toughest simulation)       |
+|   - STRETCH persona (adjacent-genre reader)                        |
+|   - Each persona: psychology, deal-breakers, triggers, channels    |
+| Output: reader-personas.md                                         |
+| Downstream: writer, evaluator, packager, chaos-engine              |
 +------------------------------------+------------------------------+
                                      |
                                      v
@@ -52,6 +67,37 @@ IDEA (1 sentence)
 |                                                                    |
 | Gate: User approves foundation + outline before writing            |
 | Loop-back: If writing reveals foundation needs change, return here |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 2.5 -- Voice DNA (NEW in V4.1)                              |
+|                                                                    |
+| Skill:  voice-fingerprint                                          |
+| Actions:                                                           |
+|   - Global narrative voice profile (POV, sentence architecture)    |
+|   - Per-character voice cards with speech patterns, syntax,        |
+|     metaphor source, voice-under-pressure (3 stress levels)        |
+|   - Voice differentiation matrix (3+ markers per character pair)   |
+|   - Anti-pattern budget (em-dash limits, Pattern #11 per chapter)  |
+|   - Cover-the-name test definition per character                   |
+| Output: voice-dna.md                                               |
+| Gate: Voice DNA approved before writing begins                     |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 2.7 -- Outline Continuity (NEW in V4.1)                     |
+|                                                                    |
+| Skill:  continuity-guardian (first pass)                           |
+| Actions:                                                           |
+|   - Audit outline for character consistency                        |
+|   - Validate timeline logic                                        |
+|   - Check information flow (no character knows before being told)  |
+|   - Verify all plot threads have resolution planned                |
+|   - Check world rules consistency                                  |
+| Output: continuity-report-outline.md                               |
+| Gate: No CRITICAL issues before writing begins                     |
 +------------------------------------+------------------------------+
                                      |
                                      v
@@ -91,6 +137,34 @@ IDEA (1 sentence)
                                      |
                                      v
 +-------------------------------------------------------------------+
+| PHASE 3.1 -- Dialogue Polish (NEW in V4.1)                        |
+|                                                                    |
+| Skill:  dialogue-polish                                            |
+| Actions:                                                           |
+|   - Cover-the-name test on ALL speaking characters                 |
+|   - Subtext injection (5 techniques)                               |
+|   - Tag/beat ratio optimization                                    |
+|   - Dialogue-to-prose ratio check against genre targets            |
+|   - Does NOT touch narrative prose                                 |
+| Output: Polished chapter (dialogue only)                           |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 3.2 -- Hook Craft (NEW in V4.1)                             |
+|                                                                    |
+| Skill:  hook-craft                                                 |
+| Actions:                                                           |
+|   - Score chapter opening (6 hook types) 1-10                      |
+|   - Score chapter ending (6 pull types) 1-10                       |
+|   - Rewrite if below threshold                                     |
+|   - Hook type variety tracking (no consecutive repeats)            |
+|   - Binge Test: read all endings + openings in sequence            |
+| Output: Hooked chapter + hook-pull scorecard                       |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
 | PHASE 3.5 -- Disruption (NEW in V4)                               |
 |                                                                    |
 | Skill:  chaos-engine (Disruptor)                                   |
@@ -110,6 +184,22 @@ IDEA (1 sentence)
 |                                                                    |
 | Output: Disrupted chapter + disruption report                      |
 | Gate: Writer reviews disruptions (can reject individual changes)   |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 3.8 -- Mechanical Preprocessing (NEW in V4.1)               |
+|                                                                    |
+| Skill:  mechanical-preprocess                                      |
+| Actions:                                                           |
+|   - Em-dash census and reduction (genre-adjusted targets)          |
+|   - Pattern #11 grep and flagging                                  |
+|   - Adverb density check                                           |
+|   - Sentence-start repetition detection                            |
+|   - Filter word counting (just, really, very, quite, rather)       |
+|   - 80% bash / 20% AI review split                                 |
+| Output: Cleaned chapter + mechanical-report.md                     |
+| Why bash: AI agents hit context limits on 30 chapters. Bash scales.|
 +------------------------------------+------------------------------+
                                      |
                                      v
@@ -139,6 +229,22 @@ IDEA (1 sentence)
 | Loop-back: Floor < 8.0 -> Phase 5 -> return here                  |
 +------------------------------------+------------------------------+
                                      |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 4.5 -- Quality Gate (NEW in V4.1)                           |
+|                                                                    |
+| Skill:  quality-gate                                               |
+| Actions:                                                           |
+|   - Auto-loop: evaluate -> synthesize -> dispatch fix -> re-eval   |
+|   - Max 3 iterations per chapter                                   |
+|   - Regression detection (fix one thing, break another)            |
+|   - Near-miss protocol (fails by small margin)                     |
+|   - Parallel batch mode with systemic issue detection              |
+|   - Escalation report with 4 options for orchestrator              |
+| Output: Quality gate report + pass/fail/escalate decision          |
+| Gate: Pass to advance. Escalate returns to orchestrator.           |
++------------------------------------+------------------------------+
+                                     |
                                      v (if floor < 8.0)
 +-------------------------------------------------------------------+
 | PHASE 5 -- Revision                                                |
@@ -160,6 +266,21 @@ IDEA (1 sentence)
 |                                                                    |
 | Loop-back: Always returns to Phase 4 for re-evaluation             |
 | Escalation: 3 cycles without floor improvement -> Phase 2          |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 5.5 -- Manuscript Continuity (NEW in V4.1)                  |
+|                                                                    |
+| Skill:  continuity-guardian (second pass — full manuscript)         |
+| Actions:                                                           |
+|   - Full-manuscript audit after all revisions complete              |
+|   - 5 audits: character, timeline, information flow, plot, world   |
+|   - Catches cross-chapter inconsistencies introduced by revision   |
+|   - Grep-based pattern detection for names, dates, descriptions    |
+|   - CRITICAL/WARNING/MINOR severity classification                 |
+| Output: continuity-report-manuscript.md                            |
+| Gate: No CRITICAL issues before delivery                           |
 +------------------------------------+------------------------------+
                                      |
                                      v (when floor >= 8.0)
@@ -229,14 +350,22 @@ The `manuscript-manager` skill operates across ALL phases via `STATE.yaml` (rena
 
 | Gate | Where | Condition | Failure Action |
 |------|-------|-----------|----------------|
-| Direction Approval | Phase 1 -> 2 | User approves research direction | Revise research |
-| Foundation Approval | Phase 2 -> 3 | User approves foundation + outline | Revise foundation |
+| Direction Approval | Phase 1 -> 1.5 | User approves research direction | Revise research |
+| Persona Validation | Phase 1.5 -> 2 | PRIMARY + HOSTILE personas defined | Revise personas |
+| Foundation Approval | Phase 2 -> 2.5 | User approves foundation + outline | Revise foundation |
+| Voice DNA Approval | Phase 2.5 -> 2.7 | Voice DNA with per-character specs approved | Revise voice DNA |
+| Outline Continuity | Phase 2.7 -> 3 | No CRITICAL continuity issues | Fix outline |
 | Anti-AI Check | Phase 3 (per chapter) | 20-pattern scan passes genre threshold | Revise chapter prose |
-| Writer Self-Report | Phase 3 -> 3.5 | Report filed with chaos moments, ugly sentence, anchor | Rewrite chapter |
-| Disruption Review | Phase 3.5 -> 4 | Writer reviews disruptions | Accept/reject changes |
+| Writer Self-Report | Phase 3 -> 3.1 | Report filed with chaos moments, ugly sentence, anchor | Rewrite chapter |
+| Dialogue Test | Phase 3.1 -> 3.2 | Cover-the-name test passes | Polish dialogue |
+| Hook Score | Phase 3.2 -> 3.5 | Hook and pull scores above threshold | Rewrite opening/ending |
+| Disruption Review | Phase 3.5 -> 3.8 | Writer reviews disruptions | Accept/reject changes |
+| Mechanical Clean | Phase 3.8 -> 4 | Pattern counts within genre targets | Re-run mechanical pass |
 | Casual Reader Gate | Phase 4 | "Would an airport reader give this 10 pages?" | Revise hook/pacing |
 | Memory Test | Phase 4 | "What would the reader remember tomorrow?" | Strengthen anchor |
-| Genesis Floor | Phase 4 -> 5 or 6 | Floor >= 8.0 | Enter revision loop |
+| Genesis Floor | Phase 4 -> 4.5 | Floor >= 8.0 | Enter quality gate loop |
+| Quality Gate | Phase 4.5 -> 5 or 6 | Pass after max 3 iterations | Escalate to orchestrator |
+| Manuscript Continuity | Phase 5.5 -> 6 | No CRITICAL cross-chapter issues | Fix inconsistencies |
 | CVI-Launch Gate | Phase 6 | CVI-Launch >= 7.0 | Revise market positioning |
 
 ---
@@ -283,40 +412,90 @@ If the Casual Reader would put the book down, the chapter fails -- regardless of
 ## Skill Interaction Map
 
 ```
+book-auto (Autonomous Entry Point — NEW in V4.1)
+    |  One command, 200 turns, 3 human checkpoints
+    v
 book-genesis (Orchestrator)
     |
-    +-- book-researcher -----> Phase 1 (Research)
+    +-- book-researcher -------> Phase 1 (Research)
     |     Outputs: comp titles, market gaps, bestseller-dna.md,
     |              comp title passages for evaluator
     |
-    +-- narrative-foundation -> Phase 2 (Foundation)
+    +-- reader-persona --------> Phase 1.5 (Reader Personas — NEW)
+    |     Outputs: reader-personas.md
+    |     Reads: research report
+    |
+    +-- narrative-foundation --> Phase 2 (Foundation)
     |     Outputs: foundation.md, outline.md, voice-bank/
-    |     Reads: research report, comp titles
+    |     Reads: research report, comp titles, reader-personas.md
     |
-    +-- prose-craft ----------> Phase 3 (Writing)
+    +-- voice-fingerprint -----> Phase 2.5 (Voice DNA — NEW)
+    |     Outputs: voice-dna.md
+    |     Reads: foundation.md, voice-bank/
+    |
+    +-- continuity-guardian ---> Phase 2.7 (Outline Continuity — NEW)
+    |     Outputs: continuity-report-outline.md
+    |     Reads: outline.md, foundation.md
+    |
+    +-- prose-craft -----------> Phase 3 (Writing)
     |     Outputs: chapter-N.md, chapter-N-report.md
-    |     Reads: foundation.md, outline.md, voice-bank/,
-    |            previous chapter, bestseller-dna.md
+    |     Reads: foundation.md, outline.md, voice-dna.md,
+    |            reader-personas.md, previous chapter, bestseller-dna.md
     |
-    +-- chaos-engine ---------> Phase 3.5 (Disruption)
+    +-- dialogue-polish -------> Phase 3.1 (Dialogue — NEW)
+    |     Outputs: polished chapter (dialogue only)
+    |     Reads: chapter, voice-dna.md
+    |
+    +-- hook-craft ------------> Phase 3.2 (Hooks & Pulls — NEW)
+    |     Outputs: hooked chapter + hook-pull scorecard
+    |     Reads: chapter, outline.md
+    |
+    +-- chaos-engine ----------> Phase 3.5 (Disruption)
     |     Outputs: disrupted chapter, disruption report
     |     Reads: chapter, writer self-report
     |
-    +-- beta-reader ----------> Phase 4 (Evaluation)
-    |     Outputs: 4-reader report + cross-diagnosis
-    |     Reads: chapter or full manuscript
+    +-- mechanical-preprocess -> Phase 3.8 (Mechanical Cleanup — NEW)
+    |     Outputs: cleaned chapter + mechanical-report.md
+    |     Reads: chapter
     |
-    +-- book-editor ----------> Phase 5 (Revision)
+    +-- beta-reader -----------> Phase 4 (Evaluation)
+    |     Outputs: 4-reader report + cross-diagnosis
+    |     Reads: chapter or full manuscript, reader-personas.md
+    |
+    +-- quality-gate ----------> Phase 4.5 (Quality Gate — NEW)
+    |     Outputs: quality gate report + pass/fail/escalate
+    |     Reads: evaluation report, Genesis Score
+    |
+    +-- book-editor -----------> Phase 5 (Revision)
     |     Outputs: revision plan, revised chapters
     |     Reads: evaluation report, Genesis Score, manuscript
     |
-    +-- editorial-package ----> Phase 6 (Delivery)
-    +-- production-prep ------> Phase 6 (Delivery)
+    +-- continuity-guardian ---> Phase 5.5 (Manuscript Continuity — NEW)
+    |     Outputs: continuity-report-manuscript.md
+    |     Reads: full revised manuscript
     |
-    +-- manuscript-manager ---> ALL PHASES (state tracking)
-    +-- series-architect -----> Multi-volume projects
+    +-- editorial-package -----> Phase 6 (Delivery)
+    +-- production-prep -------> Phase 6 (Delivery)
+    |
+    +-- manuscript-manager ----> ALL PHASES (state tracking)
+    +-- series-architect ------> Multi-volume projects
     +-- bestseller-orchestrator -> Quick/autopilot mode
 ```
+
+---
+
+## Autonomous Mode (NEW in V4.1)
+
+V4.1 introduces `/book-auto`, which replaces 150+ manual skill invocations with a single command. The `book-auto` skill dispatches the `book-genesis` orchestrator agent with 200 turns of autonomous execution.
+
+**3 Human Checkpoints:**
+1. **Foundation checkpoint** (after Phase 2.7): User approves research direction, reader personas, foundation, outline, voice DNA, and continuity report before any writing begins.
+2. **Manuscript checkpoint** (after Phase 5.5): User reviews the complete revised manuscript and continuity report before delivery packaging begins.
+3. **Delivery checkpoint** (after Phase 6): User approves the final editorial package before submission.
+
+Everything between checkpoints runs automatically: writing, dialogue polish, hook craft, disruption, mechanical preprocessing, evaluation, quality gate loops, revision, and continuity audits.
+
+**Invocation:** `/book-auto [language] [idea]`
 
 ---
 
@@ -328,10 +507,15 @@ project/
   foundation/
     foundation.md               # Characters, chaos profiles, theme, engagement type
     outline.md                  # Chapter outline with structural approaches
+    reader-personas.md          # 3-5 reader personas (NEW in V4.1)
+    voice-dna.md                # Per-character voice specs (NEW in V4.1)
     voice-bank/
       samples.md                # 10-15 voice samples
       voice-under-pressure.md   # 3+ samples of voice failing
       irrelevant-thoughts.md    # Character-specific irrelevant thoughts
+    continuity/
+      continuity-report-outline.md     # Outline-stage audit (NEW in V4.1)
+      continuity-report-manuscript.md  # Full manuscript audit (NEW in V4.1)
   manuscript/
     chapters/
       chapter-01.md

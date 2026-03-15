@@ -1,3 +1,38 @@
+# Changelog
+
+## V4.1 — Autonomous Pipeline (2026-03-15)
+
+V4.1 adds 8 new skills, doubles the phase count to 14, and introduces fully autonomous execution with `/book-auto`.
+
+### New Skills (8)
+
+| Skill | Phase | What It Solves |
+|-------|-------|---------------|
+| **reader-persona** | 1.5 | Writer was writing for nobody specific. Now 3-5 personas with psychology, deal-breakers, triggers drive every downstream decision. |
+| **voice-fingerprint** | 2.5 | Characters sounded alike (failed cover-the-name test). Now Voice DNA document with per-character specs, differentiation matrix, voice-under-pressure variants. |
+| **continuity-guardian** | 2.7 + 5.5 | Characters knew things before being told. Dead characters reappeared. Now 5 systematic audits: character consistency, timeline, information flow, plot threads, world rules. |
+| **dialogue-polish** | 3.1 | Dialogue was the #1 voice-bleeding point. Now dedicated pass with cover-the-name test, subtext injection, tag/beat ratio check. |
+| **hook-craft** | 3.2 | Chapters started with weather and ended with sleep. Now 6 hook types + 6 pull types scored 1-10, plus binge test across all chapters. |
+| **mechanical-preprocess** | 3.8 | Single agent couldn't process 30 chapters for em-dash removal (context overflow). Now bash handles 80%, agent reviews 20%. Scales to any manuscript size. |
+| **quality-gate** | 4.5 | Human had to babysit every eval→fix→re-eval cycle. Now auto-loop with max 3 iterations, escalation protocol, regression detection. |
+| **book-auto** | Entry | 150+ manual invocations per book. Now one command, 3 checkpoints, everything else automatic. |
+
+### Pipeline Changes
+
+- **7 phases → 14 phases.** New sub-phases for reader personas (1.5), voice DNA (2.5), outline continuity (2.7), dialogue polish (3.1), hook craft (3.2), mechanical preprocessing (3.8), quality gate (4.5), manuscript continuity (5.5).
+- **Manual → Autonomous.** The book-orchestrator agent now has 200 turns and runs the full pipeline with 3 human checkpoints.
+- **Orchestrator updated.** `book-genesis` SKILL.md now has all 14 phase gates, dispatch templates for all 20 skills, and STATE.yaml schema with voice_dna, reader_personas, continuity, quality_gate, and mechanical_preprocess tracking.
+
+### Systemic Fixes (learned from Protocolo Vermelho + Era de Aquário iterations)
+
+1. **Editor vs Writer for voice:** book-editor inserts markers but can't change voice architecture. Voice work now requires book-writer (full rewrite with voice constraints from voice-dna.md).
+2. **Pre-fab stopping sentences don't stop:** Generating sentences out of context then distributing fails. Writer must create them in-context at peak emotional moments.
+3. **Bash for mechanical cleanup:** AI agents hit context limits processing 30 chapters. Bash pipeline handles pattern matching at any scale, agent only reviews diffs.
+4. **Single agent scaling limit:** One agent handles ~3-5 chapters reliably. For full manuscripts: batch into groups of 5 or use mechanical preprocessing.
+5. **Voice-under-pressure is non-negotiable:** Same voice at peace and crisis caps Characters at 7.5. Must be specified in voice-dna.md before writing begins.
+
+---
+
 # Changelog -- V2 to V4
 
 Every change listed here traces back to a specific failure identified in the 5-genre system analysis (docs/system-analysis.md). V3 was an internal iteration with ~75 calibrations. V4 is the public release.

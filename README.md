@@ -15,21 +15,21 @@
 
 </p>
 
-<h1 align="center">10 AI agents. One idea. A publish-ready book.</h1>
+<h1 align="center">20 AI skills. One idea. A publish-ready book.</h1>
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> &middot;
   <a href="#the-pipeline">Pipeline</a> &middot;
   <a href="#genesis-score-v37">Genesis Score</a> &middot;
-  <a href="#the-12-skills">Skills</a> &middot;
+  <a href="#the-20-skills">Skills</a> &middot;
   <a href="#why-this-is-different">Why It's Different</a> &middot;
   <a href="docs/architecture.md">Architecture</a> &middot;
   <a href="docs/faq.md">FAQ</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/skills-12-blue" alt="12 skills" />
-  <img src="https://img.shields.io/badge/phases-7-green" alt="7 phases" />
+  <img src="https://img.shields.io/badge/skills-20-blue" alt="20 skills" />
+  <img src="https://img.shields.io/badge/phases-14-green" alt="14 phases" />
   <img src="https://img.shields.io/badge/Genesis_Score-V3.7-orange" alt="Genesis Score V3.7" />
   <img src="https://img.shields.io/badge/license-MIT-yellow" alt="MIT License" />
   <img src="https://img.shields.io/badge/platform-Claude%20Code-purple" alt="Claude Code" />
@@ -38,7 +38,7 @@
 
 ---
 
-Book Genesis is the only open-source system that turns a single idea into a full manuscript using specialized AI agents that write, evaluate, disrupt, and revise -- the same pipeline used to produce a 68,000-word memoir scoring 9.0 on an empirically-calibrated quality framework benchmarked against 15 bestsellers representing 350M+ copies sold.
+Book Genesis is the only open-source system that turns a single idea into a full manuscript using 20 specialized AI skills that research, write, evaluate, disrupt, and revise -- the same pipeline used to produce a 68,000-word memoir scoring 9.0 on an empirically-calibrated quality framework benchmarked against 15 bestsellers representing 350M+ copies sold.
 
 No external APIs. No databases. No build step. Just Claude Code and markdown files.
 
@@ -62,11 +62,10 @@ irm https://raw.githubusercontent.com/PhilipStark/book-genesis/main/install.ps1 
 
 ```
 claude
-> /book-genesis
-> "A grief counselor discovers her five patients are connected to the same murder"
+> /book-auto pt-br "thriller sobre ex-policial vingando a família"
 ```
 
-That's it. The system handles research, foundation, writing, disruption, evaluation, revision, and packaging. You approve key decisions. It does the rest.
+That's it. The orchestrator runs the full 14-phase pipeline autonomously. It pauses at 3 checkpoints for your approval. Everything else is automatic.
 
 ---
 
@@ -94,7 +93,15 @@ V4 is a ground-up rebuild. We ran 5 genre tests, hired a publishing consultant t
 | **Engagement Types** | None | **5 types** ranked -- Empathy, Fascination, Self-Insertion, Intellectual Stimulation, Aspiration |
 | **Re-Read Architecture** | None | **Planted details** that gain meaning after the ending |
 | **Cultural Vocabulary** | None | **Branded concepts** -- terms readers adopt and use in conversation |
-| **Skills** | 9 | **12** -- added chaos-engine, book-editor, book-researcher |
+| **Skills** | 12 | **20** -- 8 new specialized skills |
+| **Phases** | 7 | **14** -- autonomous pipeline |
+| **Automation** | Manual | **Autonomous** -- 3 checkpoints only |
+| **Voice System** | Voice bank | **Voice DNA** -- per-character specs, differentiation matrix |
+| **Continuity** | Manual grep | **Dedicated agent** -- 5 audits |
+| **Quality Gate** | Manual loop | **Auto-loop** -- eval→fix→re-eval |
+| **Dialogue** | None | **Dedicated pass** -- cover-the-name test |
+| **Hooks** | None | **Dedicated pass** -- opening/ending scoring, binge test |
+| **Preprocessing** | None | **Bash pipeline** -- scales to 30+ chapters |
 
 ### The 10 New Anti-AI Patterns
 
@@ -117,42 +124,30 @@ Pattern #11 (Explanatory Extension) appeared in **every chapter** of a 14-chapte
 
 ---
 
-## The 7-Phase Pipeline
+## The 14-Phase Pipeline
 
 ```
   IDEA
    |
    v
-Phase 1: RESEARCH ---------> /book-researcher
-   |                          Market gaps, comp titles, audience analysis
-   v
-Phase 2: FOUNDATION -------> /narrative-foundation
-   |                          Characters (5 chaos markers), theme, outline,
-   |                          voice bank, engagement type, re-read architecture
-   v
-Phase 3: WRITING ----------> /prose-craft
-   |                          One chapter at a time. Voice inhabitation ritual.
-   |                          8 structural types. 7 opening strategies.
-   |                          20-pattern anti-AI protocol. Speed design.
-   v
-Phase 3.5: DISRUPTION -----> /chaos-engine
-   |                          Breaks predictability. Injects human noise.
-   |                          Irrelevant thoughts. Failed composure.
-   |                          The agent whose job is to make things worse.
-   v
-Phase 4: EVALUATION -------> /beta-reader
-   |                          5 reader profiles. Genesis Score V3.7.
-   |                          CVI-Launch + CVI-Legacy. Anti-AI scan.
-   |                          Tomorrow Test. Discovery Test.
-   v
-Phase 5: REVISION ----------> /book-editor
-   |                          Surgical fixes by taxonomy (13 issue types).
-   |                          Structural first, then connective, then
-   |                          prose, then factual. Max 3 cycles.
-   v
-Phase 6: DELIVERY ----------> /editorial-package + /production-prep
-                               Query letter, synopsis, cover brief.
-                               Proofreading, EPUB/print formatting.
+Phase 1:   RESEARCH ---------> /book-researcher
+Phase 1.5: READER PERSONAS --> /reader-persona          [NEW]
+Phase 2:   FOUNDATION -------> /narrative-foundation
+Phase 2.5: VOICE DNA --------> /voice-fingerprint       [NEW]
+   >>> CHECKPOINT 1: You approve the foundation <<<
+Phase 2.7: CONTINUITY -------> /continuity-guardian      [NEW]
+Phase 3:   WRITING ----------> /prose-craft
+Phase 3.1: DIALOGUE POLISH --> /dialogue-polish          [NEW]
+Phase 3.2: HOOK CRAFT -------> /hook-craft               [NEW]
+Phase 3.5: DISRUPTION -------> /chaos-engine
+Phase 3.8: MECH PREPROCESS --> /mechanical-preprocess    [NEW]
+Phase 4:   EVALUATION -------> /beta-reader
+Phase 4.5: QUALITY GATE -----> /quality-gate             [NEW]
+   >>> CHECKPOINT 2: You approve the manuscript <<<
+Phase 5:   REVISION ---------> /book-editor
+Phase 5.5: CONTINUITY -------> /continuity-guardian      [NEW]
+Phase 6:   DELIVERY ---------> /editorial-package + /production-prep
+   >>> CHECKPOINT 3: Book delivered <<<
 ```
 
 Every phase has a gate. Nothing advances without passing. The revision loop (Phases 4-5) continues until the Genesis Score floor hits 8.0+ or 3 cycles are reached.
@@ -195,6 +190,26 @@ Average accuracy: **85%**. Worst case: 70% (The Alchemist -- parable fiction has
 
 ---
 
+## Autonomous Mode
+
+V4.1 introduces `/book-auto` — a single command that runs the entire pipeline:
+
+```
+/book-auto en "a grief counselor discovers her five patients are connected to the same murder"
+```
+
+The orchestrator agent runs up to 200 turns autonomously. It only pauses at 3 checkpoints:
+
+1. **Foundation approval** — You see the characters, outline, and voice specs before writing starts
+2. **Manuscript approval** — You see the full score breakdown before the editorial package
+3. **Delivery** — You receive the finished book
+
+Everything between checkpoints is automatic: writing, dialogue polish, hooks, disruption, mechanical cleanup, evaluation, quality gate loops, revision, continuity checks.
+
+For manual control, use `/book-genesis` instead — same pipeline, you drive each phase.
+
+---
+
 ## Genesis Score V3.7
 
 A **7-dimension FLOOR scoring system**. Your book's score equals its weakest dimension. You cannot hide weak characters behind brilliant prose.
@@ -230,16 +245,24 @@ Full scoring methodology: [`docs/genesis-score.md`](docs/genesis-score.md)
 
 ---
 
-## The 12 Skills
+## The 20 Skills
 
 | Skill | Command | Phase | What It Does |
 |-------|---------|-------|-------------|
-| **Book Genesis** | `/book-genesis` | All | Master orchestrator. Chains all skills through 7 phases with quality gates. |
+| **Book Auto** | `/book-auto` | Entry point | One-command book generation. Dispatches autonomous orchestrator. |
+| **Book Genesis** | `/book-genesis` | All | Manual orchestrator. Chains all skills through 14 phases with quality gates. |
 | **Book Researcher** | `/book-researcher` | 1 | Market analysis, comp titles, audience profiling, data gathering for non-fiction. |
+| **Reader Persona** | `/reader-persona` | 1.5 | 3-5 reader personas with psychology, deal-breakers, emotional triggers. |
 | **Narrative Foundation** | `/narrative-foundation` | 2 | Characters (5 chaos markers), theme as question, voice bank, outline, engagement type, re-read architecture. |
+| **Voice Fingerprint** | `/voice-fingerprint` | 2.5 | Per-character voice DNA, differentiation matrix, voice-under-pressure specs. |
+| **Continuity Guardian** | `/continuity-guardian` | 2.7 + 5.5 | Cross-manuscript consistency audit, timeline, information flow, plot threads. |
 | **Prose Craft** | `/prose-craft` | 3 | Chapter writing with voice inhabitation, 8 structural types, 7 opening strategies, 20-pattern anti-AI, speed design. |
+| **Dialogue Polish** | `/dialogue-polish` | 3.1 | Cover-the-name test, subtext injection, voice consistency in dialogue. |
+| **Hook Craft** | `/hook-craft` | 3.2 | Chapter openings + endings scoring, binge test across all chapters. |
 | **Chaos Engine** | `/chaos-engine` | 3.5 | Breaks predictability. Injects irrelevant thoughts, failed composure, unprompted memories, cognitive distortions. |
+| **Mechanical Preprocess** | `/mechanical-preprocess` | 3.8 | Bash pipeline for em-dashes, Pattern #11, adverbs, repetition. Scales to 30+ chapters. |
 | **Beta Reader** | `/beta-reader` | 4 | 5 non-convergent reader profiles. Genesis Score V3.7. CVI. Tomorrow Test. Discovery Test. Anti-AI scan. |
+| **Quality Gate** | `/quality-gate` | 4.5 | Auto-loop evaluate→fix→re-evaluate, max 3 iterations per chapter. |
 | **Book Editor** | `/book-editor` | 5 | Surgical revision with 13 issue handlers. Structural, connective, prose, factual taxonomy. |
 | **Editorial Package** | `/editorial-package` | 6 | Query letter, 3 synopsis formats, cover brief, comp title positioning. |
 | **Production Prep** | `/production-prep` | 6 | 8-category proofreading (3 passes) + EPUB/print formatting with checklists. |
@@ -247,7 +270,7 @@ Full scoring methodology: [`docs/genesis-score.md`](docs/genesis-score.md)
 | **Series Architect** | `/series-architect` | -- | Series bible for multi-volume projects. Macro arc, canonical worldbuilding, character threading. |
 | **Bestseller Orchestrator** | `/bestseller-orchestrator` | -- | Alternative fast pipeline. Autopilot or guided mode (max 3 questions). |
 
-Each skill works standalone or orchestrated. Use `/book-genesis` for the full pipeline or any individual skill for specific tasks.
+Each skill works standalone or orchestrated. Use `/book-auto` for full autonomous mode, `/book-genesis` for manual control, or any individual skill for specific tasks.
 
 ---
 

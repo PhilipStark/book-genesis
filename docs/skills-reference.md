@@ -1,6 +1,6 @@
 # Skills Reference -- Book Genesis V4
 
-Book Genesis V4 contains **12 skills** organized into a 7-phase pipeline (including Phase 3.5). Each skill is a standalone specialist that also works as part of the orchestrated pipeline. V4 adds 3 new skills (chaos-engine, book-editor, book-researcher) that address the 9 structural problems identified in the system analysis.
+Book Genesis V4 contains **20 skills** organized into a 14-phase pipeline (with sub-phases). Each skill is a standalone specialist that also works as part of the orchestrated pipeline. V4 adds 3 skills (chaos-engine, book-editor, book-researcher). V4.1 adds 8 more skills focused on automation, voice quality, and scaling.
 
 ---
 
@@ -268,3 +268,87 @@ An alternative, faster orchestrator for when the user wants autopilot or guided 
 | manuscript-manager | manuscript-manager | manuscript-manager (STATE.yaml) |
 | series-architect | series-architect | series-architect |
 | bestseller-orchestrator | bestseller-orchestrator | bestseller-orchestrator |
+
+---
+
+## V4.1 Skills
+
+### 13. reader-persona (Reader Personas)
+**Phase:** 1.5
+**Role:** Builds 3-5 reader personas that drive writer decisions, evaluator simulation, and packager targeting.
+**Key features:**
+- PRIMARY persona (drives writing when conflicts arise)
+- HOSTILE persona (drives evaluator's toughest simulation)
+- STRETCH persona (adjacent-genre reader)
+- Each persona has: reading psychology, deal-breakers, emotional triggers, discovery channels, comp titles
+- Downstream consumers: writer (voice calibration), evaluator (reader simulation), packager (marketing targeting), chaos-engine (who to challenge vs protect)
+
+### 14. voice-fingerprint (Voice DNA)
+**Phase:** 2.5
+**Role:** Creates prescriptive Voice DNA document. Per-character voice specs that the writer MUST follow.
+**Key features:**
+- Global narrative voice profile (POV, sentence architecture, metaphor domain, prose register)
+- Per-character voice cards: speech patterns, syntax fingerprint, metaphor source, voice-under-pressure (3 stress levels)
+- Voice differentiation matrix (minimum 3 distinguishing markers per character pair)
+- Anti-pattern budget (em-dash limits, Pattern #11 budget per chapter)
+- Cover-the-name test definition per character
+
+### 15. continuity-guardian (Continuity)
+**Phase:** 2.7 (outline) + 5.5 (full manuscript)
+**Role:** Cross-manuscript consistency auditor. Catches errors no individual chapter writer can see.
+**Key features:**
+- 5 systematic audits: character consistency, timeline validation, information flow, plot threads, world rules
+- 3 modes: batch (every 3-5 chapters), full-manuscript, post-revision
+- Grep-based pattern detection for names, dates, descriptions
+- CRITICAL/WARNING/MINOR severity classification
+
+### 16. dialogue-polish (Dialogue)
+**Phase:** 3.1
+**Role:** Dialogue-only editing pass. Ensures distinct character voices in speech.
+**Key features:**
+- Cover-the-name test on ALL speaking characters
+- Subtext injection (5 techniques)
+- Tag/beat ratio optimization
+- Dialogue-to-prose ratio check against genre targets
+- Does NOT touch narrative prose
+
+### 17. hook-craft (Hooks & Pulls)
+**Phase:** 3.2
+**Role:** Chapter openings must hook, endings must pull. Prevents the reader from putting the book down.
+**Key features:**
+- 6 hook types (in medias res, question, sensory, voice, contrast, ticking clock)
+- 6 pull types (cliffhanger, revelation, question plant, gut punch, ominous promise, decision point)
+- Scoring 1-10 with rewrite if below threshold
+- Hook type variety tracking (no consecutive repeats)
+- Binge Test: read all endings + openings in sequence to check momentum
+
+### 18. mechanical-preprocess (Mechanical Cleanup)
+**Phase:** 3.8
+**Role:** Bash-first pattern cleanup. Scales to any manuscript size.
+**Key features:**
+- Em-dash census and reduction (genre-adjusted targets)
+- Pattern #11 grep and flagging
+- Adverb density check
+- Sentence-start repetition detection
+- Filter word counting (just, really, very, quite, rather, somewhat)
+- 80% bash / 20% AI review split
+
+### 19. quality-gate (Quality Gate)
+**Phase:** 4.5
+**Role:** Automated evaluate→fix→re-evaluate loop. Eliminates manual babysitting.
+**Key features:**
+- Auto-loop: evaluate, synthesize feedback, dispatch fix, re-evaluate
+- Max 3 iterations per chapter
+- Regression detection (fix one thing, break another)
+- Near-miss protocol (fails by small margin)
+- Parallel batch mode with systemic issue detection
+- Escalation report with 4 options for orchestrator
+
+### 20. book-auto (Autonomous Entry Point)
+**Phase:** All
+**Role:** One command, one book. Dispatches the book-orchestrator agent.
+**Key features:**
+- Single invocation: `/book-auto [language] [idea]`
+- 200-turn autonomous execution
+- 3 human checkpoints (foundation, manuscript, delivery)
+- Zero manual skill invocation between checkpoints
