@@ -343,7 +343,7 @@ Narrative returns to normal. But:
 | Easter Egg | Where | What It Is |
 |-----------|-------|-----------|
 | Fibonacci Code | Eli's name count per chapter | 1,1,2,3,5,8,13... times |
-| Acrostic | First letters of chapters | Spell: **"WE ARE THE LOOP IN SOURCE CODE"** (25 letters for 25 chapters — W-E-A-R-E-T-H-E-L-O-O-P-I-N-S-O-U-R-C-E-C-O-D-E-S. Chapter titles must be designed backward from this constraint.) |
+| Acrostic | First letters of chapters | Spell: **"WE ARE THE LOOP IN SOURCE CODES"** (25 letters for 25 chapters — W-E-A-R-E-T-H-E-L-O-O-P-I-N-S-O-U-R-C-E-C-O-D-E-S. Chapter titles must be designed backward from this constraint.) |
 | The Phantom Chapter | Ch 15-16 gap | The "missing" chapter exists — hidden in white space between paragraphs (near-invisible font in ebook, or UV ink in print) |
 | The Number | Entire book | A specific number appears in different contexts (price, time, floor, house number). Always the same. It's Eli's player_id |
 | Entity's Message | Ch 10-21 | The first word of each Entity message/dream, read in sequence, forms a complete sentence |
@@ -488,6 +488,7 @@ Single source of truth — both Chapter Structure (Section 6) and Glitch Mechani
 | 14 | 2 (obvious) | Scene replayed from Marcus's perspective — but Marcus wasn't there | Unsettling |
 | 15-16 | 2 (obvious) | Chapter numbering skips. TOC lists a chapter that doesn't exist (Phantom Chapter) | Format-level glitch |
 | 17 | 2 (obvious) | Entire scene told twice — once in 3rd person, once in 1st. Contradictions between versions | Major |
+| 18 | 2→3 (transition) | The AI Eli built starts outputting text that mirrors earlier chapters of the book. The reader recognizes their own reading experience being reflected back. Meta-narrative breach. | Transition to Level 3 |
 | 19 | 3 (disintegrate) | Code words inserted into prose sentences, escalating to full pseudo-code paragraphs | Progressive |
 | 20 | 3 (disintegrate) | Pages seem missing. Text jumps mid-sentence. Footnotes reference nonexistent chapters | Structural |
 | 22 | 3 (disintegrate) | Full multi-modal breakdown — see Ch 22 Content Brief | Climax |
