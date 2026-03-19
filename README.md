@@ -421,3 +421,17 @@ See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines. Open an issue bef
 <p align="center">
   <strong>Built with Claude Code by <a href="https://github.com/PhilipStark">Philip Stark</a></strong>
 </p>
+
+---
+
+## 🌐 Community
+
+- ⭐ **[Star this repo](https://github.com/PhilipStark/book-genesis)** — helps others discover it
+- 💬 **[Discussions](https://github.com/PhilipStark/book-genesis/discussions)** — share your books, ask questions
+- 📚 **[Community Showcase](https://github.com/PhilipStark/book-genesis/discussions/4)** — see books the community created
+- 🐛 **[Issues](https://github.com/PhilipStark/book-genesis/issues)** — bugs and feature requests
+
+**Join the conversation:**
+- Reddit: [r/ClaudeAI](https://reddit.com/r/ClaudeAI) — search "Book Genesis"
+- HackerNews: [news.ycombinator.com](https://news.ycombinator.com) — search "Book Genesis"
+
