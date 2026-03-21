@@ -1,5 +1,38 @@
 # Changelog
 
+## V4.1.1 — Entity Tracking + English Standardization (2026-03-21)
+
+### New Skill: entity-tracker
+- Builds and maintains `ENTITY_STATE.yaml` -- persistent, structured state for manuscript entities
+- Two modes: BUILD (from foundation/outline) and UPDATE (incremental after chapter batches)
+- Tracks characters (physical facts, traits, knowledge graph, location log), locations, timeline, objects (Chekhov status), world rules, organizations
+- Conflict detection: flags contradictions as UNRESOLVED without resolving them
+- Source-mandatory: every entry requires chapter:paragraph citation
+- Consumed by continuity-guardian, prose-craft, dialogue-polish, book-editor, chaos-engine
+
+### Upgraded: continuity-guardian
+- Reads ENTITY_STATE.yaml instead of rebuilding databases from scratch
+- New Audit 6: YAML vs Text Divergence -- validates UNRESOLVED conflicts
+- Outputs suggested YAML patches alongside markdown report
+- Backward compatible: falls back to V4 behavior if YAML doesn't exist
+
+### English Standardization
+- Translated 3 remaining Portuguese skills to English: manuscript-manager, editorial-package, production-prep
+- Book-orchestrator checkpoints now language-adaptive (no hardcoded Portuguese)
+- PROJECT_STATE.yaml schema fields now in English (migration note included)
+
+### Documentation
+- FAQ updated: fixed skill count (was 12, now 21), added V4.1.1 information
+- README updated: skill count 21, pipeline diagram with entity-tracker phases
+- Skills reference updated: entity-tracker entry, cross-skill consumption notes
+- Architecture doc updated: entity-tracker data flow
+
+### Showcase
+- Added Age of Aquarius (Hermetic Fantasy, EN, Genesis Score 9.16, 97K words)
+- Added multilingual synopses (EN, ES) for Protocolo Nao Encontrado
+
+---
+
 ## V4.1 — Autonomous Pipeline (2026-03-15)
 
 V4.1 adds 8 new skills, doubles the phase count to 14, and introduces fully autonomous execution with `/book-auto`.

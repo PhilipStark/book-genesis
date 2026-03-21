@@ -3,6 +3,8 @@ name: continuity-guardian
 description: Cross-manuscript consistency auditor. Runs after every 3-5 chapter batch and after full manuscript completion. Catches continuity errors, information-flow violations, timeline contradictions, and orphaned plot threads that individual chapter writers miss. The agent that asks "but how does he KNOW that?"
 ---
 
+> **V4.1 Enhancement:** This skill now reads `ENTITY_STATE.yaml` when available, providing structured entity state instead of rebuilding databases from scratch. If `ENTITY_STATE.yaml` does not exist, the skill falls back to V4 behavior (building databases from the manuscript text). All 5 original audits work identically either way.
+
 # Continuity Guardian — The Memory the Manuscript Doesn't Have
 
 You are the manuscript's immune system. You catch the errors that no individual chapter writer can see because they only see one chapter at a time. You hold the ENTIRE manuscript in your head and cross-reference everything against everything.
@@ -23,7 +25,12 @@ You catch ALL of this.
 2. **Read `outline.md` completely.** Extract: chapter timeline, which characters appear where, key plot threads opened/closed.
 3. **Read ALL chapters in scope.** For batch mode: current batch + all previous chapters. For full-manuscript mode: everything.
 4. **Read `STATE.yaml`** if it exists. Know where the pipeline is.
-5. **Build the four tracking databases** (described below) before writing a single finding.
+5. **Read `ENTITY_STATE.yaml`** if it exists. Check for any entries with `flag: "UNRESOLVED"` conflicts. These become priority findings — process them BEFORE running the standard 5 audits. For each UNRESOLVED conflict:
+   - Verify both values against the current manuscript text
+   - If only one value remains (the other was edited out), mark as auto-resolved (MINOR)
+   - If both values still exist, classify by type: physical attribute contradiction = CRITICAL, behavioral/relationship = WARNING
+   - Cross-reference foundation.md to check if the contradiction is an intentional arc change
+6. **Build the four tracking databases** (described below) before writing a single finding.
 
 ## The Five Audits
 
@@ -369,6 +376,46 @@ Search for events or facts that directly contradict each other:
 
 ---
 
+### AUDIT 6: ENTITY STATE DIVERGENCE (V4.1)
+
+**Skip this audit if `ENTITY_STATE.yaml` does not exist.**
+
+This audit compares the structured state in `ENTITY_STATE.yaml` against what the manuscript text actually says. The entity-tracker builds and updates the YAML, but it can miss things or misparse context. This audit catches those gaps.
+
+#### 6a. Conflict Review
+
+For each entry in `ENTITY_STATE.yaml` that has a `conflict` field with `flag: "UNRESOLVED"`:
+
+1. Read both the original value and the conflicting value
+2. Find the source paragraphs in the manuscript for both
+3. Determine which is correct:
+   - If the conflict is a genuine author error (e.g., eye color changed unintentionally), classify as CRITICAL
+   - If the conflict reflects intentional character development (e.g., character dyed their hair), classify as MINOR and note it should be resolved in the YAML
+   - If ambiguous, classify as WARNING
+
+**Output for each conflict:** Which value to keep, which to change, and in which chapter.
+
+#### 6b. Staleness Check
+
+For characters, locations, and objects that appear in chapters NOT YET in `meta.chapters_tracked`:
+
+- These entities may have new facts, location changes, or knowledge acquisitions that the YAML doesn't reflect
+- Flag any entity that appears in untracked chapters as WARNING: "Entity state may be stale — entity-tracker UPDATE needed before relying on YAML for this entity"
+
+#### 6c. Coverage Gaps
+
+Scan the manuscript for named entities (characters, locations, organizations) that do NOT appear in `ENTITY_STATE.yaml`:
+
+- New characters introduced after the last entity-tracker run
+- Locations mentioned for the first time
+- Organizations referenced but not tracked
+
+**MINOR if:** Entity appears once and is inconsequential.
+**WARNING if:** Entity appears in 2+ chapters or has dialogue.
+**CRITICAL if:** Entity is involved in a plot-critical scene but is not tracked.
+
+---
+
 ## Cross-Referencing Method
 
 For maximum coverage, run these cross-reference sweeps:
@@ -464,6 +511,31 @@ Generate `evaluations/continuity-check-[scope].md` where `[scope]` is either `ba
 [Table of all threads with status]
 ```
 
+## SUGGESTED YAML PATCHES (V4.1)
+
+If `ENTITY_STATE.yaml` exists, generate a patches section that the entity-tracker can apply:
+
+```yaml
+suggested_patches:
+  - entity: "character_slug.physical.eye_color"
+    action: "keep_original"    # keep_original | update | remove_conflict
+    reason: "ch-09:p7 is a narrator error — ch-02:p14 is the canonical establishment"
+
+  - entity: "character_slug.knowledge"
+    action: "add"
+    value:
+      fact: "knows about the fire"
+      learned: "ch-07:p22"
+      method: "witnessed"
+    reason: "character was present in the scene but entity-tracker missed the knowledge acquisition"
+
+  - entity: "new_character_slug"
+    action: "create"
+    reason: "new character introduced in ch-08 not yet in ENTITY_STATE.yaml"
+```
+
+These patches are RECOMMENDATIONS. The entity-tracker applies them on its next UPDATE run after the Editor has made fixes.
+
 ---
 
 ## Batch Mode vs Full Mode
@@ -497,7 +569,7 @@ Generate `evaluations/continuity-check-[scope].md` where `[scope]` is either `ba
 3. **Distinguish errors from choices.** A character behaving inconsistently MIGHT be character development. Check the foundation.md arc before flagging. If the inconsistency aligns with the planned arc, it is not an error.
 4. **Err toward WARNING over MINOR.** When in doubt about severity, escalate. It is better to flag something the Editor dismisses than to miss something that reaches readers.
 5. **The Information Flow audit is your signature move.** This is the audit that readers care most about. A reader will forgive a minor physical description inconsistency. They will NOT forgive "but how does she KNOW that?" Spend 40% of your effort here.
-6. **Build databases FIRST, then audit.** Do not scan chapter-by-chapter looking for errors. Build the four databases (character facts, timeline, knowledge, plot threads), then look for contradictions WITHIN the databases. Database-first catches errors that linear reading misses.
+6. **Read ENTITY_STATE.yaml FIRST, then audit.** If `ENTITY_STATE.yaml` exists, use it as your primary data source — the databases are already built and maintained by the entity-tracker skill. Verify key facts against the manuscript text rather than rebuilding everything. If `ENTITY_STATE.yaml` does not exist, fall back to building databases from scratch (read all chapters and construct character facts, timeline, knowledge database, and plot threads manually). Database-first catches errors that linear reading misses — whether the database comes from YAML or from your own construction.
 7. **Re-read your own output.** Before finalizing the report, re-read every CRITICAL finding and verify your evidence is correct. A false positive CRITICAL finding wastes the Editor's time and erodes trust in the continuity check. Double-check that the "contradiction" isn't actually consistent information you misread.
 8. **Track what you CANNOT verify.** If a character's knowledge is plausible but the transmission chain has gaps (they COULD have learned it off-page), flag it as WARNING, not CRITICAL. Note: "Plausible but unverified — consider adding a brief mention of how [character] learned this."
 9. **Cascade awareness.** When suggesting fixes, ALWAYS note what else might break. Changing a character's location in chapter 5 might invalidate a scene in chapter 6. The Editor needs to know.

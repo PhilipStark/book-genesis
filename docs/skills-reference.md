@@ -1,6 +1,6 @@
 # Skills Reference -- Book Genesis V4
 
-Book Genesis V4 contains **20 skills** organized into a 14-phase pipeline (with sub-phases). Each skill is a standalone specialist that also works as part of the orchestrated pipeline. V4 adds 3 skills (chaos-engine, book-editor, book-researcher). V4.1 adds 8 more skills focused on automation, voice quality, and scaling.
+Book Genesis V4 contains **21 skills** organized into a 17-phase pipeline (with sub-phases). Each skill is a standalone specialist that also works as part of the orchestrated pipeline. V4 adds 3 skills (chaos-engine, book-editor, book-researcher). V4.1 adds 8 skills focused on automation, voice quality, and scaling. V4.1.1 adds entity-tracker for persistent state.
 
 ---
 
@@ -105,6 +105,8 @@ The writing agent. Produces one chapter at a time. Follows the outline but is AL
 
 **Output:** chapter-N.md + chapter-N-report.md (self-report with chaos moments, ugly sentence, impulse deviations, anti-AI scan results).
 
+Optionally reads ENTITY_STATE.yaml to verify character knowledge before writing dialogue (V4.1.1+).
+
 ---
 
 ### 4. chaos-engine (Disruptor) -- NEW in V4
@@ -128,6 +130,8 @@ The agent that introduces WILDNESS into a system that defaults to control. Opera
 
 **Gate:** Writer reviews all disruptions and can reject individual changes.
 
+Optionally reads character traits from ENTITY_STATE.yaml for coherent chaos injection (V4.1.1+).
+
 ---
 
 ### 5. beta-reader (Evaluator)
@@ -146,6 +150,8 @@ Simulates 4 radically different readers evaluating the manuscript. V4 adds the C
 
 **Cross-diagnosis:** 3/3 agree = critical. 2/3 = real problem. 1/1 = investigate. Hostile praises = exceptional. Casual Reader abandons = commercial failure regardless of other scores.
 
+Optionally references ENTITY_STATE.yaml for evidence-based coherence scoring (V4.1.1+).
+
 ---
 
 ### 6. book-editor (Editor) -- NEW in V4
@@ -163,6 +169,8 @@ Dedicated revision agent. V2 relied on the writer to revise their own work, whic
 **Key principle:** Genesis Score governs revision priority. The weakest dimension gets attention first. Always revise structural before connective before prose before factual.
 
 **Output:** Revision plan with specific changes per chapter + revised chapters.
+
+Optionally reads suggested_patches from continuity-guardian and confirms conflicts resolved (V4.1.1+).
 
 ---
 
@@ -240,6 +248,8 @@ Builds and maintains the series bible.
 
 **When to use:** Before writing Volume 2+. When a plot point could create a future contradiction. When reviewing volume endings.
 
+Book 1 ENTITY_STATE.yaml can feed book 2 tracking for cross-volume continuity (V4.1.1+).
+
 ---
 
 ### 12. bestseller-orchestrator (Quick Mode)
@@ -252,22 +262,31 @@ An alternative, faster orchestrator for when the user wants autopilot or guided 
 
 ---
 
-## Skill Consolidation Map (V1 -> V2 -> V4)
+## Skill Consolidation Map (V1 -> V2 -> V4 -> V4.1.1)
 
-| V1 Skills (15) | V2 Skills (9) | V4 Skills (12) |
-|----------------|---------------|----------------|
-| character-forge + theme-weaver + emotion-engineer | narrative-foundation | narrative-foundation (upgraded with chaos profiles, engagement types, re-read architecture) |
-| hook-crafter + dialogue-master | prose-craft | prose-craft (upgraded with voice inhabitation, impulse instruction, 20 anti-AI patterns, structural diversity) |
-| beta-reader-sim (5 profiles) | beta-reader (3 profiles) | beta-reader (4 profiles: + Casual Reader) |
-| -- | -- | **chaos-engine** (NEW) |
-| -- | -- | **book-editor** (NEW) |
-| -- | -- | **book-researcher** (NEW) |
-| synopsis-writer + cover-brief + query-letter | editorial-package | editorial-package |
-| proofreader + book-formatter | production-prep | production-prep |
-| book-genesis | book-genesis | book-genesis (upgraded with CVI, genre profiles, 7 phases) |
-| manuscript-manager | manuscript-manager | manuscript-manager (STATE.yaml) |
-| series-architect | series-architect | series-architect |
-| bestseller-orchestrator | bestseller-orchestrator | bestseller-orchestrator |
+| V1 Skills (15) | V2 Skills (9) | V4 Skills (12) | V4.1.1 Skills (21) |
+|----------------|---------------|----------------|-------------------|
+| character-forge + theme-weaver + emotion-engineer | narrative-foundation | narrative-foundation | narrative-foundation (chaos profiles, engagement types, re-read architecture) |
+| hook-crafter + dialogue-master | prose-craft | prose-craft | prose-craft (voice inhabitation, impulse instruction, 20 anti-AI, reads ENTITY_STATE.yaml) |
+| beta-reader-sim (5 profiles) | beta-reader (3 profiles) | beta-reader (4 profiles) | beta-reader (reads ENTITY_STATE.yaml) |
+| -- | -- | **chaos-engine** | chaos-engine (reads ENTITY_STATE.yaml) |
+| -- | -- | **book-editor** | book-editor (reads suggested_patches) |
+| -- | -- | **book-researcher** | book-researcher |
+| synopsis-writer + cover-brief + query-letter | editorial-package | editorial-package | editorial-package (EN) |
+| proofreader + book-formatter | production-prep | production-prep | production-prep (EN) |
+| book-genesis | book-genesis | book-genesis | book-genesis (17 phases, language-adaptive) |
+| manuscript-manager | manuscript-manager | manuscript-manager | manuscript-manager (EN) |
+| series-architect | series-architect | series-architect | series-architect (cross-volume ENTITY_STATE) |
+| bestseller-orchestrator | bestseller-orchestrator | bestseller-orchestrator | bestseller-orchestrator |
+| -- | -- | -- | **reader-persona** (V4.1) |
+| -- | -- | -- | **voice-fingerprint** (V4.1) |
+| -- | -- | -- | **continuity-guardian** (V4.1, +Audit 6) |
+| -- | -- | -- | **dialogue-polish** (V4.1, reads ENTITY_STATE.yaml) |
+| -- | -- | -- | **hook-craft** (V4.1, reads ENTITY_STATE.yaml) |
+| -- | -- | -- | **mechanical-preprocess** (V4.1) |
+| -- | -- | -- | **quality-gate** (V4.1) |
+| -- | -- | -- | **book-auto** (V4.1) |
+| -- | -- | -- | **entity-tracker** (V4.1.1) |
 
 ---
 
@@ -294,13 +313,15 @@ An alternative, faster orchestrator for when the user wants autopilot or guided 
 - Cover-the-name test definition per character
 
 ### 15. continuity-guardian (Continuity)
-**Phase:** 2.7 (outline) + 5.5 (full manuscript)
+**Phase:** 2.8 (outline) + 5.6 (full manuscript)
 **Role:** Cross-manuscript consistency auditor. Catches errors no individual chapter writer can see.
 **Key features:**
-- 5 systematic audits: character consistency, timeline validation, information flow, plot threads, world rules
+- 6 systematic audits: character consistency, timeline validation, information flow, plot threads, world rules, YAML vs Text Divergence (V4.1.1)
 - 3 modes: batch (every 3-5 chapters), full-manuscript, post-revision
 - Grep-based pattern detection for names, dates, descriptions
 - CRITICAL/WARNING/MINOR severity classification
+- Now reads ENTITY_STATE.yaml when available (V4.1.1) -- falls back to V4 behavior if absent
+- Outputs suggested YAML patches alongside markdown report
 
 ### 16. dialogue-polish (Dialogue)
 **Phase:** 3.1
@@ -311,6 +332,7 @@ An alternative, faster orchestrator for when the user wants autopilot or guided 
 - Tag/beat ratio optimization
 - Dialogue-to-prose ratio check against genre targets
 - Does NOT touch narrative prose
+- Optionally validates voice markers against ENTITY_STATE.yaml (V4.1.1+)
 
 ### 17. hook-craft (Hooks & Pulls)
 **Phase:** 3.2
@@ -321,6 +343,7 @@ An alternative, faster orchestrator for when the user wants autopilot or guided 
 - Scoring 1-10 with rewrite if below threshold
 - Hook type variety tracking (no consecutive repeats)
 - Binge Test: read all endings + openings in sequence to check momentum
+- Optionally queries ENTITY_STATE.yaml for chekhov_open objects (V4.1.1+)
 
 ### 18. mechanical-preprocess (Mechanical Cleanup)
 **Phase:** 3.8
@@ -352,3 +375,18 @@ An alternative, faster orchestrator for when the user wants autopilot or guided 
 - 200-turn autonomous execution
 - 3 human checkpoints (foundation, manuscript, delivery)
 - Zero manual skill invocation between checkpoints
+
+---
+
+## V4.1.1 Skills
+
+### 21. entity-tracker (Entity State)
+**Phase:** 2.7 (BUILD) + 3.7 / 5.5 (UPDATE)
+**Role:** Builds and maintains ENTITY_STATE.yaml -- persistent, structured state for all manuscript entities.
+**Key features:**
+- Two modes: BUILD (from foundation/outline) and UPDATE (incremental after chapter batches)
+- Tracks: characters (physical, traits, knowledge, location log), locations, timeline, objects (Chekhov tracking), world rules, organizations
+- 5 extraction passes per chapter: character scan, temporal scan, entity scan, object scan, knowledge flow
+- Conflict detection without resolution (flags contradictions as UNRESOLVED)
+- Source-mandatory: every entry requires chapter:paragraph citation
+- Consumed by: continuity-guardian (audits), prose-craft (knowledge check), dialogue-polish (voice markers), book-editor (patches), chaos-engine (trait-based chaos), hook-craft (Chekhov objects), beta-reader (coherence data)

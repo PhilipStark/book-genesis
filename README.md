@@ -15,21 +15,21 @@
 
 </p>
 
-<h1 align="center">20 AI skills. One idea. A publish-ready book.</h1>
+<h1 align="center">21 AI skills. One idea. A publish-ready book.</h1>
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> &middot;
   <a href="#the-pipeline">Pipeline</a> &middot;
   <a href="#genesis-score-v37">Genesis Score</a> &middot;
-  <a href="#the-20-skills">Skills</a> &middot;
+  <a href="#the-21-skills">Skills</a> &middot;
   <a href="#why-this-is-different">Why It's Different</a> &middot;
   <a href="docs/architecture.md">Architecture</a> &middot;
   <a href="docs/faq.md">FAQ</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/skills-20-blue" alt="20 skills" />
-  <img src="https://img.shields.io/badge/phases-14-green" alt="14 phases" />
+  <img src="https://img.shields.io/badge/skills-21-blue" alt="21 skills" />
+  <img src="https://img.shields.io/badge/phases-17-green" alt="17 phases" />
   <img src="https://img.shields.io/badge/Genesis_Score-V3.7-orange" alt="Genesis Score V3.7" />
   <img src="https://img.shields.io/badge/license-MIT-yellow" alt="MIT License" />
   <img src="https://img.shields.io/badge/platform-Claude%20Code-purple" alt="Claude Code" />
@@ -38,7 +38,7 @@
 
 ---
 
-Book Genesis is the only open-source system that turns a single idea into a full manuscript using 20 specialized AI skills that research, write, evaluate, disrupt, and revise -- the same pipeline used to produce a 68,000-word memoir scoring 9.0 on an empirically-calibrated quality framework benchmarked against 15 bestsellers representing 350M+ copies sold.
+Book Genesis is the only open-source system that turns a single idea into a full manuscript using 21 specialized AI skills that research, write, evaluate, disrupt, and revise -- the same pipeline used to produce a 68,000-word memoir scoring 9.0 on an empirically-calibrated quality framework benchmarked against 15 bestsellers representing 350M+ copies sold.
 
 No external APIs. No databases. No build step. Just Claude Code and markdown files.
 
@@ -65,7 +65,7 @@ claude
 > /book-auto pt-br "thriller sobre ex-policial vingando a família"
 ```
 
-That's it. The orchestrator runs the full 14-phase pipeline autonomously. It pauses at 3 checkpoints for your approval. Everything else is automatic.
+That's it. The orchestrator runs the full 17-phase pipeline autonomously. It pauses at 3 checkpoints for your approval. Everything else is automatic.
 
 ---
 
@@ -93,8 +93,8 @@ V4 is a ground-up rebuild. We ran 5 genre tests, hired a publishing consultant t
 | **Engagement Types** | None | **5 types** ranked -- Empathy, Fascination, Self-Insertion, Intellectual Stimulation, Aspiration |
 | **Re-Read Architecture** | None | **Planted details** that gain meaning after the ending |
 | **Cultural Vocabulary** | None | **Branded concepts** -- terms readers adopt and use in conversation |
-| **Skills** | 12 | **20** -- 8 new specialized skills |
-| **Phases** | 7 | **14** -- autonomous pipeline |
+| **Skills** | 12 | **21** -- 9 new specialized skills |
+| **Phases** | 7 | **17** -- autonomous pipeline |
 | **Automation** | Manual | **Autonomous** -- 3 checkpoints only |
 | **Voice System** | Voice bank | **Voice DNA** -- per-character specs, differentiation matrix |
 | **Continuity** | Manual grep | **Dedicated agent** -- 5 audits |
@@ -124,29 +124,50 @@ Pattern #11 (Explanatory Extension) appeared in **every chapter** of a 14-chapte
 
 ---
 
-## The 14-Phase Pipeline
+## What's New in V4.1
+
+V4.1 adds persistent entity tracking and standardizes the pipeline for global use:
+
+| Feature | Before | V4.1 |
+|---------|--------|------|
+| **Entity Tracking** | Ephemeral (rebuilt every run) | **Persistent ENTITY_STATE.yaml** -- characters, locations, timeline, objects, knowledge graph |
+| **Knowledge Graph** | None | **Who knows what, when, how** -- prevents "how does she know that?" errors structurally |
+| **Conflict Detection** | Post-hoc | **Automatic** -- contradictions flagged as UNRESOLVED in YAML |
+| **Continuity Speed** | Re-reads entire manuscript | **Reads YAML** -- seconds instead of minutes |
+| **Chekhov Tracking** | Manual | **Automatic** -- objects tracked as open/resolved/texture |
+| **Skill Language** | Mixed PT/EN | **All English** -- global-ready |
+| **Orchestrator** | Hardcoded Portuguese checkpoints | **Language-adaptive** -- matches book language |
+| **Continuity Audits** | 5 | **6** -- added YAML vs Text Divergence audit |
+| **Skills** | 20 | **21** |
+
+---
+
+## The 17-Phase Pipeline
 
 ```
   IDEA
    |
    v
-Phase 1:   RESEARCH ---------> /book-researcher
-Phase 1.5: READER PERSONAS --> /reader-persona          [NEW]
-Phase 2:   FOUNDATION -------> /narrative-foundation
-Phase 2.5: VOICE DNA --------> /voice-fingerprint       [NEW]
+Phase 1:   RESEARCH ----------> /book-researcher
+Phase 1.5: READER PERSONAS ---> /reader-persona
+Phase 2:   FOUNDATION ---------> /narrative-foundation
+Phase 2.5: VOICE DNA ----------> /voice-fingerprint
    >>> CHECKPOINT 1: You approve the foundation <<<
-Phase 2.7: CONTINUITY -------> /continuity-guardian      [NEW]
-Phase 3:   WRITING ----------> /prose-craft
-Phase 3.1: DIALOGUE POLISH --> /dialogue-polish          [NEW]
-Phase 3.2: HOOK CRAFT -------> /hook-craft               [NEW]
-Phase 3.5: DISRUPTION -------> /chaos-engine
-Phase 3.8: MECH PREPROCESS --> /mechanical-preprocess    [NEW]
-Phase 4:   EVALUATION -------> /beta-reader
-Phase 4.5: QUALITY GATE -----> /quality-gate             [NEW]
+Phase 2.7: ENTITY TRACKING ----> /entity-tracker (BUILD)          [NEW in V4.1]
+Phase 2.8: CONTINUITY ---------> /continuity-guardian (outline)
+Phase 3:   WRITING ------------> /prose-craft
+Phase 3.1: DIALOGUE POLISH ----> /dialogue-polish
+Phase 3.2: HOOK CRAFT ---------> /hook-craft
+Phase 3.5: DISRUPTION ---------> /chaos-engine
+Phase 3.7: ENTITY UPDATE ------> /entity-tracker (UPDATE)         [NEW in V4.1]
+Phase 3.8: MECH PREPROCESS ----> /mechanical-preprocess
+Phase 4:   EVALUATION ---------> /beta-reader
+Phase 4.5: QUALITY GATE -------> /quality-gate
    >>> CHECKPOINT 2: You approve the manuscript <<<
-Phase 5:   REVISION ---------> /book-editor
-Phase 5.5: CONTINUITY -------> /continuity-guardian      [NEW]
-Phase 6:   DELIVERY ---------> /editorial-package + /production-prep
+Phase 5:   REVISION -----------> /book-editor
+Phase 5.5: ENTITY UPDATE ------> /entity-tracker (UPDATE)         [NEW in V4.1]
+Phase 5.6: CONTINUITY ---------> /continuity-guardian (manuscript)
+Phase 6:   DELIVERY -----------> /editorial-package + /production-prep
    >>> CHECKPOINT 3: Book delivered <<<
 ```
 
@@ -245,7 +266,7 @@ Full scoring methodology: [`docs/genesis-score.md`](docs/genesis-score.md)
 
 ---
 
-## The 20 Skills
+## The 21 Skills
 
 | Skill | Command | Phase | What It Does |
 |-------|---------|-------|-------------|
@@ -255,7 +276,8 @@ Full scoring methodology: [`docs/genesis-score.md`](docs/genesis-score.md)
 | **Reader Persona** | `/reader-persona` | 1.5 | 3-5 reader personas with psychology, deal-breakers, emotional triggers. |
 | **Narrative Foundation** | `/narrative-foundation` | 2 | Characters (5 chaos markers), theme as question, voice bank, outline, engagement type, re-read architecture. |
 | **Voice Fingerprint** | `/voice-fingerprint` | 2.5 | Per-character voice DNA, differentiation matrix, voice-under-pressure specs. |
-| **Continuity Guardian** | `/continuity-guardian` | 2.7 + 5.5 | Cross-manuscript consistency audit, timeline, information flow, plot threads. |
+| **Entity Tracker** | `/entity-tracker` | 2.7 + 3.7 + 5.5 | Builds and maintains ENTITY_STATE.yaml -- persistent character, location, timeline, object, and knowledge tracking. |
+| **Continuity Guardian** | `/continuity-guardian` | 2.8 + 5.6 | Cross-manuscript consistency audit, timeline, information flow, plot threads. Now reads ENTITY_STATE.yaml (V4.1). |
 | **Prose Craft** | `/prose-craft` | 3 | Chapter writing with voice inhabitation, 8 structural types, 7 opening strategies, 20-pattern anti-AI, speed design. |
 | **Dialogue Polish** | `/dialogue-polish` | 3.1 | Cover-the-name test, subtext injection, voice consistency in dialogue. |
 | **Hook Craft** | `/hook-craft` | 3.2 | Chapter openings + endings scoring, binge test across all chapters. |
@@ -310,7 +332,24 @@ Artifacts in [`examples/protocolo-nao-encontrado/`](examples/protocolo-nao-encon
 | `outline.md` | Chapter-by-chapter outline with tension map |
 | `sinopses.md` | Logline + cover paragraph + editorial synopsis |
 
+Additional translations available: [`synopses-en.md`](examples/protocolo-nao-encontrado/synopses-en.md) (English), [`synopses-es.md`](examples/protocolo-nao-encontrado/synopses-es.md) (Spanish)
+
 > The full manuscript is not included (author IP). These artifacts demonstrate what the system produces.
+
+**Age of Aquarius** -- a 97,000-word hermetic fantasy in English that scored 9.16 on Genesis Score V3.7.
+
+- Genesis Score floor: **9.16**
+- 4 scoring iterations: 7.80 -> 8.40 -> 8.90 -> 9.16
+- 28 chapters across 4 parts
+- Full evaluation artifacts
+
+Artifacts in [`examples/age-of-aquarius/`](examples/age-of-aquarius/):
+
+| File | Contents |
+|------|----------|
+| `genesis-score.md` | Full 4-iteration scoring with per-dimension diagnostics |
+| `outline.md` | 28-chapter outline with POV and structural approach |
+| `synopses.md` | Logline + back cover + editorial synopsis |
 
 ---
 
@@ -390,7 +429,7 @@ No external APIs. No databases. No build step. No dependencies beyond Claude Cod
 We want genre testers, skill translators, and anyone who has tried to make AI write something worth reading.
 
 - **Test it** -- Write a book and report what works and what breaks
-- **Translate skills** -- Skills are in Portuguese; English, Spanish, French, and other translations welcome
+- **Translate skills** -- All core skills are now in English; translations to other languages welcome
 - **New genre profiles** -- Test with specific genres and submit calibrated profiles
 - **Improve the Genesis Score** -- Better rubrics, better anti-inflation, better calibration data
 - **Add examples** -- Share your proof-of-concept artifacts
@@ -421,17 +460,3 @@ See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines. Open an issue bef
 <p align="center">
   <strong>Built with Claude Code by <a href="https://github.com/PhilipStark">Philip Stark</a></strong>
 </p>
-
----
-
-## 🌐 Community
-
-- ⭐ **[Star this repo](https://github.com/PhilipStark/book-genesis)** — helps others discover it
-- 💬 **[Discussions](https://github.com/PhilipStark/book-genesis/discussions)** — share your books, ask questions
-- 📚 **[Community Showcase](https://github.com/PhilipStark/book-genesis/discussions/4)** — see books the community created
-- 🐛 **[Issues](https://github.com/PhilipStark/book-genesis/issues)** — bugs and feature requests
-
-**Join the conversation:**
-- Reddit: [r/ClaudeAI](https://reddit.com/r/ClaudeAI) — search "Book Genesis"
-- HackerNews: [news.ycombinator.com](https://news.ycombinator.com) — search "Book Genesis"
-

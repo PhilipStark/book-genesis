@@ -1,6 +1,6 @@
 # Architecture -- Book Genesis V4
 
-Book Genesis V4.1 is a 14-phase pipeline (with sub-phases) that transforms a one-sentence idea into a commercially viable, publishable manuscript. V4 was built from the ground up after a 5-genre stress test (SYSTEM-ANALYSIS.md) identified 9 structural problems in V2. V4.1 adds 8 skills, doubles the phase count, and introduces fully autonomous execution via `/book-auto`. Every architectural change traces back to a specific failure in the system analysis or lessons learned from real manuscript iterations.
+Book Genesis V4.1 is a 17-phase pipeline (with sub-phases) that transforms a one-sentence idea into a commercially viable, publishable manuscript. V4 was built from the ground up after a 5-genre stress test (SYSTEM-ANALYSIS.md) identified 9 structural problems in V2. V4.1 adds 8 skills, doubles the phase count, and introduces fully autonomous execution via `/book-auto`. Every architectural change traces back to a specific failure in the system analysis or lessons learned from real manuscript iterations.
 
 ---
 
@@ -87,10 +87,27 @@ IDEA (1 sentence)
                                      |
                                      v
 +-------------------------------------------------------------------+
-| PHASE 2.7 -- Outline Continuity (NEW in V4.1)                     |
+| PHASE 2.7 -- Entity Tracking (NEW in V4.1.1)                      |
+|                                                                    |
+| Skill:  entity-tracker (BUILD mode)                                |
+| Actions:                                                           |
+|   - Read foundation.md: extract characters, relationships,         |
+|     physical traits, knowledge, world rules                        |
+|   - Read outline.md: extract locations, timeline skeleton,         |
+|     key objects, organizations                                     |
+|   - Generate ENTITY_STATE.yaml from scratch                        |
+|   - All entries sourced to foundation or outline                   |
+| Output: ENTITY_STATE.yaml                                          |
+| Gate: YAML created before continuity check                         |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 2.8 -- Outline Continuity                                    |
 |                                                                    |
 | Skill:  continuity-guardian (first pass)                           |
 | Actions:                                                           |
+|   - Reads ENTITY_STATE.yaml for structured entity data             |
 |   - Audit outline for character consistency                        |
 |   - Validate timeline logic                                        |
 |   - Check information flow (no character knows before being told)  |
@@ -188,6 +205,20 @@ IDEA (1 sentence)
                                      |
                                      v
 +-------------------------------------------------------------------+
+| PHASE 3.7 -- Entity Update (NEW in V4.1.1)                       |
+|                                                                    |
+| Skill:  entity-tracker (UPDATE mode)                               |
+| Actions:                                                           |
+|   - Read new chapters (not in meta.chapters_tracked)               |
+|   - 5 extraction passes: character, temporal, entity, object,      |
+|     knowledge flow                                                 |
+|   - Merge into YAML (append new, flag conflicts, never overwrite)  |
+| Output: Updated ENTITY_STATE.yaml                                  |
+| Runs: After every 3-5 chapter batch                                |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
 | PHASE 3.8 -- Mechanical Preprocessing (NEW in V4.1)               |
 |                                                                    |
 | Skill:  mechanical-preprocess                                      |
@@ -270,16 +301,31 @@ IDEA (1 sentence)
                                      |
                                      v
 +-------------------------------------------------------------------+
-| PHASE 5.5 -- Manuscript Continuity (NEW in V4.1)                  |
+| PHASE 5.5 -- Entity Update (NEW in V4.1.1)                       |
 |                                                                    |
-| Skill:  continuity-guardian (second pass — full manuscript)         |
+| Skill:  entity-tracker (UPDATE mode)                               |
+| Actions:                                                           |
+|   - Capture all changes from revision phase                        |
+|   - Resolve conflicts where edited text now has single value       |
+|   - Update ENTITY_STATE.yaml with revision changes                 |
+| Output: Updated ENTITY_STATE.yaml                                  |
++------------------------------------+------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------+
+| PHASE 5.6 -- Manuscript Continuity                                 |
+|                                                                    |
+| Skill:  continuity-guardian (second pass -- full manuscript)        |
 | Actions:                                                           |
 |   - Full-manuscript audit after all revisions complete              |
-|   - 5 audits: character, timeline, information flow, plot, world   |
+|   - 6 audits: character, timeline, information flow, plot, world,  |
+|     YAML vs Text Divergence (NEW in V4.1.1)                        |
+|   - Reads ENTITY_STATE.yaml for structured validation              |
 |   - Catches cross-chapter inconsistencies introduced by revision   |
 |   - Grep-based pattern detection for names, dates, descriptions    |
 |   - CRITICAL/WARNING/MINOR severity classification                 |
-| Output: continuity-report-manuscript.md                            |
+|   - Outputs suggested YAML patches                                 |
+| Output: continuity-report-manuscript.md + yaml-patches.md          |
 | Gate: No CRITICAL issues before delivery                           |
 +------------------------------------+------------------------------+
                                      |
@@ -354,7 +400,8 @@ The `manuscript-manager` skill operates across ALL phases via `STATE.yaml` (rena
 | Persona Validation | Phase 1.5 -> 2 | PRIMARY + HOSTILE personas defined | Revise personas |
 | Foundation Approval | Phase 2 -> 2.5 | User approves foundation + outline | Revise foundation |
 | Voice DNA Approval | Phase 2.5 -> 2.7 | Voice DNA with per-character specs approved | Revise voice DNA |
-| Outline Continuity | Phase 2.7 -> 3 | No CRITICAL continuity issues | Fix outline |
+| Entity State Built | Phase 2.7 -> 2.8 | ENTITY_STATE.yaml created with all foundation entities | Rebuild YAML |
+| Outline Continuity | Phase 2.8 -> 3 | No CRITICAL continuity issues | Fix outline |
 | Anti-AI Check | Phase 3 (per chapter) | 20-pattern scan passes genre threshold | Revise chapter prose |
 | Writer Self-Report | Phase 3 -> 3.1 | Report filed with chaos moments, ugly sentence, anchor | Rewrite chapter |
 | Dialogue Test | Phase 3.1 -> 3.2 | Cover-the-name test passes | Polish dialogue |
@@ -365,7 +412,8 @@ The `manuscript-manager` skill operates across ALL phases via `STATE.yaml` (rena
 | Memory Test | Phase 4 | "What would the reader remember tomorrow?" | Strengthen anchor |
 | Genesis Floor | Phase 4 -> 4.5 | Floor >= 8.0 | Enter quality gate loop |
 | Quality Gate | Phase 4.5 -> 5 or 6 | Pass after max 3 iterations | Escalate to orchestrator |
-| Manuscript Continuity | Phase 5.5 -> 6 | No CRITICAL cross-chapter issues | Fix inconsistencies |
+| Entity State Updated | Phase 5.5 -> 5.6 | ENTITY_STATE.yaml reflects all revisions | Re-run entity update |
+| Manuscript Continuity | Phase 5.6 -> 6 | No CRITICAL cross-chapter issues | Fix inconsistencies |
 | CVI-Launch Gate | Phase 6 | CVI-Launch >= 7.0 | Revise market positioning |
 
 ---
@@ -433,9 +481,13 @@ book-genesis (Orchestrator)
     |     Outputs: voice-dna.md
     |     Reads: foundation.md, voice-bank/
     |
-    +-- continuity-guardian ---> Phase 2.7 (Outline Continuity — NEW)
+    +-- entity-tracker -------> Phase 2.7 (Entity Tracking — NEW in V4.1.1)
+    |     Outputs: ENTITY_STATE.yaml
+    |     Reads: foundation.md, outline.md
+    |
+    +-- continuity-guardian ---> Phase 2.8 (Outline Continuity)
     |     Outputs: continuity-report-outline.md
-    |     Reads: outline.md, foundation.md
+    |     Reads: outline.md, foundation.md, ENTITY_STATE.yaml
     |
     +-- prose-craft -----------> Phase 3 (Writing)
     |     Outputs: chapter-N.md, chapter-N-report.md
@@ -452,7 +504,11 @@ book-genesis (Orchestrator)
     |
     +-- chaos-engine ----------> Phase 3.5 (Disruption)
     |     Outputs: disrupted chapter, disruption report
-    |     Reads: chapter, writer self-report
+    |     Reads: chapter, writer self-report, ENTITY_STATE.yaml
+    |
+    +-- entity-tracker -------> Phase 3.7 (Entity Update — NEW in V4.1.1)
+    |     Outputs: updated ENTITY_STATE.yaml
+    |     Reads: new chapters, existing ENTITY_STATE.yaml
     |
     +-- mechanical-preprocess -> Phase 3.8 (Mechanical Cleanup — NEW)
     |     Outputs: cleaned chapter + mechanical-report.md
@@ -470,9 +526,13 @@ book-genesis (Orchestrator)
     |     Outputs: revision plan, revised chapters
     |     Reads: evaluation report, Genesis Score, manuscript
     |
-    +-- continuity-guardian ---> Phase 5.5 (Manuscript Continuity — NEW)
-    |     Outputs: continuity-report-manuscript.md
-    |     Reads: full revised manuscript
+    +-- entity-tracker -------> Phase 5.5 (Entity Update — NEW in V4.1.1)
+    |     Outputs: updated ENTITY_STATE.yaml
+    |     Reads: revised chapters, existing ENTITY_STATE.yaml
+    |
+    +-- continuity-guardian ---> Phase 5.6 (Manuscript Continuity)
+    |     Outputs: continuity-report-manuscript.md + yaml-patches.md
+    |     Reads: full revised manuscript, ENTITY_STATE.yaml
     |
     +-- editorial-package -----> Phase 6 (Delivery)
     +-- production-prep -------> Phase 6 (Delivery)
@@ -489,8 +549,8 @@ book-genesis (Orchestrator)
 V4.1 introduces `/book-auto`, which replaces 150+ manual skill invocations with a single command. The `book-auto` skill dispatches the `book-genesis` orchestrator agent with 200 turns of autonomous execution.
 
 **3 Human Checkpoints:**
-1. **Foundation checkpoint** (after Phase 2.7): User approves research direction, reader personas, foundation, outline, voice DNA, and continuity report before any writing begins.
-2. **Manuscript checkpoint** (after Phase 5.5): User reviews the complete revised manuscript and continuity report before delivery packaging begins.
+1. **Foundation checkpoint** (after Phase 2.8): User approves research direction, reader personas, foundation, outline, voice DNA, entity state, and continuity report before any writing begins.
+2. **Manuscript checkpoint** (after Phase 5.6): User reviews the complete revised manuscript, entity state, and continuity report before delivery packaging begins.
 3. **Delivery checkpoint** (after Phase 6): User approves the final editorial package before submission.
 
 Everything between checkpoints runs automatically: writing, dialogue polish, hook craft, disruption, mechanical preprocessing, evaluation, quality gate loops, revision, and continuity audits.
@@ -504,6 +564,7 @@ Everything between checkpoints runs automatically: writing, dialogue polish, hoo
 ```
 project/
   STATE.yaml                    # Source of truth
+  ENTITY_STATE.yaml             # Persistent entity tracking (NEW in V4.1.1)
   foundation/
     foundation.md               # Characters, chaos profiles, theme, engagement type
     outline.md                  # Chapter outline with structural approaches

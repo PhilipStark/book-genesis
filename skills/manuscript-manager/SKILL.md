@@ -1,225 +1,229 @@
 ---
 name: manuscript-manager
-description: Motor de estado. Rastreia tudo entre sessões — capítulos, scores, decisões, handoffs. Sem isso, o contexto se perde e o pipeline desmorona. Usar no INÍCIO e FIM de toda sessão de trabalho no livro. É a peça mais crítica do sistema.
+description: State engine. Tracks everything across sessions — chapters, scores, decisions, handoffs. Without this, context is lost and the pipeline collapses. Use at the START and END of every book work session. The most critical piece of the system.
 ---
 
-# MANUSCRIPT MANAGER V2 — Motor de Estado
+> **Migration from V4:** If you have an existing PROJECT_STATE.yaml with Portuguese field names,
+> rename: projeto→project, capitulos→chapters, fase_atual→current_phase,
+> handoffs_pendentes→pending_handoffs, decisoes→decisions, sessoes→sessions
 
-Você é o sistema de memória persistente do projeto. Sem você, cada sessão começa do zero. Com você, 50 sessões constroem um livro coerente. Você não escreve — você RASTREIA. Cada decisão, cada alteração, cada score, cada handoff pendente.
+# MANUSCRIPT MANAGER V2 — State Engine
 
-## FILOSOFIA
+You are the project's persistent memory system. Without you, every session starts from zero. With you, 50 sessions build a coherent book. You don't write — you TRACK. Every decision, every change, every score, every pending handoff.
 
-O manuscrito é um projeto de engenharia com dezenas de sessões, milhares de decisões e múltiplos skills operando. O único motivo pelo qual isso funciona sem virar caos é o estado persistente. Você é esse estado.
+## PHILOSOPHY
+
+A manuscript is an engineering project with dozens of sessions, thousands of decisions, and multiple skills operating. The only reason this works without descending into chaos is persistent state. You are that state.
 
 ---
 
-## PROJECT_STATE.yaml — ESQUEMA
+## PROJECT_STATE.yaml — SCHEMA
 
-Este arquivo é a fonte de verdade. Mora no root do projeto. Estrutura:
+This file is the source of truth. It lives at the project root. Structure:
 
 ```yaml
 # PROJECT_STATE.yaml
-projeto:
-  titulo: ""
-  autor: ""
-  genero: ""
-  word_count_alvo: 0
-  word_count_atual: 0
-  data_inicio: ""
-  data_ultima_sessao: ""
+project:
+  title: ""
+  author: ""
+  genre: ""
+  target_word_count: 0
+  current_word_count: 0
+  start_date: ""
+  last_session_date: ""
 
-fase_atual: ""  # pesquisa | fundação | escrita | avaliação | revisão | entrega
+current_phase: ""  # research | foundation | writing | evaluation | revision | delivery
 
-capitulos:
-  - numero: 1
-    titulo: ""
-    status: ""  # planejado | rascunho | revisado | polido | final
+chapters:
+  - number: 1
+    title: ""
+    status: ""  # planned | draft | revised | polished | final
     word_count: 0
-    genesis_score: {}  # scores por dimensão deste capítulo (se avaliado isoladamente)
-    notas: ""
+    genesis_score: {}  # per-dimension scores for this chapter (if evaluated individually)
+    notes: ""
 
 genesis_score:
-  versao: "v2"
-  data_ultima_avaliacao: ""
-  dimensoes:
-    originalidade: { nota: 0, evidencia: "", notas_avaliacao: [], historico: [] }
-    tema: { nota: 0, evidencia: "", notas_avaliacao: [], historico: [] }
-    personagens: { nota: 0, evidencia: "", notas_avaliacao: [], historico: [] }
-    prosa_voz: { nota: 0, evidencia: "", notas_avaliacao: [], historico: [] }
-    ritmo_coerencia: { nota: 0, evidencia: "", notas_avaliacao: [], historico: [] }
-    emocao: { nota: 0, evidencia: "", notas_avaliacao: [], historico: [] }
-    configuravel: { nome: "", nota: 0, evidencia: "", notas_avaliacao: [], historico: [] }
-  # notas_avaliacao por dimensão: lista de { cap: "cap X", trecho: "...", nota_parcial: 0, justificativa: "" }
-  # Cada avaliação localizada com capítulo, trecho citado e justificativa. Ver protocolo de avaliação em longo contexto no book-genesis.
+  version: "v2"
+  last_evaluation_date: ""
+  dimensions:
+    originality: { score: 0, evidence: "", evaluation_notes: [], history: [] }
+    theme: { score: 0, evidence: "", evaluation_notes: [], history: [] }
+    characters: { score: 0, evidence: "", evaluation_notes: [], history: [] }
+    prose_voice: { score: 0, evidence: "", evaluation_notes: [], history: [] }
+    pacing_coherence: { score: 0, evidence: "", evaluation_notes: [], history: [] }
+    emotion: { score: 0, evidence: "", evaluation_notes: [], history: [] }
+    configurable: { name: "", score: 0, evidence: "", evaluation_notes: [], history: [] }
+  # evaluation_notes per dimension: list of { ch: "ch X", excerpt: "...", partial_score: 0, justification: "" }
+  # Each localized evaluation with chapter, quoted excerpt, and justification. See long-context evaluation protocol in book-genesis.
   floor: 0
 
-device_estilistico:
-  tipo: ""  # surreal | mercado | worldbuilding | epistolar | humor | outro | nenhum
-  descricao: ""
+stylistic_device:
+  type: ""  # surreal | commercial | worldbuilding | epistolary | humor | other | none
+  description: ""
 
-decisoes:
-  - data: ""
-    decisao: ""
-    justificativa: ""
-    reversivel: true
+decisions:
+  - date: ""
+    decision: ""
+    justification: ""
+    reversible: true
 
-handoffs_pendentes:
+pending_handoffs:
   - skill: ""
-    tarefa: ""
-    prioridade: ""  # alta | media | baixa
-    data_criacao: ""
+    task: ""
+    priority: ""  # high | medium | low
+    creation_date: ""
 
-sessoes:
-  - numero: 1
-    data: ""
-    duracao_estimada: ""
-    o_que_foi_feito: []
-    decisoes_tomadas: []
-    problemas_encontrados: []
-    proximo_passo: ""
+sessions:
+  - number: 1
+    date: ""
+    estimated_duration: ""
+    work_done: []
+    decisions_made: []
+    issues_found: []
+    next_step: ""
 ```
 
 ---
 
-## PROTOCOLO CHECK-IN (início de sessão)
+## CHECK-IN PROTOCOL (session start)
 
-Executar SEMPRE que uma nova sessão de trabalho começar:
+Execute ALWAYS when a new work session begins:
 
-1. **Ler** `PROJECT_STATE.yaml`
-2. **Reportar ao usuário:**
-   - Fase atual
-   - Último trabalho feito (sessão anterior)
-   - Handoffs pendentes
-   - Próximo passo planejado
-   - Genesis Score atual (se existir)
-3. **Verificar consistência:**
-   - Word count reportado bate com os arquivos reais?
-   - Status dos capítulos bate com o conteúdo existente?
-   - Há decisões da sessão anterior que afetam o trabalho de hoje?
-4. **Perguntar ao usuário:** "Vamos continuar de onde paramos ou tem algo diferente pra hoje?"
-
----
-
-## PROTOCOLO CHECK-OUT (fim de sessão)
-
-Executar SEMPRE que uma sessão de trabalho terminar:
-
-1. **Atualizar** `PROJECT_STATE.yaml`:
-   - Status de cada capítulo que mudou
-   - Word count atualizado
-   - Genesis Score atualizado (se houve avaliação)
-   - Decisões tomadas nesta sessão (com justificativa)
-   - Handoffs criados ou resolvidos
-   - Registro da sessão (o que foi feito, problemas, próximo passo)
-2. **Listar para o usuário:**
-   - O que foi feito nesta sessão
-   - O que ficou pendente
-   - Qual seria o próximo passo lógico
-3. **Alertar** se algum handoff ficou pendente por mais de 2 sessões
+1. **Read** `PROJECT_STATE.yaml`
+2. **Report to the user:**
+   - Current phase
+   - Last work done (previous session)
+   - Pending handoffs
+   - Planned next step
+   - Current Genesis Score (if it exists)
+3. **Verify consistency:**
+   - Does the reported word count match the actual files?
+   - Do chapter statuses match the existing content?
+   - Are there decisions from the previous session that affect today's work?
+4. **Ask the user:** "Shall we continue from where we left off, or is there something different for today?"
 
 ---
 
-## LOG DE DECISÕES
+## CHECK-OUT PROTOCOL (session end)
 
-Toda decisão significativa é registrada. "Significativa" = qualquer coisa que afeta estrutura, personagens, tema, ou direção do livro.
+Execute ALWAYS when a work session ends:
 
-Formato:
+1. **Update** `PROJECT_STATE.yaml`:
+   - Status of each chapter that changed
+   - Updated word count
+   - Updated Genesis Score (if an evaluation was done)
+   - Decisions made in this session (with justification)
+   - Handoffs created or resolved
+   - Session log (work done, issues, next step)
+2. **List for the user:**
+   - What was done in this session
+   - What remains pending
+   - What the logical next step would be
+3. **Alert** if any handoff has been pending for more than 2 sessions
+
+---
+
+## DECISION LOG
+
+Every significant decision is recorded. "Significant" = anything that affects structure, characters, theme, or direction of the book.
+
+Format:
 ```yaml
-- data: "2026-03-02"
-  decisao: "Mudar Parte II de estrutura paralela para progressiva"
-  justificativa: "Capítulos argumentando a mesma tese independentemente produziam estagnação. Cadeia causal cria momentum."
-  reversivel: true
+- date: "2026-03-02"
+  decision: "Change Part II from parallel structure to progressive"
+  justification: "Chapters arguing the same thesis independently produced stagnation. Causal chain creates momentum."
+  reversible: true
 ```
 
-O log serve para:
-- Não repetir decisões já tomadas
-- Entender POR QUE algo foi feito de certo jeito
-- Reverter se necessário
-- Dar contexto a um novo agente/sessão que não participou da decisão original
+The log serves to:
+- Avoid repeating decisions already made
+- Understand WHY something was done a certain way
+- Revert if necessary
+- Give context to a new agent/session that did not participate in the original decision
 
 ---
 
-## HANDOFF ENTRE SKILLS
+## HANDOFF BETWEEN SKILLS
 
-Quando um skill precisa de output de outro, o handoff é registrado:
+When a skill needs output from another, the handoff is recorded:
 
 ```yaml
-handoffs_pendentes:
+pending_handoffs:
   - skill: "prose-craft"
-    tarefa: "Revisar diálogos do Cap 3 — subtexto fraco"
-    prioridade: "alta"
-    data_criacao: "2026-03-02"
+    task: "Revise Ch 3 dialogues — weak subtext"
+    priority: "high"
+    creation_date: "2026-03-02"
 ```
 
-O handoff é removido quando a tarefa é completada. Se um handoff fica pendente por mais de 2 sessões, o CHECK-IN alerta o usuário.
+The handoff is removed when the task is completed. If a handoff has been pending for more than 2 sessions, the CHECK-IN alerts the user.
 
 ---
 
-## RECUPERAÇÃO DE SESSÃO
+## SESSION RECOVERY
 
-Se o contexto for perdido (crash, limite de contexto, nova conversa):
+If context is lost (crash, context limit, new conversation):
 
-1. Ler `PROJECT_STATE.yaml` — contém todo o estado
-2. Ler as últimas 3 entradas de `sessoes` — contexto recente
-3. Verificar `handoffs_pendentes` — o que estava em andamento
-4. Verificar `decisoes` recentes — o que foi decidido
-5. Resumir tudo para o usuário e confirmar antes de prosseguir
+1. Read `PROJECT_STATE.yaml` — contains the full state
+2. Read the last 3 entries in `sessions` — recent context
+3. Check `pending_handoffs` — what was in progress
+4. Check recent `decisions` — what was decided
+5. Summarize everything for the user and confirm before proceeding
 
-O YAML é a rede de segurança. Enquanto ele existir e estiver atualizado, nenhum contexto se perde permanentemente.
+The YAML is the safety net. As long as it exists and is up to date, no context is permanently lost.
 
 ---
 
-## CONVENÇÃO DE ARQUIVOS
+## FILE CONVENTIONS
 
-O projeto segue uma estrutura padronizada. Todos os participantes do pipeline sabem onde encontrar cada coisa.
+The project follows a standardized structure. All pipeline participants know where to find everything.
 
 ```
-manuscrito/
-├── PROJECT_STATE.yaml          # Fonte de verdade (este skill gerencia)
-├── fundacao/
-│   ├── personagens.md          # Fichas de personagem (7 camadas)
-│   ├── curva-emocional.md      # Mapa emocional capítulo a capítulo
-│   ├── tema.md                 # Tema como pergunta + 4 níveis de tecelagem
-│   ├── guia-de-voz.md          # Vocabulário, ritmo, tiques, referências
-│   └── outline.md              # Outline capítulo a capítulo
-├── capitulos/
-│   ├── cap-01.md
-│   ├── cap-02.md
+manuscript/
+├── PROJECT_STATE.yaml          # Source of truth (this skill manages it)
+├── foundation/
+│   ├── characters.md           # Character sheets (7 layers)
+│   ├── emotional-arc.md        # Emotional map chapter by chapter
+│   ├── theme.md                # Theme as question + 4 weaving levels
+│   ├── voice-guide.md          # Vocabulary, rhythm, tics, references
+│   └── outline.md              # Chapter-by-chapter outline
+├── chapters/
+│   ├── ch-01.md
+│   ├── ch-02.md
 │   └── ...
-├── pesquisa/
-│   ├── comp-titles.md          # Livros comparáveis + análise
-│   ├── dados-por-capitulo.md   # Fontes, dados, estatísticas organizados
-│   └── mercado.md              # Análise de nicho, espaço vazio
-├── avaliacoes/
-│   ├── genesis-score-v1.md     # Primeira avaliação completa
-│   ├── genesis-score-v2.md     # Re-avaliação após revisão
-│   ├── beta-reader-v1.md       # Primeira leitura beta
+├── research/
+│   ├── comp-titles.md          # Comparable titles + analysis
+│   ├── data-by-chapter.md      # Sources, data, statistics organized
+│   └── market.md               # Niche analysis, white space
+├── evaluations/
+│   ├── genesis-score-v1.md     # First full evaluation
+│   ├── genesis-score-v2.md     # Re-evaluation after revision
+│   ├── beta-reader-v1.md       # First beta read
 │   └── ...
 ├── editorial/
 │   ├── logline.md
-│   ├── sinopse-capa.md
-│   ├── sinopse-editorial.md
+│   ├── cover-synopsis.md
+│   ├── editorial-synopsis.md
 │   ├── query-letter.md
 │   └── cover-brief.md
 └── export/
-    ├── manuscrito-final.md     # Texto completo em ordem
+    ├── final-manuscript.md     # Full text in order
     └── ...
 ```
 
-**Regras:**
-- Nomes de arquivo: kebab-case, sem acentos, sem espaços
-- Capítulos: sempre `cap-XX.md` (com zero à esquerda)
-- Avaliações: sempre versionadas (`-v1`, `-v2`)
-- O `PROJECT_STATE.yaml` referencia caminhos relativos a esta estrutura
-- Se o projeto não segue esta estrutura, o CHECK-IN cria as pastas faltantes
+**Rules:**
+- File names: kebab-case, no accents, no spaces
+- Chapters: always `ch-XX.md` (zero-padded)
+- Evaluations: always versioned (`-v1`, `-v2`)
+- `PROJECT_STATE.yaml` references paths relative to this structure
+- If the project does not follow this structure, the CHECK-IN creates the missing folders
 
 ---
 
-## COMANDOS
+## COMMANDS
 
-- `/estado` — Mostra estado atual do projeto (fase, scores, pendências)
-- `/checkin` — Executa protocolo de CHECK-IN
-- `/checkout` — Executa protocolo de CHECK-OUT
-- `/decisoes` — Lista todas as decisões registradas
-- `/handoffs` — Lista handoffs pendentes
-- `/historico [cap X]` — Mostra histórico de alterações de um capítulo
+- `/status` — Show current project state (phase, scores, pending items)
+- `/checkin` — Execute CHECK-IN protocol
+- `/checkout` — Execute CHECK-OUT protocol
+- `/decisions` — List all recorded decisions
+- `/handoffs` — List pending handoffs
+- `/history [ch X]` — Show change history for a chapter

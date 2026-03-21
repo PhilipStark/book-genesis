@@ -1,17 +1,17 @@
-projeto:
-  titulo: "Protocolo Nao Encontrado: Por Que Sua Geracao Esta Fodida e O Que Fazer Com Isso"
-  genero: "autoajuda acida / ensaio geracional confessional"
-  publico: "millennials brasileiros (27-40 anos)"
-  idioma: "pt-BR"
-  extensao: "~71.000 palavras"
+project:
+  title: "Protocolo Nao Encontrado: Por Que Sua Geracao Esta Fodida e O Que Fazer Com Isso"
+  genre: "autoajuda acida / ensaio geracional confessional"
+  audience: "millennials brasileiros (27-40 anos)"
+  language: "pt-BR"
+  length: "~71.000 palavras"
   registro_surreal: "kafkiano"
-  ultima_atualizacao: "2026-02-27"
-  fase_atual: 7_completa
+  last_updated: "2026-02-27"
+  current_phase: 7_completa
   modo: "guiado"
 
-manuscrito:
-  total_capitulos: 13
-  palavras_estimadas: 71000
+manuscript:
+  total_chapters: 13
+  estimated_words: 71000
   status: "finalizado"
   estrutura:
     introducao: "Eu Fiz Eletrochoque e Continuei Fudido"
@@ -20,28 +20,28 @@ manuscrito:
     parte_3: "O Que Sobra Quando Para de Procurar Cura (Cap 10-13)"
     epilogo: "Protocolo Nao Encontrado (e ta tudo bem)"
 
-capitulos:
-  - { numero: 0, titulo: "Introducao", status: "rascunho", palavras: 2125 }
-  - { numero: 1, titulo: "A Praia do Sossego", status: "rascunho", palavras: 3769 }
-  - { numero: 2, titulo: "O Shopping de Deuses", status: "rascunho", palavras: 3775 }
-  - { numero: 3, titulo: "A Roleta de Remedios", status: "rascunho", palavras: 4514 }
-  - { numero: 4, titulo: "O Fundo do Poco", status: "rascunho", palavras: 4112 }
-  - { numero: 5, titulo: "A Promessa Quebrada", status: "rascunho", palavras: 3927 }
-  - { numero: 6, titulo: "O PJ da Vida", status: "rascunho", palavras: 4139 }
-  - { numero: 7, titulo: "O Scroll Infinito", status: "rascunho", palavras: 4512 }
-  - { numero: 8, titulo: "O Amor em Tempos de App", status: "rascunho", palavras: 4388 }
-  - { numero: 9, titulo: "A Industria da Cura", status: "rascunho", palavras: 4873 }
-  - { numero: 10, titulo: "A Rendicao", status: "rascunho", palavras: 4242 }
-  - { numero: 11, titulo: "O Ritmo", status: "rascunho", palavras: 4127 }
-  - { numero: 12, titulo: "A Constancia Enquanto Fodido", status: "rascunho", palavras: 4696 }
-  - { numero: 13, titulo: "A Vocacao Encontrada no Caos", status: "rascunho", palavras: 4748 }
-  - { numero: 14, titulo: "Epilogo", status: "rascunho", palavras: 2847 }
+chapters:
+  - { number: 0, title: "Introducao", status: "rascunho", words: 2125 }
+  - { number: 1, title: "A Praia do Sossego", status: "rascunho", words: 3769 }
+  - { number: 2, title: "O Shopping de Deuses", status: "rascunho", words: 3775 }
+  - { number: 3, title: "A Roleta de Remedios", status: "rascunho", words: 4514 }
+  - { number: 4, title: "O Fundo do Poco", status: "rascunho", words: 4112 }
+  - { number: 5, title: "A Promessa Quebrada", status: "rascunho", words: 3927 }
+  - { number: 6, title: "O PJ da Vida", status: "rascunho", words: 4139 }
+  - { number: 7, title: "O Scroll Infinito", status: "rascunho", words: 4512 }
+  - { number: 8, title: "O Amor em Tempos de App", status: "rascunho", words: 4388 }
+  - { number: 9, title: "A Industria da Cura", status: "rascunho", words: 4873 }
+  - { number: 10, title: "A Rendicao", status: "rascunho", words: 4242 }
+  - { number: 11, title: "O Ritmo", status: "rascunho", words: 4127 }
+  - { number: 12, title: "A Constancia Enquanto Fodido", status: "rascunho", words: 4696 }
+  - { number: 13, title: "A Vocacao Encontrada no Caos", status: "rascunho", words: 4748 }
+  - { number: 14, title: "Epilogo", status: "rascunho", words: 2847 }
 
 genesis_score:
   ultima_avaliacao: "2026-02-26"
   media_ponderada: 9.04
   aprovado: true
-  dimensoes:
+  dimensions:
     originalidade: 9.0
     tema: 9.1
     personagens: 9.1
@@ -54,5 +54,5 @@ genesis_score:
     surreal: 9.0
   iteracoes_revisao: 2
 
-handoffs_pendentes: []
-inconsistencias: []
+pending_handoffs: []
+inconsistencies: []

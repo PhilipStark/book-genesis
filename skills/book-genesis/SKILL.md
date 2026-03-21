@@ -1,6 +1,6 @@
 ---
 name: book-genesis
-description: Master orchestrator for the Book Genesis V4 pipeline. Turns a one-line idea into a publish-ready book using 10 specialized skills. Manages state, dispatches skills, enforces quality gates.
+description: Master orchestrator for the Book Genesis V4 pipeline. Turns a one-line idea into a publish-ready book using 11 specialized skills. Manages state, dispatches skills, enforces quality gates.
 ---
 
 # BOOK GENESIS V4 — Master Orchestrator
@@ -25,8 +25,8 @@ You are the project manager and technical director. You:
 V4 is a ground-up rebuild from the V2 skill. Every V3.x calibration from the agent pipeline is now baked in. Here is what changed:
 
 ### Pipeline Upgrades
-- **7 phases (was 6).** Phase 3.5 (Disruption) is now an explicit phase with its own skill (`/chaos-engine`). In V2, disruption did not exist — the writer was expected to self-disrupt, which never worked.
-- **3 new dedicated skills.** `/chaos-engine` (breaks predictability after writing), `/book-editor` (targeted revision — V2 had no separate editor), `/book-researcher` (market research — V2 did inline research).
+- **17 phases (was 6).** Phase 3.5 (Disruption) is now an explicit phase with its own skill (`/chaos-engine`). Entity tracking phases (2.7, 3.7, 5.5) maintain persistent entity state via `/entity-tracker`. In V2, disruption did not exist — the writer was expected to self-disrupt, which never worked.
+- **4 new dedicated skills.** `/chaos-engine` (breaks predictability after writing), `/book-editor` (targeted revision — V2 had no separate editor), `/book-researcher` (market research — V2 did inline research), `/entity-tracker` (builds and maintains ENTITY_STATE.yaml for character/location/timeline tracking).
 - **Full-manuscript evaluation.** After all chapters pass Phase 4 individually, a macro evaluation runs across the entire manuscript checking for structural repetition, tension sags, chaos distribution, and oscillation patterns.
 - **Post-packaging gate.** After Phase 6, upstream signals from the packager can trigger a structural re-evaluation. V2 had no feedback loop from packaging back to evaluation.
 
@@ -63,23 +63,26 @@ V4 is a ground-up rebuild from the V2 skill. Every V3.x calibration from the age
 
 ---
 
-## PIPELINE — 14 PHASES
+## PIPELINE — 17 PHASES
 
 ```
 PHASE 1:   RESEARCH           -> /book-researcher
 PHASE 1.5: READER PERSONAS    -> /reader-persona
 PHASE 2:   FOUNDATION         -> /narrative-foundation
 PHASE 2.5: VOICE DNA          -> /voice-fingerprint
-PHASE 2.7: CONTINUITY (outline) -> /continuity-guardian (batch: outline + foundation)
+PHASE 2.7: ENTITY TRACKING    -> /entity-tracker (BUILD)
+PHASE 2.8: CONTINUITY (outline) -> /continuity-guardian (batch: outline + foundation)
 PHASE 3:   WRITING            -> /prose-craft (one chapter at a time)
 PHASE 3.1: DIALOGUE POLISH    -> /dialogue-polish (per chapter, after prose-craft)
 PHASE 3.2: HOOK CRAFT         -> /hook-craft (per chapter, after dialogue-polish)
 PHASE 3.5: DISRUPTION         -> /chaos-engine
+PHASE 3.7: ENTITY UPDATE      -> /entity-tracker (UPDATE)
 PHASE 3.8: MECHANICAL PREPROCESS -> /mechanical-preprocess (bash pipeline, before eval)
 PHASE 4:   EVALUATION         -> /beta-reader
 PHASE 4.5: QUALITY GATE       -> /quality-gate (auto-loop: eval->fix->re-eval, max 3)
 PHASE 5:   REVISION           -> /book-editor
-PHASE 5.5: CONTINUITY (ms)    -> /continuity-guardian (full manuscript)
+PHASE 5.5: ENTITY UPDATE      -> /entity-tracker (UPDATE)
+PHASE 5.6: CONTINUITY (ms)    -> /continuity-guardian (full manuscript)
 PHASE 6:   DELIVERY           -> /editorial-package + /production-prep
 ```
 
@@ -118,8 +121,8 @@ When starting a new project, create this directory structure:
 |   +-- full-manuscript.md  # Assembled manuscript (generated)
 +-- evaluations/            # One .md per evaluation round
 +-- continuity/             # Continuity audit reports
-|   +-- outline-audit.md    # Phase 2.7 results
-|   +-- manuscript-audit.md # Phase 5.5 results
+|   +-- outline-audit.md    # Phase 2.8 results
+|   +-- manuscript-audit.md # Phase 5.6 results
 +-- feedback/               # Human feedback files
 |   +-- beta-readers/       # Structured beta reader feedback
 |   +-- author-notes.md     # Author's own annotations
@@ -146,7 +149,7 @@ project:
   updated: ""
 
 phase:
-  current: 1  # 1, 1.5, 2, 2.5, 2.7, 3, 3.1, 3.2, 3.5, 3.8, 4, 4.5, 5, 5.5, 6
+  current: 1  # 1, 1.5, 2, 2.5, 2.7, 2.8, 3, 3.1, 3.2, 3.5, 3.7, 3.8, 4, 4.5, 5, 5.5, 5.6, 6
   status: "in_progress"  # in_progress, gate_pending, gate_passed, blocked
   history: []  # [{phase: 1, status: "completed", date: "", notes: ""}]
 
@@ -208,8 +211,8 @@ reader_personas:
   hostile: ""  # Name of hostile persona
 
 continuity:
-  outline_check: false  # Phase 2.7 ran
-  manuscript_check: false  # Phase 5.5 ran
+  outline_check: false  # Phase 2.8 ran
+  manuscript_check: false  # Phase 5.6 ran
   critical_findings: 0
   warning_findings: 0
 
@@ -275,7 +278,7 @@ revision_cycles: 0  # Max 3 per iteration
 - [ ] Stylistic device chosen (or "market" default)
 - [ ] User explicitly approves foundation + outline
 
-### Phase 2.5 -> 2.7 (Voice DNA -> Continuity Check)
+### Phase 2.5 -> 2.7 (Voice DNA -> Entity Tracking)
 - [ ] `voice-dna.md` created by /voice-fingerprint with:
   - Global narrative voice profile
   - Per-character voice cards (speech patterns, syntax, metaphor source, voice-under-pressure)
@@ -284,7 +287,12 @@ revision_cycles: 0  # Max 3 per iteration
   - Benchmark samples
 - [ ] Voice bank initialized with >=10 samples including >=3 voice-breaking and >=2 irrelevant-thought samples
 
-### Phase 2.7 -> 3 (Continuity Check -> Writing)
+### Phase 2.7 -> 2.8 (Entity Tracking -> Continuity Check)
+- [ ] /entity-tracker ran in BUILD mode on foundation.md + outline.md
+- [ ] ENTITY_STATE.yaml created in project directory
+- [ ] All characters, locations, and timeline events tracked
+
+### Phase 2.8 -> 3 (Continuity Check -> Writing)
 - [ ] /continuity-guardian ran on outline + foundation + voice-dna
 - [ ] No CRITICAL findings (timeline contradictions, impossible information flow)
 - [ ] All WARNING findings logged and addressed or deferred with rationale
@@ -304,7 +312,12 @@ revision_cycles: 0  # Max 3 per iteration
 - [ ] Pull score >= 7 (commercial) or >= 6 (literary)
 - [ ] Hook type differs from previous chapter's hook type
 
-### Phase 3.5 -> 3.8 (Disruption -> Mechanical Preprocess)
+### Phase 3.5 -> 3.7 (Disruption -> Entity Update)
+- [ ] /chaos-engine applied >=5 of 8 disruption operations
+- [ ] After every 3-5 chapters written + disrupted, dispatch /entity-tracker in UPDATE mode
+- [ ] ENTITY_STATE.yaml updated with new chapter entities
+
+### Phase 3.7 -> 3.8 (Entity Update -> Mechanical Preprocess)
 - [ ] /chaos-engine applied >=5 of 8 disruption operations
 - [ ] Disruption report saved to evaluations/disruption-chapter-[N].md
 - [ ] Emotional anchor preserved (disruption enhanced it, not dissolved it)
@@ -342,7 +355,11 @@ revision_cycles: 0  # Max 3 per iteration
 - [ ] Max 3 revision cycles per iteration (structural problem = back to Phase 2)
 - [ ] **Oscillation check.** If evaluator reports oscillation count <6 or >12 or "highly irregular," this is a macro-structural issue that CANNOT be fixed by the editor. Loop back to Phase 2 (/narrative-foundation) for outline restructuring.
 
-### Phase 5 -> 5.5 (Revision -> Full Continuity Check)
+### Phase 5 -> 5.5 (Revision -> Entity Update)
+- [ ] /entity-tracker ran in UPDATE mode after all revisions
+- [ ] ENTITY_STATE.yaml reflects any changes made during revision
+
+### Phase 5.5 -> 5.6 (Entity Update -> Full Continuity Check)
 - [ ] /continuity-guardian ran in full-manuscript mode
 - [ ] Character consistency: names, physical descriptions, relationships — zero contradictions
 - [ ] Timeline: no impossible sequences, travel times respected, ages consistent
@@ -350,7 +367,7 @@ revision_cycles: 0  # Max 3 per iteration
 - [ ] Plot threads: all opened threads either closed or deliberately left open
 - [ ] World rules: no violations of established rules
 
-### Phase 5.5 -> 6 (Continuity -> Delivery)
+### Phase 5.6 -> 6 (Continuity -> Delivery)
 - [ ] Genesis Score floor >= 7.5 (target >= 8.0, stretch >= 8.5). V3.2 calibration: Genesis Floor does NOT predict sales. Floor 7.0 books sold 62M copies. The floor measures CRAFT, not commercial viability.
 - [ ] **CVI-Launch >= 7.0.** If CVI-Launch < 7.0 and Genesis Floor >= 7.5, dispatch targeted pacing/shareability revision before packaging. CVI-Launch formula: Commercial Pacing (20%) + Tomorrow Test (20%) + Casual Reader (20%) + Shareability (20%) + Concept Pitch (10%) + Human Closeness (10%).
 - [ ] **Genesis Score governs REVISION PRIORITY. CVI-Launch governs SUBMISSION READINESS.** When they diverge by 2.0+, report the divergence prominently -- it IS the finding.
@@ -506,7 +523,19 @@ Deliverables: voice-dna.md with:
 This document is PRESCRIPTIVE — the writer MUST follow it.
 ```
 
-**Phase 2.7 -- Continuity Check (outline):**
+**Phase 2.7 -- Entity Tracking (BUILD):**
+```
+Next step: invoke /entity-tracker
+
+Task: Build entity state for "[title]".
+Project dir: [path]
+Mode: BUILD
+Read: foundation.md, outline.md.
+Creates ENTITY_STATE.yaml with all characters, locations, timeline events,
+and relationships extracted from the foundation and outline.
+```
+
+**Phase 2.8 -- Continuity Check (outline):**
 ```
 Next step: invoke /continuity-guardian
 
@@ -545,6 +574,18 @@ If either < 7 (commercial) or < 6 (literary): rewrite the first/last 3-5 sentenc
 Preserve POV character voice from voice-dna.md.
 ```
 
+**Phase 3.7 -- Entity Update (per batch):**
+```
+Next step: invoke /entity-tracker
+
+Task: Update entity state after chapters [range] of "[title]".
+Project dir: [path]
+Mode: UPDATE
+Read: newly written chapters in manuscript/chapters/.
+Updates ENTITY_STATE.yaml incrementally with new entity appearances,
+relationship changes, timeline events, and state transitions.
+```
+
 **Phase 3.8 -- Mechanical Preprocess (per chapter or batch):**
 ```
 Next step: invoke /mechanical-preprocess
@@ -574,7 +615,19 @@ If 3 iterations without meeting threshold: ESCALATE to orchestrator.
 Preserve strengths: [list from evaluation]
 ```
 
-**Phase 5.5 -- Full Continuity Check:**
+**Phase 5.5 -- Entity Update (post-revision):**
+```
+Next step: invoke /entity-tracker
+
+Task: Update entity state after revisions of "[title]".
+Project dir: [path]
+Mode: UPDATE
+Read: all revised chapters in manuscript/chapters/.
+Updates ENTITY_STATE.yaml to capture any changes made during revision
+(character trait changes, timeline adjustments, relationship shifts).
+```
+
+**Phase 5.6 -- Full Continuity Check:**
 ```
 Next step: invoke /continuity-guardian
 
@@ -919,7 +972,8 @@ You track these. The evaluator scans for them. The disruptor breaks them. The wr
     +-- /reader-persona          -> Phase 1.5 (3-5 reader personas for writer/evaluator/packager)
     +-- /narrative-foundation    -> Phase 2   (characters, outline, voice, theme, emotional design)
     +-- /voice-fingerprint       -> Phase 2.5 (voice DNA: per-character voice cards, differentiation matrix)
-    +-- /continuity-guardian     -> Phase 2.7 + 5.5 (outline check + full manuscript check)
+    +-- /entity-tracker          -> Phase 2.7 + 3.7 + 5.5 (BUILD + UPDATE entity state)
+    +-- /continuity-guardian     -> Phase 2.8 + 5.6 (outline check + full manuscript check)
     +-- /prose-craft             -> Phase 3   (writes chapters with voice inhabitation, anti-AI, chaos)
     +-- /dialogue-polish         -> Phase 3.1 (cover-the-name test, subtext, voice consistency in dialogue)
     +-- /hook-craft              -> Phase 3.2 (chapter openings + endings, binge test)

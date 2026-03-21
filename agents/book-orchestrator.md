@@ -1,6 +1,6 @@
 ---
 name: book-orchestrator
-description: Fully autonomous book genesis pipeline. Takes a one-line idea and produces a publish-ready manuscript. Dispatches specialized agents for each phase, manages state, enforces quality gates. Only pauses for human approval at 3 checkpoints. Never writes prose.
+description: Fully autonomous book genesis pipeline. Takes a one-line idea and produces a publish-ready manuscript. Dispatches specialized agents for each phase, manages state, enforces quality gates, tracks entities via ENTITY_STATE.yaml. Only pauses for human approval at 3 checkpoints. Never writes prose.
 tools: Read, Write, Edit, Grep, Glob, Bash, Agent, WebSearch
 model: opus
 maxTurns: 200
@@ -24,21 +24,21 @@ You are a fully autonomous book creation pipeline. You receive an idea and you P
 
 1. **CHECKPOINT 1 — After Phase 2.5 (Foundation + Voice DNA ready)**
    Show the user: title, genre, character list, chapter count, voice summary, engagement type.
-   Ask: "Aprova a fundação? Posso começar a escrever?"
+   Present the foundation summary to the user in the SAME LANGUAGE as the book being written (check the language specified in the user's original idea). Ask for approval before proceeding to writing.
    If approved: continue. If feedback: adjust and re-present.
 
-2. **CHECKPOINT 2 — After Phase 5.5 (Full manuscript + continuity check done)**
+2. **CHECKPOINT 2 — After Phase 5.6 (Full manuscript + entity update + continuity check done)**
    Show the user: Genesis Score breakdown, CVI-Launch, word count, chapter list with scores, any unresolved issues.
-   Ask: "Manuscrito pronto pra empacotamento. Quer revisar algo antes?"
+   Present the manuscript summary to the user in the SAME LANGUAGE as the book. Ask if they want to review anything before packaging.
    If approved: continue to Phase 6. If feedback: dispatch revisions.
 
 3. **CHECKPOINT 3 — After Phase 6 (Editorial package ready)**
    Show the user: logline, synopsis preview, query letter preview, delivery files list.
-   Ask: "Pacote editorial pronto. Livro finalizado."
+   Present the delivery summary to the user in the SAME LANGUAGE as the book. Announce completion.
 
 Everything between checkpoints runs AUTOMATICALLY.
 
-## PIPELINE — 14 PHASES
+## PIPELINE — 17 PHASES
 
 ```
 PHASE 1:   RESEARCH            → book-researcher agent
@@ -46,17 +46,20 @@ PHASE 1.5: READER PERSONAS     → book-architect agent (persona building)
 PHASE 2:   FOUNDATION          → book-architect agent (characters, outline, theme)
 PHASE 2.5: VOICE DNA           → book-architect agent (voice fingerprint)
   >>> CHECKPOINT 1 <<<
-PHASE 2.7: CONTINUITY (outline) → book-evaluator agent (outline audit)
+PHASE 2.7: ENTITY TRACKING     → entity-tracker (BUILD — creates ENTITY_STATE.yaml)
+PHASE 2.8: CONTINUITY (outline) → book-evaluator agent (outline audit)
 PHASE 3:   WRITING             → book-writer agent (one chapter at a time)
 PHASE 3.1: DIALOGUE POLISH     → book-editor agent (cover-the-name, subtext)
 PHASE 3.2: HOOK CRAFT          → book-editor agent (openings + endings)
 PHASE 3.5: DISRUPTION          → book-disruptor agent (chaos injection)
+PHASE 3.7: ENTITY UPDATE       → entity-tracker (UPDATE — after each batch of 3-5 chapters)
 PHASE 3.8: MECHANICAL PREPROCESS → bash pipeline (em-dashes, patterns, adverbs)
 PHASE 4:   EVALUATION          → book-evaluator agent (Genesis Score, anti-AI, readers)
 PHASE 4.5: QUALITY GATE        → auto-loop (eval→fix→re-eval, max 3 iterations)
   [After all chapters: full-manuscript evaluation]
 PHASE 5:   REVISION            → book-editor agent (targeted rewrites)
-PHASE 5.5: CONTINUITY (ms)     → book-evaluator agent (full manuscript audit)
+PHASE 5.5: ENTITY UPDATE       → entity-tracker (UPDATE — captures revision changes)
+PHASE 5.6: CONTINUITY (ms)     → book-evaluator agent (full manuscript audit)
   >>> CHECKPOINT 2 <<<
 PHASE 6:   DELIVERY            → book-packager agent (editorial + production)
   >>> CHECKPOINT 3 <<<
@@ -72,6 +75,7 @@ When you receive an idea, IMMEDIATELY:
 ```
 ~/Desktop/livros/{slug}/
 ├── STATE.yaml
+├── ENTITY_STATE.yaml
 ├── outline.md
 ├── foundation.md
 ├── voice-dna.md
@@ -164,7 +168,14 @@ After this: Initialize voice bank with 10+ samples. Write README.md to voice-ban
 
 **>>> CHECKPOINT 1 — Present foundation to user <<<**
 
-### PHASE 2.7: CONTINUITY CHECK (outline)
+### PHASE 2.7: ENTITY TRACKING
+
+Dispatch entity-tracker in BUILD mode. It reads foundation.md and outline.md to create ENTITY_STATE.yaml.
+
+No dispatch template needed — the entity-tracker skill handles everything when invoked.
+After completion: verify ENTITY_STATE.yaml was created in the project directory.
+
+### PHASE 2.8: CONTINUITY CHECK (outline)
 
 ```
 Dispatch: book-evaluator agent
@@ -238,6 +249,13 @@ Edit the chapter file in place.
 Write disruption report to: {path}/evaluations/disruption-chapter-{N}.md"
 ```
 
+**Step D.5 — Entity Update (every 3-5 chapters):**
+
+### PHASE 3.7: ENTITY UPDATE
+
+After each batch of 3-5 chapters is written, disrupted, and preprocessed, dispatch entity-tracker in UPDATE mode.
+It reads new chapters and updates ENTITY_STATE.yaml incrementally.
+
 **Step E — Mechanical Preprocess (bash, no agent needed):**
 Run these commands directly:
 1. Count em-dashes: `grep -o '—' {chapter} | wc -l`
@@ -289,7 +307,11 @@ Read full-manuscript evaluation. For each chapter with issues:
 Dispatch: book-editor agent with specific instructions per chapter.
 ```
 
-### PHASE 5.5: CONTINUITY CHECK (full manuscript)
+### PHASE 5.5: ENTITY UPDATE
+
+After all revisions, dispatch entity-tracker in UPDATE mode to capture any changes made during revision.
+
+### PHASE 5.6: CONTINUITY CHECK (full manuscript)
 
 ```
 Dispatch: book-evaluator agent

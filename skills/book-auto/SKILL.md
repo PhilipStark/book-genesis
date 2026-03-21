@@ -1,6 +1,6 @@
 ---
 name: book-auto
-description: One-command book generation. Give it an idea, get a publish-ready book. Dispatches the book-orchestrator agent which runs the entire 14-phase pipeline autonomously, pausing only at 3 human checkpoints.
+description: One-command book generation. Give it an idea, get a publish-ready book. Dispatches the book-orchestrator agent which runs the entire 17-phase pipeline autonomously, pausing only at 3 human checkpoints.
 ---
 
 # /book-auto — One Command, One Book
@@ -16,13 +16,17 @@ This skill dispatches the `book-orchestrator` agent which runs the entire Book G
 3. Narrative foundation (characters, outline, theme)
 4. Voice DNA (per-character voice specs)
 5. **>>> CHECKPOINT 1: You approve the foundation <<<**
-6. Writing all chapters (with dialogue polish, hooks, chaos, mechanical cleanup, evaluation, quality gate — all automatic)
-7. Full-manuscript evaluation + continuity audit
-8. Revisions
-9. **>>> CHECKPOINT 2: You approve the manuscript <<<**
-10. Editorial package (logline, synopsis, query letter, cover brief)
-11. Production prep (proofreading, formatting)
-12. **>>> CHECKPOINT 3: Book delivered <<<**
+6. Entity state initialization (builds ENTITY_STATE.yaml from foundation)
+7. Continuity check (outline)
+8. Writing all chapters (with dialogue polish, hooks, chaos, entity state update per batch, mechanical cleanup, evaluation, quality gate — all automatic)
+9. Full-manuscript evaluation
+10. Revisions
+11. Entity state update (tracks revisions)
+12. Continuity audit (full manuscript)
+13. **>>> CHECKPOINT 2: You approve the manuscript <<<**
+14. Editorial package (logline, synopsis, query letter, cover brief)
+15. Production prep (proofreading, formatting)
+16. **>>> CHECKPOINT 3: Book delivered <<<**
 
 ## Usage
 

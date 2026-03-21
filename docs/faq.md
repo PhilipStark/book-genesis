@@ -1,4 +1,4 @@
-# FAQ -- Book Genesis V4
+# FAQ -- Book Genesis V4.1
 
 ---
 
@@ -6,7 +6,7 @@
 
 ### What is Book Genesis?
 
-A set of 12 custom skills (prompt modules) for Claude Code that form a complete literary production pipeline. From a one-sentence idea to a publish-ready manuscript with editorial package. It includes a 7-dimension quality scoring system, commercial viability prediction, 20-pattern AI-detection protocol, character chaos system, and automated revision loops.
+A set of 21 specialized skills (prompt modules) for Claude Code that form a complete 17-phase literary production pipeline. From a one-sentence idea to a publish-ready manuscript with editorial package. It includes a 7-dimension quality scoring system, commercial viability prediction, 20-pattern AI-detection protocol, character chaos system, and automated revision loops.
 
 ### What changed from V2 to V4?
 
@@ -31,6 +31,27 @@ Everything that the system analysis identified as a structural ceiling was rebui
 - **Dialogue craft** expanded: interruptions, repetition, silence, responding to the wrong thing
 
 See docs/changelog.md for the full list organized by category.
+
+### What changed in V4.1?
+
+- **Entity Tracker** -- new skill that builds and maintains `ENTITY_STATE.yaml`, a persistent structured state file tracking all manuscript entities (characters, locations, timeline, objects, world rules, organizations, knowledge graph)
+- **Continuity Guardian upgraded** -- now reads ENTITY_STATE.yaml instead of rebuilding databases. New Audit 6 (YAML vs Text Divergence). Outputs suggested YAML patches.
+- **All skills now in English** -- manuscript-manager, editorial-package, and production-prep translated from Portuguese
+- **Language-adaptive orchestrator** -- checkpoint messages match the book's language
+- **Knowledge graph** -- tracks who knows what, when they learned it, and how (told, overheard, witnessed, discovered, inferred)
+- **Chekhov tracking** -- objects tracked as `chekhov_open`, `chekhov_resolved`, or `texture`
+- **Conflict detection** -- contradictions flagged as `UNRESOLVED` without auto-resolving
+
+### What is the Entity Tracker?
+
+A new skill (V4.1) that builds and maintains `ENTITY_STATE.yaml` -- a persistent, structured state file for all manuscript entities. It runs in two modes:
+
+- **BUILD mode** (Phase 2.7): Reads foundation.md and outline.md to create the initial YAML with all characters, locations, timeline skeleton, objects, organizations, and world rules.
+- **UPDATE mode** (Phases 3.7 and 5.5): Reads new chapters incrementally, runs 5 extraction passes (character scan, temporal scan, entity scan, object scan, knowledge flow), and merges findings into the YAML without reprocessing old chapters.
+
+The entity-tracker never resolves contradictions -- it flags them as `UNRESOLVED` for the continuity-guardian to audit and the book-editor to fix. Every entry requires a source citation (chapter:paragraph).
+
+The knowledge graph (`character.knowledge`) is the key innovation: it tracks who knows what, when they learned it, and by what method. This prevents the most common continuity error readers catch -- "how does this character KNOW that?"
 
 ### What is the Chaos Engine?
 
@@ -67,7 +88,7 @@ ChatGPT generates a chapter. Book Genesis generates a book that competes on the 
 
 ### Can it write in languages other than English?
 
-Yes. The skills are written in a mix of Portuguese and English, but Claude automatically adapts to whatever language you use. If you start a conversation in English, the entire pipeline operates in English. Same for Spanish, French, German, Japanese, etc.
+Yes. All skills are written in English. Claude adapts the output to whatever language you use. If you start a conversation in English, the entire pipeline operates in English. Same for Spanish, French, German, Japanese, etc.
 
 The voice bank and foundation documents should be in the target language. The anti-AI patterns are language-agnostic (they describe structural patterns, not specific words).
 
