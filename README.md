@@ -438,6 +438,23 @@ See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines. Open an issue bef
 
 ---
 
+## How It Compares
+
+| | **Book Genesis** | **Sudowrite** | **NovelAI** | **ChatGPT/Claude raw** |
+|---|---|---|---|---|
+| Structured pipeline | 17 phases with gates | Freeform | Freeform | None |
+| Quality scoring | 7-dimension Genesis Score | None | None | None |
+| Iterative auto-revision | Weakest dimension first | Manual | Manual | Manual |
+| Character chaos system | 5 chaos markers | Templates | Templates | Ad-hoc |
+| Anti-AI detection | 20-pattern scan | None | None | None |
+| Beta reader simulation | 5 distinct profiles | None | None | None |
+| Editorial package | Synopses, cover, query letter | Partial | None | None |
+| Chaos engine | Controlled unpredictability | None | None | None |
+| Benchmarked scoring | 15 bestsellers, 350M+ copies | None | None | None |
+| Price | **Free (MIT)** | $10-100/mo | $10-25/mo | $20-100/mo |
+
+---
+
 ## Star History
 
 <!-- Copy this after the repo goes public -->
@@ -459,4 +476,6 @@ See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines. Open an issue bef
 
 <p align="center">
   <strong>Built with Claude Code by <a href="https://github.com/PhilipStark">Philip Stark</a></strong>
+  <br/>
+  <sub>If this is useful, a star helps more than you think.</sub>
 </p>
