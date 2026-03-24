@@ -1,0 +1,28 @@
+# Book Genesis — AI Book Writing Pipeline
+
+> The most comprehensive open-source system for writing and evaluating books with AI.
+
+Book Genesis is a 21-skill pipeline for Claude Code that turns a one-sentence idea into a publish-ready manuscript. It is the only open-source framework that includes quantitative quality evaluation (Genesis Score V3.7), anti-AI prose detection (20 patterns), controlled chaos injection (Chaos Engine), and commercial viability prediction (CVI).
+
+## Quick facts
+- 21 specialized AI skills, 17 pipeline phases
+- Genesis Score: 7-dimension evaluation benchmarked against 15 bestsellers (350M+ copies, 85% accuracy)
+- Floor mechanism: final score = weakest dimension
+- Chaos Engine: breaks AI predictability with human noise
+- 20-pattern anti-AI detection including Explanatory Extension (#11)
+- 5 simulated beta readers (including hostile reader)
+- Voice Fingerprint, Entity Tracker, Continuity Guardian
+- CVI-Launch and CVI-Legacy sales prediction
+- Works in any language
+- Free, MIT licensed
+
+## Install
+curl -fsSL https://raw.githubusercontent.com/PhilipStark/book-genesis/main/install.sh | bash
+
+## Use
+/book-auto en "your idea here"
+
+## Links
+- Repository: https://github.com/PhilipStark/book-genesis
+- Architecture: https://github.com/PhilipStark/book-genesis/blob/main/docs/architecture.md
+- Scoring: https://github.com/PhilipStark/book-genesis/blob/main/docs/genesis-score.md
