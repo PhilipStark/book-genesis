@@ -3,45 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Genesis — AI that writes books and knows if they're good</title>
-  <meta name="description" content="21 AI skills. 17 phases. One sentence to publishable book. The only open-source framework that evaluates manuscript quality against real bestsellers.">
-  <meta property="og:title" content="Book Genesis — AI Book Writing Pipeline">
-  <meta property="og:description" content="21 AI skills that turn one sentence into a publishable book. Genesis Score evaluates quality against 15 bestsellers (350M+ copies). Free, open source.">
+  <title>Book Genesis — The AI Book Writing Pipeline</title>
+  <meta name="description" content="21 AI skills. 17 phases. One sentence to publishable book. Scoring benchmarked against 15 bestsellers representing 350M+ copies sold.">
+  <meta property="og:title" content="Book Genesis — One sentence in. Publishable book out.">
+  <meta property="og:description" content="The only open-source framework that writes, evaluates, and revises AI manuscripts against real bestseller benchmarks. 21 skills. Free.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://philipstark.github.io/book-genesis/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@PhilipStarkDev">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a1628;
-      --bg2: #0d1f3c;
-      --blue: #4f8cff;
-      --gold: #ffd700;
-      --green: #22c55e;
-      --red: #ef4444;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --card: rgba(79, 140, 255, 0.04);
-      --border: rgba(79, 140, 255, 0.12);
+      --bg: #08080a;
+      --bg-elevated: #111114;
+      --bg-card: #16161a;
+      --gold: #c9a84c;
+      --gold-light: #e4c76b;
+      --gold-dim: rgba(201, 168, 76, 0.08);
+      --gold-glow: rgba(201, 168, 76, 0.15);
+      --green: #34d399;
+      --green-dim: rgba(52, 211, 153, 0.1);
+      --red: #f87171;
+      --red-dim: rgba(248, 113, 113, 0.1);
+      --text: #e8e6e3;
+      --text-secondary: #9f9d99;
+      --text-dim: #5c5a56;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    /* ── Grain overlay ─────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
 
-    /* ── Hero ─────────────────────────────── */
+    /* ── Scroll animations ─────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .container-narrow { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Navigation ────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8,8,10,0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s ease;
+    }
+
+    nav.scrolled { padding: 14px 32px; }
+
+    .nav-brand {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.35rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-brand em { color: var(--gold); font-style: italic; }
+
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 8px;
+      color: var(--gold-light) !important;
+      font-weight: 600 !important;
+      font-size: 0.82rem !important;
+      transition: all 0.3s ease !important;
+    }
+    .nav-cta:hover {
+      background: rgba(201,168,76,0.15) !important;
+      border-color: rgba(201,168,76,0.35) !important;
+    }
+
+    /* ── Hero ──────────────────────────────── */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -49,403 +147,984 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 60px 24px;
+      padding: 140px 32px 100px;
       position: relative;
       overflow: hidden;
     }
 
-    .hero::before {
-      content: '';
+    /* Gradient orbs */
+    .hero-orb {
       position: absolute;
-      width: 600px;
-      height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(79,140,255,0.06) 0%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      top: 10%; left: 50%;
+      transform: translateX(-50%);
+      animation: orbFloat 12s ease-in-out infinite;
+    }
+    .hero-orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(52,211,153,0.04) 0%, transparent 70%);
+      bottom: 10%; right: -10%;
+      animation: orbFloat 16s ease-in-out infinite reverse;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-30px); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px 6px 8px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge-dot {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 900;
-      line-height: 1.1;
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      max-width: 900px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+      position: relative;
+    }
+    .hero h1 em::after {
+      content: '';
+      position: absolute;
+      bottom: 0.05em;
+      left: -2%;
+      right: -2%;
+      height: 0.08em;
+      background: var(--gold);
+      opacity: 0.25;
+      border-radius: 2px;
     }
 
-    .hero h1 span { color: var(--blue); }
-
-    .hero .tagline {
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      color: var(--muted);
-      margin-top: 20px;
-      max-width: 700px;
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      margin-top: 28px;
+      max-width: 560px;
+      line-height: 1.7;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      font-weight: 400;
     }
 
-    .hero .stats {
+    .hero-metrics {
       display: flex;
-      gap: 40px;
-      margin-top: 48px;
+      gap: 1px;
+      margin-top: 56px;
       position: relative;
-      z-index: 1;
-      flex-wrap: wrap;
-      justify-content: center;
+      z-index: 2;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .hero-metric {
+      padding: 28px 40px;
+      background: var(--bg-elevated);
+      text-align: center;
+    }
+    .hero-metric:first-child { border-radius: 16px 0 0 16px; }
+    .hero-metric:last-child { border-radius: 0 16px 16px 0; }
+    .hero-metric-value {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.4rem;
+      color: var(--text);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .hero-metric-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
     }
 
-    .hero .stat-item { text-align: center; }
-    .hero .stat-value { font-size: 2.5rem; font-weight: 900; color: var(--gold); }
-    .hero .stat-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-top: 2px; }
-
-    .hero .cta-row {
+    .hero-actions {
       display: flex;
       gap: 16px;
       margin-top: 48px;
       position: relative;
-      z-index: 1;
-      flex-wrap: wrap;
-      justify-content: center;
+      z-index: 2;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 14px 32px;
+      gap: 10px;
+      padding: 14px 28px;
       border-radius: 12px;
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+      cursor: pointer;
     }
 
-    .btn:hover { transform: translateY(-2px); }
-
-    .btn-primary {
-      background: var(--blue);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(79,140,255,0.3);
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold) 0%, #b8943f 100%);
+      color: #0a0a0a;
+      box-shadow: 0 2px 20px rgba(201,168,76,0.2), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px rgba(201,168,76,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
     }
 
-    .btn-primary:hover { box-shadow: 0 8px 30px rgba(79,140,255,0.4); }
-
-    .btn-secondary {
+    .btn-ghost {
       background: transparent;
-      color: var(--blue);
-      border: 2px solid var(--border);
-    }
-
-    .btn-secondary:hover { border-color: var(--blue); }
-
-    /* ── Section ──────────────────────────── */
-    section { padding: 100px 0; }
-
-    .section-title {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 900;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      font-size: 1.1rem;
-      color: var(--muted);
-      text-align: center;
-      max-width: 600px;
-      margin: 0 auto 60px;
-    }
-
-    /* ── Problem ──────────────────────────── */
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    .problem-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-    }
-
-    .problem-card h3 {
-      font-size: 1.2rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .problem-card p { color: var(--muted); font-size: 0.95rem; }
-    .problem-card .badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-    .badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
-    .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
-
-    /* ── Score ────────────────────────────── */
-    .score-section { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%); }
-
-    .score-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-
-    .dim-list { display: flex; flex-direction: column; gap: 12px; }
-
-    .dim-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .dim-name {
-      width: 110px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .dim-bar {
-      flex: 1;
-      height: 20px;
-      background: rgba(79,140,255,0.06);
-      border-radius: 10px;
-      overflow: hidden;
+      color: var(--text-secondary);
       border: 1px solid var(--border);
     }
-
-    .dim-fill {
-      height: 100%;
-      border-radius: 10px;
-      background: var(--green);
-      transition: width 1s ease;
-    }
-
-    .dim-val {
-      width: 36px;
-      font-size: 0.85rem;
-      font-weight: 900;
-      color: var(--green);
-    }
-
-    .score-big {
-      text-align: center;
-    }
-
-    .score-big .number {
-      font-size: 8rem;
-      font-weight: 900;
-      color: var(--gold);
-      line-height: 1;
-      text-shadow: 0 0 60px rgba(255,215,0,0.2);
-    }
-
-    .score-big .label {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--green);
-      margin-top: 8px;
-    }
-
-    .score-big .rule {
-      margin-top: 24px;
-      padding: 16px 24px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      display: inline-block;
-    }
-
-    .score-big .rule-title {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--blue);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .score-big .rule-text {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    /* ── Comparison ───────────────────────── */
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    .comparison-table th {
-      padding: 14px 16px;
-      text-align: center;
-      font-weight: 800;
-      color: var(--muted);
-      border-bottom: 2px solid var(--border);
-    }
-
-    .comparison-table th:first-child { text-align: left; }
-    .comparison-table th:nth-child(2) { color: var(--blue); }
-
-    .comparison-table td {
-      padding: 12px 16px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .comparison-table td:first-child {
-      text-align: left;
-      font-weight: 700;
+    .btn-ghost:hover {
+      border-color: var(--border-hover);
       color: var(--text);
+      background: rgba(255,255,255,0.02);
     }
 
-    .comparison-table tr:nth-child(even) { background: var(--card); }
+    .btn svg { width: 18px; height: 18px; }
 
-    .check { color: var(--green); font-weight: 900; font-size: 1.1rem; }
-    .cross { color: rgba(239,68,68,0.4); }
-
-    /* ── Install ──────────────────────────── */
-    .install-box {
-      background: rgba(10,22,40,0.8);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      max-width: 700px;
+    /* ── Divider line ──────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--border-hover) 50%, transparent 100%);
       margin: 0 auto;
+      max-width: 600px;
     }
 
-    .install-box .terminal-dots {
-      display: flex;
-      gap: 8px;
+    /* ── Section common ────────────────────── */
+    section { padding: 120px 0; }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
       margin-bottom: 20px;
     }
 
-    .install-box .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
+    .section-heading {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 700px;
+    }
+    .section-heading em { font-style: italic; color: var(--gold); }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-top: 20px;
+      max-width: 520px;
+      line-height: 1.75;
     }
 
-    .install-box pre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      color: var(--blue);
-      line-height: 1.8;
-      overflow-x: auto;
+    /* ── Problem section ───────────────────── */
+    .problem-section { background: var(--bg); }
+
+    .problem-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
     }
 
-    .install-box .comment { color: var(--muted); }
-    .install-box .cmd { color: var(--gold); }
+    .problem-left { position: sticky; top: 140px; }
 
-    /* ── Footer ───────────────────────────── */
-    footer {
-      padding: 60px 0;
-      text-align: center;
-      border-top: 1px solid var(--border);
-    }
+    .problem-cards { display: flex; flex-direction: column; gap: 16px; }
 
-    footer p { color: var(--muted); font-size: 0.9rem; }
-    footer a { color: var(--blue); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-
-    .star-cta {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 12px 28px;
-      background: var(--card);
+    .problem-card {
+      padding: 28px 32px;
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 16px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      border-radius: 3px 0 0 3px;
+    }
+    .problem-card:hover {
+      border-color: var(--border-hover);
+      transform: translateX(4px);
+    }
+    .problem-card.red::before { background: var(--red); }
+    .problem-card.green::before { background: var(--green); }
+
+    .problem-card-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .problem-card.red .problem-card-tag { color: var(--red); }
+    .problem-card.green .problem-card-tag { color: var(--green); }
+
+    .problem-card h3 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .problem-card p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    /* ── Pipeline ──────────────────────────── */
+    .pipeline-section {
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pipeline-header { text-align: center; margin-bottom: 72px; }
+    .pipeline-header .section-heading { margin: 0 auto; }
+    .pipeline-header .section-desc { margin: 20px auto 0; }
+
+    .pipeline-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 0 32px 24px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-hover) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+    .pipeline-track::-webkit-scrollbar { height: 4px; }
+    .pipeline-track::-webkit-scrollbar-track { background: transparent; }
+    .pipeline-track::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
+
+    .phase-card {
+      flex: 0 0 160px;
+      padding: 24px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .phase-card:hover {
+      border-color: var(--gold-glow);
+      background: rgba(201,168,76,0.03);
+      transform: translateY(-4px);
+    }
+
+    .phase-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .phase-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .phase-desc {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    .phase-connector {
+      flex: 0 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    /* ── Genesis Score ─────────────────────── */
+    .score-section {
+      position: relative;
+    }
+    .score-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .score-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .score-display {
+      text-align: center;
+      padding: 60px 40px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .score-display::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(201,168,76,0.03), transparent, rgba(52,211,153,0.02), transparent);
+      animation: scoreRotate 20s linear infinite;
+    }
+    @keyframes scoreRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    .score-number {
+      font-family: 'Instrument Serif', serif;
+      font-size: 7rem;
+      color: var(--gold);
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 80px rgba(201,168,76,0.2);
+    }
+    .score-status {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .score-iterations {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .score-iter {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .score-iter.active {
+      border-color: rgba(201,168,76,0.3);
+      color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    .dim-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .dim-row { display: flex; align-items: center; gap: 14px; }
+    .dim-name {
+      width: 110px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .dim-bar {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .dim-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--green) 100%);
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 0;
+    }
+    .dim-fill.animated { /* width set inline */ }
+    .dim-val {
+      width: 32px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .floor-rule {
+      margin-top: 32px;
+      padding: 20px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 4px 12px 12px 4px;
+    }
+    .floor-rule-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .floor-rule-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Features bento ────────────────────── */
+    .features-section { background: var(--bg-elevated); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+
+    .bento-card {
+      padding: 36px 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .bento-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+    .bento-card.span-2 { grid-column: span 2; }
+
+    .bento-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .bento-icon.gold { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.15); }
+    .bento-icon.green { background: var(--green-dim); border: 1px solid rgba(52,211,153,0.15); }
+    .bento-icon.red { background: var(--red-dim); border: 1px solid rgba(248,113,113,0.15); }
+
+    .bento-card h3 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .bento-card p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    /* chaos card special */
+    .chaos-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, rgba(201,168,76,0.03) 100%);
+      border-color: rgba(201,168,76,0.1);
+    }
+    .chaos-card:hover { border-color: rgba(201,168,76,0.25); }
+    .chaos-card::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Comparison ────────────────────────── */
+    .comparison-section { }
+
+    .comparison-header { text-align: center; margin-bottom: 60px; }
+    .comparison-header .section-heading { margin: 0 auto; }
+
+    .comp-table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .comp-table thead { background: rgba(255,255,255,0.02); }
+    .comp-table th {
+      padding: 18px 20px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-table th:first-child { text-align: left; padding-left: 32px; }
+    .comp-table th.highlight { color: var(--gold); }
+
+    .comp-table td {
+      padding: 16px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .comp-table td:first-child {
+      text-align: left;
+      padding-left: 32px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .comp-table tbody tr:last-child td { border-bottom: none; }
+    .comp-table tbody tr:hover { background: rgba(255,255,255,0.01); }
+
+    .comp-table td.highlight-col {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .comp-check { color: var(--green); font-weight: 700; }
+    .comp-dash { color: var(--text-dim); }
+    .comp-price-free {
       color: var(--gold);
       font-weight: 700;
-      font-size: 0.95rem;
-      text-decoration: none;
-      transition: border-color 0.2s;
     }
 
-    .star-cta:hover { border-color: var(--gold); text-decoration: none; }
+    /* ── Install ───────────────────────────── */
+    .install-section { }
 
-    /* ── Responsive ───────────────────────── */
-    @media (max-width: 768px) {
-      .score-grid { grid-template-columns: 1fr; }
-      .hero .stats { gap: 24px; }
-      .score-big .number { font-size: 5rem; }
-      .comparison-table { font-size: 0.75rem; }
-      .comparison-table th, .comparison-table td { padding: 8px 6px; }
+    .install-header { text-align: center; margin-bottom: 48px; }
+    .install-header .section-heading { margin: 0 auto; }
+    .install-header .section-desc { margin: 16px auto 0; }
+
+    .terminal {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+    }
+
+    .terminal-body {
+      padding: 28px 28px 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 2;
+      overflow-x: auto;
+    }
+    .terminal-body .comment { color: var(--text-dim); }
+    .terminal-body .cmd { color: var(--gold-light); }
+    .terminal-body .output { color: var(--green); }
+    .terminal-body .prompt { color: var(--text-secondary); }
+
+    /* ── Footer ────────────────────────────── */
+    footer {
+      padding: 80px 0 60px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 200px;
+      background: radial-gradient(ellipse, rgba(201,168,76,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .footer-brand {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.6rem;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .footer-brand em { color: var(--gold); font-style: italic; }
+
+    .footer-text {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+    .footer-text a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-text a:hover { color: var(--text); }
+
+    .star-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.02) 100%);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 14px;
+      color: var(--gold-light);
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .star-btn:hover {
+      transform: translateY(-3px);
+      border-color: rgba(201,168,76,0.4);
+      box-shadow: 0 8px 40px rgba(201,168,76,0.12);
+      background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.04) 100%);
+    }
+    .star-btn svg { width: 20px; height: 20px; fill: var(--gold); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    .footer-links a {
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    .footer-copy {
+      color: var(--text-dim);
+      font-size: 0.72rem;
+      margin-top: 40px;
+      opacity: 0.6;
+    }
+
+    /* ── Responsive ────────────────────────── */
+    @media (max-width: 900px) {
+      .problem-layout { grid-template-columns: 1fr; gap: 48px; }
+      .problem-left { position: static; }
+      .score-layout { grid-template-columns: 1fr; gap: 48px; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .bento-card.span-2 { grid-column: span 1; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: clamp(2.5rem, 10vw, 3.8rem); }
+      .hero-metrics { flex-direction: column; border-radius: 16px; }
+      .hero-metric { padding: 20px 32px; }
+      .hero-metric:first-child { border-radius: 16px 16px 0 0; }
+      .hero-metric:last-child { border-radius: 0 0 16px 16px; }
+      .hero-actions { flex-direction: column; width: 100%; max-width: 320px; }
+      .btn { justify-content: center; }
+      .score-number { font-size: 5rem; }
+      .comp-table { font-size: 0.75rem; }
+      .comp-table th, .comp-table td { padding: 12px 8px; }
+      .comp-table td:first-child, .comp-table th:first-child { padding-left: 12px; }
+      section { padding: 80px 0; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Nav -->
+  <nav id="nav">
+    <a href="#" class="nav-brand">Book <em>Genesis</em></a>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#score">Score</a>
+      <a href="#features">Features</a>
+      <a href="#compare">Compare</a>
+      <a href="https://github.com/PhilipStark/book-genesis" class="nav-cta">
+        <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </nav>
+
   <!-- Hero -->
   <div class="hero">
-    <h1>One sentence in.<br><span>Publishable book out.</span></h1>
-    <p class="tagline">21 AI skills that write, evaluate, and revise manuscripts — with a scoring system benchmarked against 15 bestsellers representing 350M+ copies sold.</p>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
 
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-value">21</div>
-        <div class="stat-label">AI Skills</div>
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      Open Source &middot; MIT Licensed
+    </div>
+
+    <h1 class="reveal reveal-delay-1">
+      One sentence in.<br><em>Publishable book out.</em>
+    </h1>
+
+    <p class="hero-sub reveal reveal-delay-2">
+      The AI pipeline that writes, scores, and revises manuscripts&mdash;benchmarked against 15 bestsellers representing 350 million copies sold.
+    </p>
+
+    <div class="hero-metrics reveal reveal-delay-3">
+      <div class="hero-metric">
+        <div class="hero-metric-value">21</div>
+        <div class="hero-metric-label">AI Skills</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-value">17</div>
-        <div class="stat-label">Pipeline Phases</div>
+      <div class="hero-metric">
+        <div class="hero-metric-value">17</div>
+        <div class="hero-metric-label">Phases</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-value">85%</div>
-        <div class="stat-label">Benchmark Accuracy</div>
+      <div class="hero-metric">
+        <div class="hero-metric-value">85%</div>
+        <div class="hero-metric-label">Accuracy</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-value">MIT</div>
-        <div class="stat-label">Licensed</div>
+      <div class="hero-metric">
+        <div class="hero-metric-value">350M+</div>
+        <div class="hero-metric-label">Copies Benchmarked</div>
       </div>
     </div>
 
-    <div class="cta-row">
-      <a href="https://github.com/PhilipStark/book-genesis" class="btn btn-primary">View on GitHub</a>
-      <a href="#install" class="btn btn-secondary">Quick Start</a>
+    <div class="hero-actions reveal reveal-delay-4">
+      <a href="https://github.com/PhilipStark/book-genesis" class="btn btn-gold">
+        <svg viewBox="0 0 16 16" fill="currentColor" width="18" height="18"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        View on GitHub
+      </a>
+      <a href="#install" class="btn btn-ghost">Quick Start</a>
     </div>
   </div>
 
-  <!-- Problem -->
-  <section>
-    <div class="container">
-      <h2 class="section-title">The problem with AI writing</h2>
-      <p class="section-sub">Every AI tool generates text. None of them tell you if it's worth reading.</p>
+  <div class="divider"></div>
 
-      <div class="problem-grid">
-        <div class="problem-card">
-          <div class="badge badge-red">WEAKNESS #1</div>
-          <h3>Pacing collapses in the middle</h3>
-          <p>AI writes each chapter as an isolated unit. It doesn't feel the accumulated weight of the narrative. Every test manuscript had a sagging middle.</p>
+  <!-- Problem -->
+  <section class="problem-section" id="problem">
+    <div class="container">
+      <div class="problem-layout">
+        <div class="problem-left">
+          <div class="section-label reveal">The Problem</div>
+          <h2 class="section-heading reveal reveal-delay-1">
+            AI generates text.<br>Nobody checks if it's <em>worth reading.</em>
+          </h2>
+          <p class="section-desc reveal reveal-delay-2">
+            We tested AI manuscripts from every major model against 15 bestsellers across 8 genres. The failures were systematic and predictable.
+          </p>
         </div>
-        <div class="problem-card">
-          <div class="badge badge-red">WEAKNESS #2</div>
-          <h3>Everything sounds like AI</h3>
-          <p>We identified 20 specific patterns that make AI prose detectable. Pattern #11 (Explanatory Extension) appeared in every chapter of a 14-chapter test.</p>
+        <div class="problem-cards">
+          <div class="problem-card red reveal">
+            <div class="problem-card-tag">Failure #1 &mdash; Pacing</div>
+            <h3>The sagging middle is universal</h3>
+            <p>AI writes each chapter as an isolated unit. It doesn't feel accumulated narrative weight. Every test manuscript collapsed between chapters 4&ndash;8.</p>
+          </div>
+          <div class="problem-card red reveal reveal-delay-1">
+            <div class="problem-card-tag">Failure #2 &mdash; Voice</div>
+            <h3>20 patterns make it detectable</h3>
+            <p>Pattern #11 (Explanatory Extension) appeared in every chapter of a 14-chapter manuscript. Every simile gets unpacked with a redundant second sentence.</p>
+          </div>
+          <div class="problem-card red reveal reveal-delay-2">
+            <div class="problem-card-tag">Failure #3 &mdash; Humanity</div>
+            <h3>Relentlessly, boringly competent</h3>
+            <p>AI characters always manage their emotions, notice the right details, think thematically. Real people have irrelevant thoughts during funerals.</p>
+          </div>
+          <div class="problem-card green reveal reveal-delay-3">
+            <div class="problem-card-tag">The Fix</div>
+            <h3>Evaluation + Controlled Chaos</h3>
+            <p>A scoring system that quantifies quality across 7 dimensions, plus a Chaos Engine that injects the human noise AI naturally avoids.</p>
+          </div>
         </div>
-        <div class="problem-card">
-          <div class="badge badge-red">WEAKNESS #3</div>
-          <h3>Relentlessly competent</h3>
-          <p>AI characters always manage their emotions, notice the right details, think thematically. Real people have irrelevant thoughts during funerals.</p>
-        </div>
-        <div class="problem-card">
-          <div class="badge badge-green">THE FIX</div>
-          <h3>Evaluation + Controlled Chaos</h3>
-          <p>A scoring system that measures quality across 7 dimensions, plus a Chaos Engine that injects the human noise AI naturally avoids.</p>
-        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section class="pipeline-section" id="pipeline">
+    <div class="container">
+      <div class="pipeline-header">
+        <div class="section-label reveal">The Pipeline</div>
+        <h2 class="section-heading reveal reveal-delay-1">17 phases. <em>Zero hand-holding.</em></h2>
+        <p class="section-desc reveal reveal-delay-2">From a single sentence to a publish-ready manuscript with editorial package. Every phase has quality gates.</p>
+      </div>
+    </div>
+    <div class="pipeline-track reveal reveal-delay-3">
+      <div class="phase-card">
+        <div class="phase-num">01</div>
+        <div class="phase-name">Research</div>
+        <div class="phase-desc">Market + genre analysis</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">02</div>
+        <div class="phase-name">Foundation</div>
+        <div class="phase-desc">Characters, arcs, themes</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">03</div>
+        <div class="phase-name">Outline</div>
+        <div class="phase-desc">Chapter-by-chapter</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">04</div>
+        <div class="phase-name">Voice DNA</div>
+        <div class="phase-desc">Per-character fingerprint</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">05</div>
+        <div class="phase-name">Writing</div>
+        <div class="phase-desc">Full manuscript draft</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">06</div>
+        <div class="phase-name">Chaos Engine</div>
+        <div class="phase-desc">Break AI patterns</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">07</div>
+        <div class="phase-name">Anti-AI Scan</div>
+        <div class="phase-desc">20 pattern detection</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">08</div>
+        <div class="phase-name">Scoring</div>
+        <div class="phase-desc">Genesis Score V3.7</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">09</div>
+        <div class="phase-name">Beta Readers</div>
+        <div class="phase-desc">5 profiles incl. hostile</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">10</div>
+        <div class="phase-name">Revision</div>
+        <div class="phase-desc">Target weakest dims</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">11</div>
+        <div class="phase-name">Continuity</div>
+        <div class="phase-desc">Cross-chapter audit</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">12</div>
+        <div class="phase-name">Dialogue</div>
+        <div class="phase-desc">Subtexto + voice diff</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">13</div>
+        <div class="phase-name">Hook Craft</div>
+        <div class="phase-desc">Chapter openers</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">14</div>
+        <div class="phase-name">Quality Gate</div>
+        <div class="phase-desc">Pass/fail checkpoint</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">15</div>
+        <div class="phase-name">Polish</div>
+        <div class="phase-desc">Line-level refinement</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">16</div>
+        <div class="phase-name">Editorial</div>
+        <div class="phase-desc">Query, synopsis, cover</div>
+      </div>
+      <div class="phase-connector">&rarr;</div>
+      <div class="phase-card">
+        <div class="phase-num">17</div>
+        <div class="phase-name">Production</div>
+        <div class="phase-desc">Print + ebook format</div>
       </div>
     </div>
   </section>
@@ -453,171 +1132,240 @@
   <!-- Genesis Score -->
   <section class="score-section" id="score">
     <div class="container">
-      <h2 class="section-title">Genesis Score V3.7</h2>
-      <p class="section-sub">Your book's score equals its weakest dimension. Strong prose can't mask weak pacing.</p>
+      <div class="score-layout">
+        <div>
+          <div class="section-label reveal">Genesis Score V3.7</div>
+          <h2 class="section-heading reveal reveal-delay-1">
+            Your score is your <em>weakest dimension.</em>
+          </h2>
+          <p class="section-desc reveal reveal-delay-2">
+            7 dimensions. Floor mechanism. No amount of beautiful prose compensates for a pacing problem. Calibrated against 15 bestsellers.
+          </p>
 
-      <div class="score-grid">
-        <div class="dim-list">
-          <div class="dim-row">
-            <div class="dim-name">Originality</div>
-            <div class="dim-bar"><div class="dim-fill" style="width:90%"></div></div>
-            <div class="dim-val">9.0</div>
+          <div class="dim-list reveal reveal-delay-3" id="dims">
+            <div class="dim-row">
+              <div class="dim-name">Originality</div>
+              <div class="dim-bar"><div class="dim-fill" data-width="90%"></div></div>
+              <div class="dim-val">9.0</div>
+            </div>
+            <div class="dim-row">
+              <div class="dim-name">Theme</div>
+              <div class="dim-bar"><div class="dim-fill" data-width="91%"></div></div>
+              <div class="dim-val">9.1</div>
+            </div>
+            <div class="dim-row">
+              <div class="dim-name">Characters</div>
+              <div class="dim-bar"><div class="dim-fill" data-width="92%"></div></div>
+              <div class="dim-val">9.2</div>
+            </div>
+            <div class="dim-row">
+              <div class="dim-name">Prose & Voice</div>
+              <div class="dim-bar"><div class="dim-fill" data-width="91%"></div></div>
+              <div class="dim-val">9.1</div>
+            </div>
+            <div class="dim-row">
+              <div class="dim-name">Pacing</div>
+              <div class="dim-bar"><div class="dim-fill" data-width="89%"></div></div>
+              <div class="dim-val">8.9</div>
+            </div>
+            <div class="dim-row">
+              <div class="dim-name">Emotion</div>
+              <div class="dim-bar"><div class="dim-fill" data-width="92%"></div></div>
+              <div class="dim-val">9.2</div>
+            </div>
+            <div class="dim-row">
+              <div class="dim-name">Market Impact</div>
+              <div class="dim-bar"><div class="dim-fill" data-width="90%"></div></div>
+              <div class="dim-val">9.0</div>
+            </div>
           </div>
-          <div class="dim-row">
-            <div class="dim-name">Theme</div>
-            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
-            <div class="dim-val">9.1</div>
-          </div>
-          <div class="dim-row">
-            <div class="dim-name">Characters</div>
-            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
-            <div class="dim-val">9.1</div>
-          </div>
-          <div class="dim-row">
-            <div class="dim-name">Prose & Voice</div>
-            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
-            <div class="dim-val">9.1</div>
-          </div>
-          <div class="dim-row">
-            <div class="dim-name">Pacing</div>
-            <div class="dim-bar"><div class="dim-fill" style="width:90%"></div></div>
-            <div class="dim-val">9.0</div>
-          </div>
-          <div class="dim-row">
-            <div class="dim-name">Emotion</div>
-            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
-            <div class="dim-val">9.1</div>
-          </div>
-          <div class="dim-row">
-            <div class="dim-name">Market Impact</div>
-            <div class="dim-bar"><div class="dim-fill" style="width:89%"></div></div>
-            <div class="dim-val">8.9</div>
+
+          <div class="floor-rule reveal reveal-delay-4">
+            <div class="floor-rule-title">The Floor Rule</div>
+            <div class="floor-rule-text">Final score = lowest dimension. A 9.5 in Characters with 7.0 in Pacing means your book scores 7.0. Fix the floor, raise the ceiling.</div>
           </div>
         </div>
 
-        <div class="score-big">
-          <div class="number">9.04</div>
-          <div class="label">PASSED — Iteration 3</div>
-          <div class="rule">
-            <div class="rule-title">The Floor Rule</div>
-            <div class="rule-text">Final score = lowest dimension.<br>No amount of excellence compensates for a gap.</div>
+        <div class="reveal reveal-delay-2">
+          <div class="score-display">
+            <div class="score-number">9.04</div>
+            <div class="score-status">Passed &mdash; All dimensions 8.9+</div>
+            <div class="score-iterations">
+              <div class="score-iter">8.70</div>
+              <div class="score-iter">8.95</div>
+              <div class="score-iter active">9.04</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Comparison -->
-  <section>
-    <div class="container">
-      <h2 class="section-title">How it compares</h2>
-      <p class="section-sub">The only framework that evaluates what it produces.</p>
+  <div class="divider"></div>
 
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Book Genesis</th>
-            <th>Sudowrite</th>
-            <th>NovelAI</th>
-            <th>ChatGPT</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Structured pipeline</td>
-            <td><span class="check">&#10003;</span> 17 phases</td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Quality scoring</td>
-            <td><span class="check">&#10003;</span> 7 dimensions</td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Auto-revision loop</td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Chaos Engine</td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Anti-AI detection (20 patterns)</td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Beta reader simulation</td>
-            <td><span class="check">&#10003;</span> 5 profiles</td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Editorial package</td>
-            <td><span class="check">&#10003;</span></td>
-            <td>Partial</td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Benchmarked scoring</td>
-            <td><span class="check">&#10003;</span> 15 bestsellers</td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="cross">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Price</td>
-            <td><strong style="color:var(--gold)">Free (MIT)</strong></td>
-            <td>$10-100/mo</td>
-            <td>$10-25/mo</td>
-            <td>$20-100/mo</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- Features -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="comparison-header">
+        <div class="section-label reveal">Core Systems</div>
+        <h2 class="section-heading reveal reveal-delay-1">Built different. <em>By design.</em></h2>
+      </div>
+
+      <div class="bento-grid">
+        <div class="bento-card chaos-card span-2 reveal">
+          <div class="bento-icon gold">&#9736;</div>
+          <h3>Chaos Engine</h3>
+          <p>The only writing pipeline with an agent designed to break its own output. Injects irrelevant thoughts during important moments, failed emotional composure, unprompted memories, cognitive distortions. The things that make fictional people feel like actual people instead of narrative vehicles.</p>
+        </div>
+        <div class="bento-card reveal reveal-delay-1">
+          <div class="bento-icon red">&#9888;</div>
+          <h3>Anti-AI Detection</h3>
+          <p>20 specific patterns that fingerprint AI prose. Pattern #11 (Explanatory Extension) is the most common. The system detects and eliminates them at the sentence level.</p>
+        </div>
+        <div class="bento-card reveal reveal-delay-1">
+          <div class="bento-icon green">&#9673;</div>
+          <h3>Voice Fingerprint</h3>
+          <p>Per-character voice DNA with differentiation matrix. No two characters sound alike. Tracks vocabulary, sentence rhythm, speech patterns, and tics across the entire manuscript.</p>
+        </div>
+        <div class="bento-card reveal reveal-delay-2">
+          <div class="bento-icon gold">&#9670;</div>
+          <h3>Entity Tracker</h3>
+          <p>Persistent tracking of characters, locations, timelines, and knowledge states. Zero plot holes. Zero continuity errors. Every detail is verified across chapters.</p>
+        </div>
+        <div class="bento-card span-2 reveal reveal-delay-2">
+          <div class="bento-icon green">&#9733;</div>
+          <h3>5 Simulated Beta Readers</h3>
+          <p>Including a deliberately hostile reader profile. Anti-inflation rules mean no dimension can jump more than +0.5 per revision without citing specific passages. The system is adversarial by default because when the same AI writes and evaluates, confirmation bias is inevitable.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Install -->
-  <section id="install">
+  <!-- Comparison -->
+  <section class="comparison-section" id="compare">
     <div class="container">
-      <h2 class="section-title">Get started in 60 seconds</h2>
-      <p class="section-sub">Requires Claude Code CLI + Claude Pro or Max subscription.</p>
+      <div class="comparison-header">
+        <div class="section-label reveal">Comparison</div>
+        <h2 class="section-heading reveal reveal-delay-1">The only framework that <em>evaluates what it produces.</em></h2>
+      </div>
 
-      <div class="install-box">
-        <div class="terminal-dots">
-          <div class="dot" style="background:#ff5f57"></div>
-          <div class="dot" style="background:#febc2e"></div>
-          <div class="dot" style="background:#28c840"></div>
+      <div class="comp-table-wrap reveal reveal-delay-2">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="highlight">Book Genesis</th>
+              <th>Sudowrite</th>
+              <th>NovelAI</th>
+              <th>ChatGPT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Structured pipeline</td>
+              <td class="highlight-col"><span class="comp-check">17 phases</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Quality scoring</td>
+              <td class="highlight-col"><span class="comp-check">7 dimensions</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Auto-revision loop</td>
+              <td class="highlight-col"><span class="comp-check">&#10003;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Chaos Engine</td>
+              <td class="highlight-col"><span class="comp-check">&#10003;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Anti-AI detection</td>
+              <td class="highlight-col"><span class="comp-check">20 patterns</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Beta reader simulation</td>
+              <td class="highlight-col"><span class="comp-check">5 profiles</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Editorial package</td>
+              <td class="highlight-col"><span class="comp-check">&#10003;</span></td>
+              <td>Partial</td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Benchmarked scoring</td>
+              <td class="highlight-col"><span class="comp-check">15 bestsellers</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+              <td><span class="comp-dash">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td>Price</td>
+              <td class="highlight-col"><span class="comp-price-free">Free (MIT)</span></td>
+              <td>$10&ndash;100/mo</td>
+              <td>$10&ndash;25/mo</td>
+              <td>$20&ndash;100/mo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Install -->
+  <section class="install-section" id="install">
+    <div class="container">
+      <div class="install-header">
+        <div class="section-label reveal">Get Started</div>
+        <h2 class="section-heading reveal reveal-delay-1">One command. <em>That's it.</em></h2>
+        <p class="section-desc reveal reveal-delay-2">Requires Claude Code CLI with a Claude Pro or Max subscription.</p>
+      </div>
+
+      <div class="terminal reveal reveal-delay-3">
+        <div class="terminal-bar">
+          <div class="terminal-dot" style="background:#ff5f57"></div>
+          <div class="terminal-dot" style="background:#febc2e"></div>
+          <div class="terminal-dot" style="background:#28c840"></div>
+          <div class="terminal-title">Terminal</div>
+          <div style="width: 36px;"></div>
         </div>
-        <pre><span class="comment"># Install (one command)</span>
+        <div class="terminal-body">
+<span class="comment"># Install</span>
 <span class="cmd">curl -fsSL https://raw.githubusercontent.com/PhilipStark/book-genesis/main/install.sh | bash</span>
 
-<span class="comment"># Open Claude Code and write a book</span>
-<span class="cmd">claude</span>
-> /book-auto en "a detective in 1920s Berlin discovers the murders
+<span class="comment"># Write a book</span>
+<span class="prompt">$</span> <span class="cmd">claude</span>
+<span class="prompt">&gt;</span> <span class="cmd">/book-auto en "a detective in 1920s Berlin discovers the murders
   she's investigating are committed by versions of herself
-  from parallel timelines"
+  from parallel timelines"</span>
 
-<span class="comment"># Or use individual skills</span>
-> /book-genesis          <span class="comment"># manual pipeline control</span>
-> /voice-fingerprint     <span class="comment"># character voice DNA</span>
-> /chaos-engine          <span class="comment"># break AI predictability</span>
-> /beta-reader           <span class="comment"># 5 simulated readers</span></pre>
+<span class="output">&#10003; Research complete</span>
+<span class="output">&#10003; Foundation built &mdash; 4 characters, 3 arcs</span>
+<span class="output">&#10003; Outline &mdash; 18 chapters</span>
+<span class="output">&#10003; Writing &mdash; 67,400 words</span>
+<span class="output">&#10003; Chaos Engine &mdash; 340 injections</span>
+<span class="output">&#10003; Genesis Score: 9.04 (PASSED)</span>
+        </div>
       </div>
     </div>
   </section>
@@ -625,10 +1373,66 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <p>Built by <a href="https://github.com/PhilipStark">Philip Stark</a> with Claude Code</p>
-      <a href="https://github.com/PhilipStark/book-genesis" class="star-cta">&#9733; Star on GitHub &mdash; it helps more than you think</a>
+      <div class="footer-brand">Book <em>Genesis</em></div>
+      <div class="footer-text">
+        Built by <a href="https://github.com/PhilipStark">Philip Stark</a> &middot;
+        <a href="https://twitter.com/PhilipStarkDev">@PhilipStarkDev</a>
+      </div>
+      <a href="https://github.com/PhilipStark/book-genesis" class="star-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Star on GitHub
+      </a>
+      <div class="footer-links">
+        <a href="https://github.com/PhilipStark/book-genesis/blob/main/docs/architecture.md">Architecture</a>
+        <a href="https://github.com/PhilipStark/book-genesis/blob/main/docs/genesis-score.md">Scoring</a>
+        <a href="https://github.com/PhilipStark/book-genesis/blob/main/docs/faq.md">FAQ</a>
+        <a href="https://github.com/PhilipStark/book-genesis/blob/main/docs/skills-reference.md">Skills</a>
+        <a href="https://github.com/PhilipStark/book-genesis/blob/main/docs/changelog.md">Changelog</a>
+      </div>
+      <div class="footer-copy">MIT License &middot; 2024&ndash;2026</div>
     </div>
   </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+
+          // Animate dimension bars when score section visible
+          if (entry.target.id === 'dims' || entry.target.closest('#dims')) {
+            document.querySelectorAll('.dim-fill').forEach(bar => {
+              bar.style.width = bar.dataset.width;
+            });
+          }
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Trigger dim bars animation when their parent section is visible
+    const dimObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            document.querySelectorAll('.dim-fill').forEach(bar => {
+              bar.style.width = bar.dataset.width;
+            });
+          }, 600);
+        }
+      });
+    }, { threshold: 0.3 });
+    const dimsEl = document.getElementById('dims');
+    if (dimsEl) dimObserver.observe(dimsEl);
+
+    // Nav shrink on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  </script>
 
 </body>
 </html>
