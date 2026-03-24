@@ -1,3 +1,5 @@
+[![GitHub Stars](https://img.shields.io/github/stars/PhilipStark/book-genesis?style=social)](https://github.com/PhilipStark/book-genesis/stargazers) [![GitHub Forks](https://img.shields.io/github/forks/PhilipStark/book-genesis?style=social)](https://github.com/PhilipStark/book-genesis/network/members) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![Last Commit](https://img.shields.io/github/last-commit/PhilipStark/book-genesis)](https://github.com/PhilipStark/book-genesis/commits/master) [![Made with Claude Code](https://img.shields.io/badge/Made%20with-Claude%20Code-blueviolet)](https://claude.ai)
+
 <p align="center">
 
 ```
