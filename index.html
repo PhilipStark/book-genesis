@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Genesis — AI that writes books and knows if they're good</title>
+  <meta name="description" content="21 AI skills. 17 phases. One sentence to publishable book. The only open-source framework that evaluates manuscript quality against real bestsellers.">
+  <meta property="og:title" content="Book Genesis — AI Book Writing Pipeline">
+  <meta property="og:description" content="21 AI skills that turn one sentence into a publishable book. Genesis Score evaluates quality against 15 bestsellers (350M+ copies). Free, open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://philipstark.github.io/book-genesis/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@PhilipStarkDev">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a1628;
+      --bg2: #0d1f3c;
+      --blue: #4f8cff;
+      --gold: #ffd700;
+      --green: #22c55e;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --card: rgba(79, 140, 255, 0.04);
+      --border: rgba(79, 140, 255, 0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Hero ─────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,140,255,0.06) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 span { color: var(--blue); }
+
+    .hero .tagline {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--muted);
+      margin-top: 20px;
+      max-width: 700px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero .stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 48px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero .stat-item { text-align: center; }
+    .hero .stat-value { font-size: 2.5rem; font-weight: 900; color: var(--gold); }
+    .hero .stat-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-top: 2px; }
+
+    .hero .cta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 48px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(79,140,255,0.3);
+    }
+
+    .btn-primary:hover { box-shadow: 0 8px 30px rgba(79,140,255,0.4); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--blue);
+      border: 2px solid var(--border);
+    }
+
+    .btn-secondary:hover { border-color: var(--blue); }
+
+    /* ── Section ──────────────────────────── */
+    section { padding: 100px 0; }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 60px;
+    }
+
+    /* ── Problem ──────────────────────────── */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .problem-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .problem-card h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .problem-card p { color: var(--muted); font-size: 0.95rem; }
+    .problem-card .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
+    .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
+
+    /* ── Score ────────────────────────────── */
+    .score-section { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%); }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .dim-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .dim-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dim-name {
+      width: 110px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .dim-bar {
+      flex: 1;
+      height: 20px;
+      background: rgba(79,140,255,0.06);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .dim-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: var(--green);
+      transition: width 1s ease;
+    }
+
+    .dim-val {
+      width: 36px;
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    .score-big {
+      text-align: center;
+    }
+
+    .score-big .number {
+      font-size: 8rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      text-shadow: 0 0 60px rgba(255,215,0,0.2);
+    }
+
+    .score-big .label {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-top: 8px;
+    }
+
+    .score-big .rule {
+      margin-top: 24px;
+      padding: 16px 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    .score-big .rule-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .score-big .rule-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Comparison ───────────────────────── */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .comparison-table th {
+      padding: 14px 16px;
+      text-align: center;
+      font-weight: 800;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .comparison-table th:first-child { text-align: left; }
+    .comparison-table th:nth-child(2) { color: var(--blue); }
+
+    .comparison-table td {
+      padding: 12px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table td:first-child {
+      text-align: left;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .comparison-table tr:nth-child(even) { background: var(--card); }
+
+    .check { color: var(--green); font-weight: 900; font-size: 1.1rem; }
+    .cross { color: rgba(239,68,68,0.4); }
+
+    /* ── Install ──────────────────────────── */
+    .install-box {
+      background: rgba(10,22,40,0.8);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .install-box .terminal-dots {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .install-box .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .install-box pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--blue);
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    .install-box .comment { color: var(--muted); }
+    .install-box .cmd { color: var(--gold); }
+
+    /* ── Footer ───────────────────────────── */
+    footer {
+      padding: 60px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p { color: var(--muted); font-size: 0.9rem; }
+    footer a { color: var(--blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .star-cta {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+
+    .star-cta:hover { border-color: var(--gold); text-decoration: none; }
+
+    /* ── Responsive ───────────────────────── */
+    @media (max-width: 768px) {
+      .score-grid { grid-template-columns: 1fr; }
+      .hero .stats { gap: 24px; }
+      .score-big .number { font-size: 5rem; }
+      .comparison-table { font-size: 0.75rem; }
+      .comparison-table th, .comparison-table td { padding: 8px 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>One sentence in.<br><span>Publishable book out.</span></h1>
+    <p class="tagline">21 AI skills that write, evaluate, and revise manuscripts — with a scoring system benchmarked against 15 bestsellers representing 350M+ copies sold.</p>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">21</div>
+        <div class="stat-label">AI Skills</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">17</div>
+        <div class="stat-label">Pipeline Phases</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">85%</div>
+        <div class="stat-label">Benchmark Accuracy</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">MIT</div>
+        <div class="stat-label">Licensed</div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="https://github.com/PhilipStark/book-genesis" class="btn btn-primary">View on GitHub</a>
+      <a href="#install" class="btn btn-secondary">Quick Start</a>
+    </div>
+  </div>
+
+  <!-- Problem -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">The problem with AI writing</h2>
+      <p class="section-sub">Every AI tool generates text. None of them tell you if it's worth reading.</p>
+
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="badge badge-red">WEAKNESS #1</div>
+          <h3>Pacing collapses in the middle</h3>
+          <p>AI writes each chapter as an isolated unit. It doesn't feel the accumulated weight of the narrative. Every test manuscript had a sagging middle.</p>
+        </div>
+        <div class="problem-card">
+          <div class="badge badge-red">WEAKNESS #2</div>
+          <h3>Everything sounds like AI</h3>
+          <p>We identified 20 specific patterns that make AI prose detectable. Pattern #11 (Explanatory Extension) appeared in every chapter of a 14-chapter test.</p>
+        </div>
+        <div class="problem-card">
+          <div class="badge badge-red">WEAKNESS #3</div>
+          <h3>Relentlessly competent</h3>
+          <p>AI characters always manage their emotions, notice the right details, think thematically. Real people have irrelevant thoughts during funerals.</p>
+        </div>
+        <div class="problem-card">
+          <div class="badge badge-green">THE FIX</div>
+          <h3>Evaluation + Controlled Chaos</h3>
+          <p>A scoring system that measures quality across 7 dimensions, plus a Chaos Engine that injects the human noise AI naturally avoids.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Genesis Score -->
+  <section class="score-section" id="score">
+    <div class="container">
+      <h2 class="section-title">Genesis Score V3.7</h2>
+      <p class="section-sub">Your book's score equals its weakest dimension. Strong prose can't mask weak pacing.</p>
+
+      <div class="score-grid">
+        <div class="dim-list">
+          <div class="dim-row">
+            <div class="dim-name">Originality</div>
+            <div class="dim-bar"><div class="dim-fill" style="width:90%"></div></div>
+            <div class="dim-val">9.0</div>
+          </div>
+          <div class="dim-row">
+            <div class="dim-name">Theme</div>
+            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
+            <div class="dim-val">9.1</div>
+          </div>
+          <div class="dim-row">
+            <div class="dim-name">Characters</div>
+            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
+            <div class="dim-val">9.1</div>
+          </div>
+          <div class="dim-row">
+            <div class="dim-name">Prose & Voice</div>
+            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
+            <div class="dim-val">9.1</div>
+          </div>
+          <div class="dim-row">
+            <div class="dim-name">Pacing</div>
+            <div class="dim-bar"><div class="dim-fill" style="width:90%"></div></div>
+            <div class="dim-val">9.0</div>
+          </div>
+          <div class="dim-row">
+            <div class="dim-name">Emotion</div>
+            <div class="dim-bar"><div class="dim-fill" style="width:91%"></div></div>
+            <div class="dim-val">9.1</div>
+          </div>
+          <div class="dim-row">
+            <div class="dim-name">Market Impact</div>
+            <div class="dim-bar"><div class="dim-fill" style="width:89%"></div></div>
+            <div class="dim-val">8.9</div>
+          </div>
+        </div>
+
+        <div class="score-big">
+          <div class="number">9.04</div>
+          <div class="label">PASSED — Iteration 3</div>
+          <div class="rule">
+            <div class="rule-title">The Floor Rule</div>
+            <div class="rule-text">Final score = lowest dimension.<br>No amount of excellence compensates for a gap.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">How it compares</h2>
+      <p class="section-sub">The only framework that evaluates what it produces.</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Book Genesis</th>
+            <th>Sudowrite</th>
+            <th>NovelAI</th>
+            <th>ChatGPT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Structured pipeline</td>
+            <td><span class="check">&#10003;</span> 17 phases</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Quality scoring</td>
+            <td><span class="check">&#10003;</span> 7 dimensions</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Auto-revision loop</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Chaos Engine</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Anti-AI detection (20 patterns)</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Beta reader simulation</td>
+            <td><span class="check">&#10003;</span> 5 profiles</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Editorial package</td>
+            <td><span class="check">&#10003;</span></td>
+            <td>Partial</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Benchmarked scoring</td>
+            <td><span class="check">&#10003;</span> 15 bestsellers</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="cross">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td>Price</td>
+            <td><strong style="color:var(--gold)">Free (MIT)</strong></td>
+            <td>$10-100/mo</td>
+            <td>$10-25/mo</td>
+            <td>$20-100/mo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section id="install">
+    <div class="container">
+      <h2 class="section-title">Get started in 60 seconds</h2>
+      <p class="section-sub">Requires Claude Code CLI + Claude Pro or Max subscription.</p>
+
+      <div class="install-box">
+        <div class="terminal-dots">
+          <div class="dot" style="background:#ff5f57"></div>
+          <div class="dot" style="background:#febc2e"></div>
+          <div class="dot" style="background:#28c840"></div>
+        </div>
+        <pre><span class="comment"># Install (one command)</span>
+<span class="cmd">curl -fsSL https://raw.githubusercontent.com/PhilipStark/book-genesis/main/install.sh | bash</span>
+
+<span class="comment"># Open Claude Code and write a book</span>
+<span class="cmd">claude</span>
+> /book-auto en "a detective in 1920s Berlin discovers the murders
+  she's investigating are committed by versions of herself
+  from parallel timelines"
+
+<span class="comment"># Or use individual skills</span>
+> /book-genesis          <span class="comment"># manual pipeline control</span>
+> /voice-fingerprint     <span class="comment"># character voice DNA</span>
+> /chaos-engine          <span class="comment"># break AI predictability</span>
+> /beta-reader           <span class="comment"># 5 simulated readers</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Built by <a href="https://github.com/PhilipStark">Philip Stark</a> with Claude Code</p>
+      <a href="https://github.com/PhilipStark/book-genesis" class="star-cta">&#9733; Star on GitHub &mdash; it helps more than you think</a>
+    </div>
+  </footer>
+
+</body>
+</html>
