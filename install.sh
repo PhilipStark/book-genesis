@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
 
 # Book Genesis V4 — Installer for macOS/Linux
 # Installs 20 skills + 1 agent + knowledge base to ~/.claude/
